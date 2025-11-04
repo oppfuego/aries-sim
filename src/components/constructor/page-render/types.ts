@@ -42,6 +42,10 @@ export type MediaBlock = {
     loop?: boolean;
     autoPlay?: boolean;
     muted?: boolean;
+
+    hoverEnabled?: boolean;
+    hoverText?: string;
+    hoverButton?: { text: string; link: string };
 };
 
 export type SliderBlock = {

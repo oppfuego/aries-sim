@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import styles from "./Hero.module.scss";
 import { motion } from "framer-motion";
-import ButtonUI from "@/components/ui/button/ButtonUI";
+import styles from "./Hero.module.scss";
 import Image from "next/image";
+import Link from "next/link";
+import ButtonUI from "@/components/ui/button/ButtonUI";
+import TrustBadge from "@/components/features/trust-badge/TrustBadge";
 import { media } from "@/resources/media";
 import type { StaticImageData } from "next/image";
-import Link from "next/link";
-import TrustBadge from "@/components/features/trust-badge/TrustBadge";
 
 interface HeroSectionProps {
     title: string;
@@ -18,7 +18,7 @@ interface HeroSectionProps {
     secondaryCta?: { text: string; link: string };
     image?: string;
     align?: "left" | "right";
-    showTrustBadge?: boolean; // ➕ нове поле
+    showTrustBadge?: boolean;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
@@ -28,8 +28,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                                                      primaryCta,
                                                      secondaryCta,
                                                      image,
-                                                     align = "right",
-                                                     showTrustBadge = false, // ➕ значення за замовчуванням
+                                                     align = "center",
+                                                     showTrustBadge = false,
                                                  }) => {
     const bgImage = image
         ? (media as Record<string, string | StaticImageData>)[image]
@@ -40,80 +40,78 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             ? bgImage
             : (bgImage as StaticImageData)?.src || "";
 
-    const orientationClass =
-        align === "left" ? styles.hero__reverse : styles.hero__default;
-
     return (
-        <section className={`${styles.hero} ${orientationClass}`}>
-            <div className={styles.hero__inner}>
-                <motion.div
-                    className={styles.hero__content}
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <h1 className={styles.hero__title}>
+        <section className={`${styles.hero} ${styles[`align_${align}`]}`}>
+            {imageSrc && (
+                <Image
+                    src={imageSrc}
+                    alt="Hero Background"
+                    fill
+                    priority
+                    className={styles.bgImage}
+                />
+            )}
+            <div className={styles.overlay} />
+
+            <motion.div
+                className={styles.content}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+            >
+                <div className={styles.textBlock}>
+                    <motion.h1
+                        className={styles.title}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
                         {title}{" "}
-                        {highlight && (
-                            <span className={styles.hero__highlight}>{highlight}</span>
+                        {highlight && <span className={styles.highlight}>{highlight}</span>}
+                    </motion.h1>
+
+                    <motion.p
+                        className={styles.description}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        {description}
+                    </motion.p>
+
+                    <motion.div
+                        className={styles.actions}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                    >
+                        {primaryCta && (
+                            <Link href={primaryCta.link}>
+                                <ButtonUI variant="solid" color="primary" size="lg">
+                                    {primaryCta.text}
+                                </ButtonUI>
+                            </Link>
                         )}
-                    </h1>
-
-                    <p className={styles.hero__desc}>{description}</p>
-
-                    <div className={styles.hero__spacer}>
-                        <div className={styles.hero__actions}>
-                            {primaryCta && (
-                                <Link href={primaryCta.link} className={styles.hero__link}>
-                                    <ButtonUI
-                                        variant="solid"
-                                        color="secondary"
-                                        size="lg"
-                                        hoverEffect="none"
-                                        hoverColor="primary"
-                                    >
-                                        {primaryCta.text}
-                                    </ButtonUI>
-                                </Link>
-                            )}
-
-                            {secondaryCta && (
-                                <Link href={secondaryCta.link} className={styles.hero__link}>
-                                    <ButtonUI
-                                        variant="outlined"
-                                        color="primary"
-                                        size="lg"
-                                        hoverEffect="none"
-                                        hoverTextColor="secondary"
-                                    >
-                                        {secondaryCta.text}
-                                    </ButtonUI>
-                                </Link>
-                            )}
-                        </div>
-
-                        {/* ➕ показуємо бейдж тільки якщо вказано showTrustBadge */}
-                        {showTrustBadge && <TrustBadge />}
-                    </div>
-                </motion.div>
-
-                <motion.div
-                    className={styles.hero__imageWrapper}
-                    initial={{ opacity: 0, x: align === "left" ? -80 : 80 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 1 }}
-                >
-                    {imageSrc && (
-                        <Image
-                            src={imageSrc}
-                            alt="Hero Illustration"
-                            fill
-                            className={styles.hero__image}
-                            priority
-                        />
-                    )}
-                </motion.div>
-            </div>
+                        {secondaryCta && (
+                            <Link href={secondaryCta.link}>
+                                <ButtonUI variant="outlined" color="secondary" size="lg">
+                                    {secondaryCta.text}
+                                </ButtonUI>
+                            </Link>
+                        )}
+                        {showTrustBadge && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 1 }}
+                                className={styles.trustBadge}
+                            >
+                                <TrustBadge />
+                            </motion.div>
+                        )}
+                    </motion.div>
+                </div>
+            </motion.div>
         </section>
     );
 };

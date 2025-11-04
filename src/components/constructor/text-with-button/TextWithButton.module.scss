@@ -3,10 +3,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap;
   width: 100%;
-  padding: 0 30px;
-  max-width: 1400px;
+  padding: 0 20px;
+  max-width: 1200px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -15,12 +14,9 @@
 }
 
 .textBlock {
-  flex: 1;
-  min-width: 260px;
 }
 
 .buttonLink {
-  flex-shrink: 0;
   text-decoration: none;
 }
 

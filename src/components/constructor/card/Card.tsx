@@ -2,9 +2,9 @@
 import React from "react";
 import Media from "../image/Media";
 import styles from "./Card.module.scss";
-import {StaticImageData} from "next/image";
+import { StaticImageData } from "next/image";
 import ButtonUI from "@/components/ui/button/ButtonUI";
-import {FaArrowRight} from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
 
 interface CardProps {
     image: string | StaticImageData;
@@ -27,24 +27,25 @@ const Card: React.FC<CardProps> = ({
                 src={image}
                 type="image"
                 width="100%"
-                height="220px"
+                height="100%"
                 alt={title}
                 objectFit="cover"
             />
         </div>
+
         <div className={styles.content}>
             <h3 className={styles.title}>{title}</h3>
             <p className={styles.description}>{description}</p>
+
             {buttonText && buttonLink && (
-                <a href={buttonLink} rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                <a href={buttonLink} rel="noopener noreferrer" className={styles.link}>
                     <ButtonUI
                         variant="solid"
                         shape="rounded"
                         size="md"
-                        textColor={"quaternary"}
-                        color={"primary"}
+                        color="primary"
                         hoverEffect="shadow"
-
+                        rightIcon={<FaArrowRight />}
                     >
                         {buttonText}
                     </ButtonUI>

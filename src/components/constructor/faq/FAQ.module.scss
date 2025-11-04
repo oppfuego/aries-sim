@@ -1,153 +1,116 @@
 .section {
   width: 100%;
   color: var(--text-primary);
-  border-top: 1px solid var(--border-color);
-}
-
-.wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
-  gap: 5rem;
-
-  @media (max-width: 900px) {
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 2.5rem;
-  }
-}
-
-.left {
-  flex: 1.2;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
 }
 
 .title {
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: var(--secondary-color);
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
-
-  @media (max-width: 768px) {
-    text-align: center;
-  }
-}
-
-.faqList {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  width: 100%;
-}
-
-.item {
-  background: var(--surface-muted);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.4rem 1.75rem;
-  transition: all 0.3s ease;
-  width: 100%;
-
-  &:hover {
-    border-color: var(--primary-color);
-  }
-
-  &.active {
-    background: var(--quaternary-color);
-    border-color: var(--primary-color);
-  }
-}
-
-.question {
-  background: none;
-  border: none;
-  font-size: 1.15rem;
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--text-primary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  text-align: left;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: var(--primary-color);
-  }
-}
-
-.arrow {
-  font-size: 1.4rem;
-  color: var(--text-secondary);
-  transition: transform 0.25s ease, color 0.25s ease;
-}
-
-.answerWrapper {
-  overflow: hidden;
-  padding-top: 0.7rem;
-}
-
-.answerContent {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  padding-bottom: 0.4rem;
-  max-width: 900px; /* 🟢 зробили ширше */
-}
-
-.right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-}
-
-.imageWrapper {
-  width: 100%;
-  max-width: 500px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  background: var(--surface-muted);
-}
-
-.image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: inherit;
-}
-
-.centered {
-  justify-content: center;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--primary-color);
   text-align: center;
+  margin-bottom: 3rem;
+}
 
-  .left {
-    align-items: center;
-  }
+/* GRID: two-column FAQ layout */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 1.2rem 3rem;
+  padding: 0 20px;
+}
 
-  .faqList {
-    max-width: 900px; /* 🟢 ширше */
+.row {
+  display: contents;
+}
+
+/* Question cell */
+.questionCard {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+  transition: all 0.3s ease;
+  height: 90px;
+  box-sizing: border-box;
+
+  &:hover {
+    background: var(--surface-muted);
+    transform: translateX(4px);
   }
 }
 
-@media (max-width: 768px) {
-  .section {
-    padding: 4rem 1.5rem;
+.active {
+  background: linear-gradient(90deg, #fff4e6, #fffaf3);
+  border: 1.5px solid var(--primary-color);
+  box-shadow: 0 6px 22px rgba(255, 122, 0, 0.18);
+  transform: translateX(5px);
+}
+
+.number {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.text {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+/* Answer cell */
+.answerCell {
+  position: relative;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.answerBox {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 8px 28px rgba(255, 122, 0, 0.1);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  width: 100%;
+  position: relative;
+}
+
+/* Decorative accent behind answers */
+.answerCell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+                  circle at 80% 50%,
+                  rgba(255, 122, 0, 0.07),
+                  transparent 70%
+  );
+  pointer-events: none;
+  border-radius: 14px;
+  z-index: 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 
-  .question {
-    font-size: 1.05rem;
+  .answerCell {
+    height: auto;
+    margin-top: 0.5rem;
   }
 }

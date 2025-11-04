@@ -1,121 +1,167 @@
 .timelineSection {
   width: 100%;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
 }
 
-.container {
-  max-width: 1440px;
-  padding: 0 30px;
+.inner {
+  max-width: 1200px;
+  padding: 0 20px;
   margin: 0 auto;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
   align-items: center;
+  gap: 4rem;
 }
 
 .title {
   font-size: 2rem;
   font-weight: 500;
   color: var(--secondary-color);
-  text-align: center;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-  margin: 0;
 }
 
-/* 🧱 Сітка кроків */
-.cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+/* 🟠 Вертикальна лінія */
+.timelineTrack {
+  position: relative;
   width: 100%;
-}
-
-/* 🗂️ Картка */
-.card {
-  background: var(--surface-color);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 2.2rem 2rem;
   display: flex;
-  align-items: flex-start;
-  gap: 1.4rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: var(--primary-color);
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
-    transform: translateY(-3px);
-  }
-}
-
-/* 🔢 Номер етапу */
-.number {
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  font-size: 1.1rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-/* 📄 Текст усередині */
-.cardBody {
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background: linear-gradient(
+                  180deg,
+                  var(--primary-color),
+                  var(--secondary-color)
+  );
+  border-radius: 2px;
+  opacity: 0.4;
+}
+
+/* 💫 Кроки */
+.steps {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 4rem;
+  width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
-.cardTitle {
-  font-weight: 500;
-  font-size: 1.2rem;
+/* 🔹 Картка */
+.stepCard {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  &:nth-child(even) {
+    flex-direction: row-reverse;
+
+    .content {
+      text-align: right;
+      align-items: flex-end;
+    }
+  }
+
+  &:hover .circle {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 122, 0, 0.6);
+    transform: scale(1.1);
+  }
+
+  &:hover .content h4 {
+    color: var(--primary-color);
+  }
+}
+
+/* 🔵 Коло з номером */
+.circle {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--quaternary-color);
   color: var(--secondary-color);
-  margin: 0;
-  line-height: 1.4;
+  border: 3px solid var(--primary-color);
+  font-weight: 700;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 10px rgba(255, 122, 0, 0.15);
 }
 
-.cardDescription {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin: 0;
-}
+/* 🧩 Контент */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  max-width: 420px;
+  padding: 1.8rem 2rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(255, 122, 0, 0.1);
+  border: 1px solid #f6d9bb;
+  transition: all 0.4s ease;
 
-/* 📱 Responsive */
-@media (max-width: 992px) {
-  .timelineSection {
-    padding: 4rem 0;
+  h4 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
   }
 
-  .title {
-    font-size: 1.75rem;
-  }
-
-  .card {
-    padding: 2rem 1.5rem;
-  }
-
-  .number {
-    width: 38px;
-    height: 38px;
+  p {
     font-size: 1rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .stepCard:hover & {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(255, 122, 0, 0.15);
   }
 }
 
-@media (max-width: 600px) {
-  .cardsGrid {
-    gap: 1.5rem;
+/* 📱 Адаптивність */
+@media (max-width: 900px) {
+  .line {
+    left: 10px;
   }
 
-  .card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+  .stepCard {
+    flex-direction: row;
+    gap: 1.2rem;
+
+    &:nth-child(even) {
+      flex-direction: row;
+      .content {
+        text-align: left;
+        align-items: flex-start;
+      }
+    }
+  }
+
+  .circle {
+    width: 50px;
+    height: 50px;
+    font-size: 1.1rem;
+  }
+
+  .content {
+    max-width: 100%;
+    padding: 1.4rem 1.2rem;
   }
 }

@@ -1,18 +1,23 @@
 "use client";
-
 import React from "react";
-import Grid from "../grid/Grid";
-import Card from "../card/Card";
-import { media as mediaMap } from "@/resources/media";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { motion } from "framer-motion";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import styles from "./TeamGrid.module.scss";
 import Text from "@/components/constructor/text/Text";
+import Media from "@/components/constructor/image/Media";
+import ButtonUI from "@/components/ui/button/ButtonUI";
 
 interface TeamMember {
     name: string;
     role: string;
     bio: string;
     image: string;
+    buttonText?: string;
+    buttonLink?: string;
 }
 
 interface TeamGridProps {
@@ -21,26 +26,15 @@ interface TeamGridProps {
     members: TeamMember[];
 }
 
-function resolveMedia(key?: string) {
-    if (!key) return undefined;
-    return (mediaMap as Record<string, unknown>)[key] as any;
-}
-
-const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-};
-
 const TeamGrid: React.FC<TeamGridProps> = ({ title, description, members }) => {
     return (
         <section className={styles.section}>
             <motion.div
                 className={styles.head}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={cardVariants}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
             >
                 <Text
                     title={title}
@@ -51,24 +45,53 @@ const TeamGrid: React.FC<TeamGridProps> = ({ title, description, members }) => {
                 />
             </motion.div>
 
-            <Grid columns={members.length > 3 ? 3 : members.length} gap="2rem">
-                {members.map((m, i) => (
-                    <motion.div
-                        key={i}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.2 }}
-                        variants={cardVariants}
-                        transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
-                    >
-                        <Card
-                            image={resolveMedia(m.image)}
-                            title={`${m.name} — ${m.role}`}
-                            description={m.bio}
-                        />
-                    </motion.div>
-                ))}
-            </Grid>
+            <div className={styles.sliderWrapper}>
+                <Swiper
+                    modules={[Autoplay, Pagination, Navigation]}
+                    spaceBetween={30}
+                    slidesPerView={3}
+                    autoplay={{ delay: 5000, disableOnInteraction: false }}
+                    pagination={{ clickable: true }}
+
+                    navigation={true}
+                    breakpoints={{
+                        0: { slidesPerView: 1 },
+                        768: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
+                    }}
+                    className={styles.slider}
+                >
+                    {members.map((m, i) => (
+                        <SwiperSlide key={i}>
+                            <motion.div
+                                className={styles.memberCard}
+                                initial={{ opacity: 0, y: 40 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.15, duration: 0.5 }}
+                                viewport={{ once: true }}
+                            >
+                                <div className={styles.imageWrapper}>
+                                    <Media
+                                        src={m.image}
+                                        type="image"
+                                        width="100%"
+                                        height="100%"
+                                        alt={m.name}
+                                        objectFit="cover"
+                                    />
+                                </div>
+
+                                <div className={styles.info}>
+                                    <h3>{m.name}</h3>
+                                    <span className={styles.role}>{m.role}</span>
+                                    <p>{m.bio}</p>
+
+                                </div>
+                            </motion.div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
         </section>
     );
 };

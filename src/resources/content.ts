@@ -14,13 +14,8 @@ export const headerContent = {
         href: "/"
     },
     links: [
+        {label: "Home", href: "/"},
         {label: "About Us", href: "/about-us"},
-        {label: "Get Started", href: "/get-started"},
-        {label: "Success Stories", href: "/success"},
-        {label: "Resources", href: "/resources"},
-        {label: "Plans", href: "/pricing"},
-        {label: "Contact Us", href: "/contact-us"},
-        {label: "Faq", href: "/faq"},
     ]
 };
 

@@ -3,6 +3,8 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import styles from "./Media.module.scss";
+import ButtonUI from "@/components/ui/button/ButtonUI";
+import { media as mediaMap } from "@/resources/media";
 
 interface MediaProps {
     src: string | StaticImageData;
@@ -15,6 +17,11 @@ interface MediaProps {
     loop?: boolean;
     muted?: boolean;
     aspectRatio?: string;
+
+    // 🆕 Нові пропси
+    hoverEnabled?: boolean;
+    hoverText?: string;
+    hoverButton?: { text: string; link: string };
 }
 
 const Media: React.FC<MediaProps> = ({
@@ -28,15 +35,26 @@ const Media: React.FC<MediaProps> = ({
                                          loop = false,
                                          muted = false,
                                          aspectRatio = "16/9",
+                                         hoverEnabled = false,
+                                         hoverText,
+                                         hoverButton,
                                      }) => {
+
+    function resolveMedia(key?: string | StaticImageData) {
+        if (typeof key === "string" && key in mediaMap) {
+            return (mediaMap as Record<string, string>)[key];
+        }
+        return key;
+    }
+
     return (
         <div
-            className={`${styles.mediaWrapper} ${className}`}
+            className={`${styles.mediaWrapper} ${hoverEnabled ? styles.hoverable : ""} ${className}`}
             style={{ aspectRatio }}
         >
             {type === "image" ? (
                 <Image
-                    src={src}
+                    src={resolveMedia(src)}
                     alt={alt}
                     fill
                     style={{ objectFit }}
@@ -54,6 +72,24 @@ const Media: React.FC<MediaProps> = ({
                         style={{ objectFit }}
                     />
                 )
+            )}
+
+            {/* 🧾 Hover Overlay */}
+            {hoverEnabled && (hoverText || hoverButton) && (
+                <div className={styles.overlay}>
+                    {hoverText && <p className={styles.hoverText}>{hoverText}</p>}
+                    {hoverButton && (
+                        <a href={hoverButton.link}>
+                            <ButtonUI
+                                text={hoverButton.text}
+                                color="primary"
+                                variant="solid"
+                                size="md"
+                                hoverEffect="scale"
+                            />
+                        </a>
+                    )}
+                </div>
             )}
         </div>
     );

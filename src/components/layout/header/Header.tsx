@@ -12,12 +12,13 @@ import {headerStyles} from "@/resources/styles-config";
 import DrawerMenu from "@/components/ui/drawer/Drawer";
 import {useCurrency} from "@/context/CurrencyContext";
 import {motion} from "framer-motion";
+import {IoMdArrowDropright} from "react-icons/io";
+import CurrencySwitch from "@/components/widgets/currency-switch/CurrencySwitch";
 
 const Header: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const user = useUser();
-    const {currency, setCurrency} = useCurrency();
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -71,12 +72,38 @@ const Header: React.FC = () => {
                                 {link.label}
                             </a>
                         ))}
-                        {/*{user && (
-                            <a href="/dashboard" className={styles.link}>
-                                Dashboard
-                            </a>
-                        )}*/}
+                        {/* 🔽 Dropdown 1 — Services */}
+                        <div className={styles.dropdown}>
+                            <button className={styles.dropbtn}>
+                                Services
+                                <span className={styles.arrow}><IoMdArrowDropright/></span>
+                            </button>
+                            <div className={styles.dropdownMenu}>
+                                <a href="/seo" className={styles.dropdownLink}>Technical Website Audit</a>
+                                <a href="/smm" className={styles.dropdownLink}>On-Page SEO</a>
+                                <a href="/audit" className={styles.dropdownLink}>Off-Page SEO</a>
+                                <a href="/audit" className={styles.dropdownLink}>Local SEO</a>
+                                <a href="/audit" className={styles.dropdownLink}>SEO Copywriting</a>
+                                <a href="/audit" className={styles.dropdownLink}>Competitor Analysis</a>
+                            </div>
+                        </div>
+
+                        {/* 🔽 Dropdown 2 — Resources */}
+                        <div className={styles.dropdown}>
+                            <button className={styles.dropbtn}>
+                                Resources
+                                <span className={styles.arrow}>
+                                   <IoMdArrowDropright/>
+                                </span>
+                            </button>
+                            <div className={styles.dropdownMenu}>
+                                <a href="/pricing" className={styles.dropdownLink}>Pricing</a>
+                                <a href="/faq" className={styles.dropdownLink}>FAQ</a>
+                                <a href="/contact" className={styles.dropdownLink}>Contact Us</a>
+                            </div>
+                        </div>
                     </nav>
+
 
                     {/* Права частина — кнопки */}
                     {/*<div className={styles.actionsNav}>
@@ -94,26 +121,8 @@ const Header: React.FC = () => {
                     </div>*/}
 
                     <div className={styles.actionsNav}>
-                        <AuthButtons />
-
-                        <div className={styles.currencySwitch}>
-                            <div className={styles.toggleTrack}>
-                                {["GBP", "EUR", "USD"].map((c) => (
-                                    <button
-                                        key={c}
-                                        onClick={() => setCurrency(c as "GBP" | "EUR" | "USD")}
-                                        className={`${styles.option} ${currency === c ? styles.active : ""}`}
-                                    >
-                                        {c}
-                                    </button>
-                                ))}
-                                <div
-                                    className={styles.thumb}
-                                    data-currency={currency}
-                                />
-                            </div>
-                        </div>
-
+                        <AuthButtons/>
+                        <CurrencySwitch/>
                     </div>
 
 

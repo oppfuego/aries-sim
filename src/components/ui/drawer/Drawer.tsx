@@ -1,17 +1,19 @@
-import React, { FC } from "react";
-import { Drawer } from "@mui/material";
+import React, {FC} from "react";
+import {Drawer} from "@mui/material";
 import styles from "./Drawer.module.scss";
 import Image from "next/image";
 import AuthButtons from "@/components/widgets/auth-buttons/AuthButtons";
-import { headerContent } from "@/resources/content";
-import { drawerConfig } from "@/resources/styles-config";
-import { DrawerMenuProps } from "@/types/drawer-menu";
-import { IoCloseSharp } from "react-icons/io5";
+import {headerContent} from "@/resources/content";
+import {drawerConfig} from "@/resources/styles-config";
+import {DrawerMenuProps} from "@/types/drawer-menu";
+import {IoCloseSharp} from "react-icons/io5";
 import {useCurrency} from "@/context/CurrencyContext";
+import CurrencySwitch from "@/components/widgets/currency-switch/CurrencySwitch";
+import {IoMdArrowDropright} from "react-icons/io";
 
-const DrawerMenu: FC<DrawerMenuProps> = ({ open, onClose }) => {
+const DrawerMenu: FC<DrawerMenuProps> = ({open, onClose}) => {
     const cfg = drawerConfig;
-    const { currency, setCurrency } = useCurrency();
+    const {currency, setCurrency} = useCurrency();
 
     return (
         <Drawer
@@ -43,7 +45,7 @@ const DrawerMenu: FC<DrawerMenuProps> = ({ open, onClose }) => {
                         href={headerContent.logo.href}
                         className={styles.logo}
                         onClick={onClose}
-                        style={{ display: "inline-flex" }}
+                        style={{display: "inline-flex"}}
                     >
                         <Image
                             width={cfg.logoWidth}
@@ -53,18 +55,14 @@ const DrawerMenu: FC<DrawerMenuProps> = ({ open, onClose }) => {
                         />
                     </a>
 
-                    <AuthButtons />
+                    <div className={styles.topRowInner}>
+                        <AuthButtons/>
 
-                        <div className={styles.currencySwitch}>
-                            <select
-                                value={currency}
-                                onChange={(e) => setCurrency(e.target.value)}
-                                className={styles.currencySelect}
-                            >
-                                <option value="GBP">£ GBP</option>
-                                <option value="EUR">€ EUR</option>
-                            </select>
-                        </div>
+                        <CurrencySwitch/>
+                    </div>
+
+
+
                 </div>
 
                 <nav
@@ -85,6 +83,32 @@ const DrawerMenu: FC<DrawerMenuProps> = ({ open, onClose }) => {
                             {link.label}
                         </a>
                     ))}
+                    <div className={styles.dropdown}>
+                        <button className={styles.dropbtn}>
+                            Services
+                            <span className={styles.arrow}><IoMdArrowDropright/></span>
+                        </button>
+                        <div className={styles.dropdownMenu}>
+                            <a href="/seo" className={styles.dropdownLink}>SEO Optimization</a>
+                            <a href="/smm" className={styles.dropdownLink}>SMM Marketing</a>
+                            <a href="/audit" className={styles.dropdownLink}>Website Audit</a>
+                        </div>
+                    </div>
+
+                    {/* 🔽 Dropdown 2 — Resources */}
+                    <div className={styles.dropdown}>
+                        <button className={styles.dropbtn}>
+                            Resources
+                            <span className={styles.arrow}>
+                                   <IoMdArrowDropright/>
+                                </span>
+                        </button>
+                        <div className={styles.dropdownMenu}>
+                            <a href="/pricing" className={styles.dropdownLink}>Pricing</a>
+                            <a href="/faq" className={styles.dropdownLink}>FAQ</a>
+                            <a href="/contact" className={styles.dropdownLink}>Contact Us</a>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </Drawer>

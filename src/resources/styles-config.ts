@@ -61,8 +61,8 @@ export const headerStyles = {
 
 // Drawer
 export const drawerConfig = {
-    anchor: "bottom" as SideBarDirection,
-    width: "100%",
+    anchor: "right" as SideBarDirection,
+    width: "50%",
     padding: "20px",
     logoWidth: 150,
     logoHeight: 50,
@@ -76,7 +76,7 @@ export const footerStyles = {
     type: "columns" as FooterType,
     showTopBorder: true,
     showBottomBorder: true,
-    maxWidth: 1400,
+    maxWidth: 1200,
     paddings: { x: 40, y: 10 },
     gap: 30,
     columnsGap: 50,

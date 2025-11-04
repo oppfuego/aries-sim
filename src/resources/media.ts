@@ -2,8 +2,8 @@ import logo from "@/assets/logo/logo.png";
 import logo_black from "@/assets/logo/logo-black.svg";
 import image1 from "@/assets/images/image1.jpg";
 import image2 from "@/assets/images/image2.jpg";
-import image3 from "@/assets/images/image3.png";
-import image4 from "@/assets/images/image4.png";
+import image3 from "@/assets/images/image3.jpg";
+import image4 from "@/assets/images/image4.jpg";
 import image5 from "@/assets/images/image5.jpg";
 import image6 from "@/assets/images/image6.jpg";
 import image7 from "@/assets/images/image7.jpg";
@@ -22,22 +22,27 @@ import image19 from "@/assets/images/image19.jpg";
 import image20 from "@/assets/images/image20.jpg";
 import image21 from "@/assets/images/image21.jpg";
 
+import portfolio1 from "@/assets/images/portfolio1.jpg";
+import portfolio2 from "@/assets/images/portfolio2.jpg";
+import portfolio3 from "@/assets/images/portfolio3.jpg";
+import portfolio4 from "@/assets/images/portfolio4.jpg";
+import portfolio5 from "@/assets/images/portfolio5.jpg";
+import portfolio6 from "@/assets/images/portfolio6.jpg";
+
 import review1 from "@/assets/images/review1.png";
 import review2 from "@/assets/images/review2.png";
 import review3 from "@/assets/images/review3.png";
+import review4 from "@/assets/images/review4.jpg";
+import review5 from "@/assets/images/review5.jpg";
+import review6 from "@/assets/images/review6.jpg";
 
 import team1 from "@/assets/images/team1.jpg";
 import team2 from "@/assets/images/team2.jpg";
 import team3 from "@/assets/images/team3.jpg";
-
-import template1 from "../../public/templates/classic.png";
-import template2 from "../../public/templates/modern.png";
-import template3 from "../../public/templates/creative.png";
-
-import coach1 from "@/assets/images/coach1.jpg";
-import coach2 from "@/assets/images/coach2.jpg";
-import coach3 from "@/assets/images/coach3.jpg";
-import coach4 from "@/assets/images/coach4.jpg";
+import team4 from "@/assets/images/team4.jpg";
+import team5 from "@/assets/images/team5.jpg";
+import team6 from "@/assets/images/team6.jpg";
+import team7 from "@/assets/images/team7.jpg";
 
 import logo1 from "@/assets/images/logo1.png";
 import logo2 from "@/assets/images/logo5.svg";
@@ -77,27 +82,27 @@ export const media = {
     image20: image20,
     image21: image21,
 
+    portfolio1: portfolio1,
+    portfolio2: portfolio2,
+    portfolio3: portfolio3,
+    portfolio4: portfolio4,
+    portfolio5: portfolio5,
+    portfolio6: portfolio6,
+
     review1: review1,
     review2: review2,
     review3: review3,
-
-    coach1: coach1,
-    coach2: coach2,
-    coach3: coach3,
-    coach4: coach4,
+    review4: review4,
+    review5: review5,
+    review6: review6,
 
     team1: team1,
     team2: team2,
     team3: team3,
-
-    template1: template1,
-    template2: template2,
-    template3: template3,
-
-    CVMakerDemo: '/videos/cv-maker-demo.mp4',
-    coachWork: '/videos/coach-work.mp4',
-    fitPlannerDemo: '/videos/fit-planner-demo.mp4',
-    planDemo: '/videos/plan-demo.mp4',
+    team4: team4,
+    team5: team5,
+    team6: team6,
+    team7: team7,
 
 }
 

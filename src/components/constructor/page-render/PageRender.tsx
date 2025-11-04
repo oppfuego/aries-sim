@@ -190,6 +190,9 @@ function RenderMedia(b: MediaBlock) {
             loop={b.loop}
             autoPlay={b.autoPlay}
             muted={b.muted}
+            hoverEnabled={b.hoverEnabled}
+            hoverText={b.hoverText}
+            hoverButton={b.hoverButton}
         />
     );
 }

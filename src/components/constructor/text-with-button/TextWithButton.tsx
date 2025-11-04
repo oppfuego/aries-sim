@@ -39,9 +39,10 @@ const TextWithButton: React.FC<TextWithButtonProps> = ({
                     <ButtonUI
                         text={buttonText}
                         color="primary"
-                        variant="solid"
+                        shape="rounded"
                         hoverEffect="scale"
                         size="md"
+                        hoverColor="primary"
                     />
                 </a>
             )}

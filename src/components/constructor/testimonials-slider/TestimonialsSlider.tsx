@@ -1,11 +1,15 @@
-// typescript
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MdStar, MdStarBorder, MdChevronLeft, MdChevronRight } from "react-icons/md";
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay, Navigation } from "swiper/modules";
+import { motion } from "framer-motion";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import styles from "./TestimonialsSlider.module.scss";
 import { media } from "@/resources/media";
+import { MdStar, MdStarBorder } from "react-icons/md";
 
 interface Testimonial {
     name: string;
@@ -22,82 +26,66 @@ interface Props {
 }
 
 export default function TestimonialsSlider({ title, description, testimonials }: Props) {
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    const resolveImage = (key?: string) => {
+        if (!key) return undefined;
+        const img = media[key as keyof typeof media];
+        if (typeof img === "string") return img;
+        return (img as any)?.src ?? "";
     };
-
-    const prevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    };
-
-    useEffect(() => {
-        const interval = setInterval(nextSlide, 5000);
-        return () => clearInterval(interval);
-    }, []);
-
-    const current = testimonials[currentIndex];
-
-    // Безопасно вычисляем src для изображения вне JSX, чтобы избежать проблем парсинга и ошибок типов
-    let srcValue: string | undefined = undefined;
-    if (current?.image) {
-        const key = current.image as keyof typeof media;
-        const m = media[key];
-        if (typeof m === "string") {
-            srcValue = m;
-        } else {
-            // m может быть StaticImageData или другой объект
-            srcValue = (m as any)?.src ?? String(m);
-        }
-    }
 
     return (
         <section className={styles.section}>
             {title && <h2 className={styles.title}>{title}</h2>}
             {description && <p className={styles.description}>{description}</p>}
 
-            <div className={styles.sliderWrapper}>
-                <button className={`${styles.navButton} ${styles.left}`} onClick={prevSlide}>
-                    <MdChevronLeft size={28} />
-                </button>
-
-                <div className={styles.slider}>
-                    <AnimatePresence mode="wait">
+            <Swiper
+                modules={[Pagination, Autoplay, Navigation]}
+                spaceBetween={40}
+                slidesPerView={1}
+                centeredSlides
+                autoplay={{ delay: 6000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                navigation
+                speed={800}
+                className={styles.slider}
+            >
+                {testimonials.map((t, i) => (
+                    <SwiperSlide key={i}>
                         <motion.div
-                            key={currentIndex}
                             className={styles.card}
-                            initial={{ opacity: 0, x: 80 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -80 }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
                         >
-                            {/* 🖼️ Фото */}
-                            {srcValue && (
+                            {/* Фото користувача */}
+                            {t.image && (
                                 <motion.img
-                                    key={srcValue}
-                                    src={srcValue}
-                                    alt={current.name}
+                                    src={resolveImage(t.image)}
+                                    alt={t.name}
                                     className={styles.avatar}
                                     initial={{ scale: 0.9, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ duration: 0.4 }}
+                                    transition={{ duration: 0.5 }}
                                 />
                             )}
 
-                            {/* 💬 Текст */}
-                            <p className={styles.text}>“{current.text}”</p>
+                            {/* Цитата */}
+                            <motion.blockquote className={styles.text}>
+                                “{t.text}”
+                            </motion.blockquote>
 
+                            {/* Ім’я + роль */}
                             <div className={styles.footer}>
                                 <div className={styles.info}>
-                                    <h4 className={styles.name}>{current.name}</h4>
-                                    {current.role && <p className={styles.role}>{current.role}</p>}
+                                    <h4 className={styles.name}>{t.name}</h4>
+                                    {t.role && <p className={styles.role}>{t.role}</p>}
                                 </div>
 
                                 {/* ⭐ Рейтинг */}
                                 <div className={styles.stars}>
                                     {Array.from({ length: 5 }).map((_, idx) =>
-                                        idx < (current.rating ?? 5) ? (
+                                        idx < (t.rating ?? 5) ? (
                                             <MdStar key={idx} className={styles.starFilled} />
                                         ) : (
                                             <MdStarBorder key={idx} className={styles.starEmpty} />
@@ -106,23 +94,9 @@ export default function TestimonialsSlider({ title, description, testimonials }:
                                 </div>
                             </div>
                         </motion.div>
-                    </AnimatePresence>
-                </div>
-
-                <button className={`${styles.navButton} ${styles.right}`} onClick={nextSlide}>
-                    <MdChevronRight size={28} />
-                </button>
-            </div>
-
-            <div className={styles.dots}>
-                {testimonials.map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrentIndex(i)}
-                        className={`${styles.dot} ${i === currentIndex ? styles.active : ""}`}
-                    />
+                    </SwiperSlide>
                 ))}
-            </div>
+            </Swiper>
         </section>
     );
 }
