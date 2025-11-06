@@ -27,7 +27,7 @@ const schema: PageSchema = {
 We optimise your Google Business Profile, build local citations, and boost reputation to attract customers near you.`,
             image: "image8",
             align: "right",
-            primaryCta: { text: "Improve Local Visibility", link: "/contact-us" },
+            primaryCta: { text: "Improve Local Visibility", link: "/contact-us?service=Local%20SEO%20Optimisation&tokens=30" },
         },
 
         // 💡 INTRO

@@ -98,36 +98,30 @@ Today, we help businesses in 20+ countries increase visibility and sales through
                         block: {
                             type: "media",
                             mediaType: "image",
-                            src: "portfolio1",
+                            src: "portfolio3",
                             hoverEnabled: true,
-                            hoverText:
-                                "E-commerce Brand — +300% organic traffic & +180% sales in 6 months.",
-                            hoverButton: { text: "View Case", link: "/cases/ecommerce" },
-                        },
+                            hoverText: "SaaS Analytics Platform — Technical SEO Audit: +75% faster load time",
+                            hoverButton: { text: "See Case", link: "/cases/audit" },                        },
                     },
                     {
                         key: "2",
                         block: {
                             type: "media",
                             mediaType: "image",
-                            src: "portfolio2",
+                            src: "portfolio4",
                             hoverEnabled: true,
-                            hoverText:
-                                "Tech Startup — From 0 to 25k monthly visits using AI-driven keyword mapping.",
-                            hoverButton: { text: "View Case", link: "/cases/saas" },
-                        },
+                            hoverText: "Restaurant Chain — SEO Copywriting: +90% engagement on location pages",
+                            hoverButton: { text: "See Case", link: "/cases/copywriting" },                        },
                     },
                     {
                         key: "3",
                         block: {
                             type: "media",
                             mediaType: "image",
-                            src: "portfolio3",
+                            src: "portfolio5",
                             hoverEnabled: true,
-                            hoverText:
-                                "Local Business — +220% leads after local SEO optimisation and Google Maps push.",
-                            hoverButton: { text: "View Case", link: "/cases/local" },
-                        },
+                            hoverText: "Real Estate Agency — Competitor Analysis: outranked 4 top rivals in 6 months",
+                            hoverButton: { text: "See Case", link: "/cases/analysis" },                        },
                     },
                 ],
             },

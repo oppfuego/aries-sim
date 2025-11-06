@@ -9,7 +9,7 @@ export default function ContactUsPage() {
     const user = useUser();
     const search = useSearchParams();
     const service = search.get("service");
-    const tokens = Number(search.get("tokens") || 5);
+    const tokens = Number(search.get("tokens") || 30);
 
     if (!service) {
         return (

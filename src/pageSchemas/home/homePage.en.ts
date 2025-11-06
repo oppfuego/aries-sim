@@ -65,7 +65,7 @@ const schema: PageSchema = {
                     description:
                         "Identify issues that block ranking: speed, Core Web Vitals, duplicate pages, crawling and indexing. You’ll receive a full report with priorities and fixes.",
                     buttonText: "Request Audit",
-                    buttonLink: "/pricing",
+                    buttonLink: "/cases/audit",
                 },
                 {
                     image: "image3",
@@ -73,7 +73,7 @@ const schema: PageSchema = {
                     description:
                         "We optimise content, tags, structure, and visuals. Clean HTML, powerful titles, proper hierarchy — all aligned with your keywords and intent.",
                     buttonText: "Improve My Pages",
-                    buttonLink: "/contact",
+                    buttonLink: "/cases/on-page",
                 },
                 {
                     image: "image4",
@@ -81,7 +81,7 @@ const schema: PageSchema = {
                     description:
                         "Backlinks that actually work. Guest posts, outreach, PR placements, and crowd-marketing that build long-term authority.",
                     buttonText: "See Link Packages",
-                    buttonLink: "/pricing",
+                    buttonLink: "/cases/off-page",
                 },
                 {
                     image: "image5",
@@ -89,7 +89,7 @@ const schema: PageSchema = {
                     description:
                         "Appear in Google Maps, increase reviews, and own your city’s search results.",
                     buttonText: "Optimise for My Area",
-                    buttonLink: "/contact",
+                    buttonLink: "/cases/local",
                 },
                 {
                     image: "image7",
@@ -97,7 +97,7 @@ const schema: PageSchema = {
                     description:
                         "Get unique, engaging SEO texts and articles that attract visitors and satisfy algorithms. We write for both people and bots.",
                     buttonText: "View Content Samples",
-                    buttonLink: "#cases",
+                    buttonLink: "/cases/copywriting",
                 },
                 {
                     image: "image6",
@@ -105,7 +105,7 @@ const schema: PageSchema = {
                     description:
                         "We study your niche, keywords, and backlinks to uncover what competitors do better — and help you outrank them.",
                     buttonText: "Order Research",
-                    buttonLink: "/pricing",
+                    buttonLink: "/cases/analysis",
                 },
             ],
         },
@@ -157,7 +157,7 @@ const schema: PageSchema = {
                             src: "portfolio1",
                             hoverEnabled: true,
                             hoverText: "E-Commerce Fashion Store — On-Page SEO: +120% organic sales in 4 months",
-                            hoverButton: { text: "See Case", link: "/cases/electronics-backlinks" },                        },
+                            hoverButton: { text: "See Case", link: "/cases/on-page" },                        },
                     },
                     {
                         key: "2",
@@ -167,7 +167,7 @@ const schema: PageSchema = {
                             src: "portfolio2",
                             hoverEnabled: true,
                             hoverText: "Dental Clinic Network — Local SEO: +230% visibility on Google Maps",
-                            hoverButton: { text: "See Case", link: "/cases/electronics-backlinks" },                        },
+                            hoverButton: { text: "See Case", link: "/cases/local" },                        },
                     },
                     {
                         key: "3",
@@ -177,7 +177,7 @@ const schema: PageSchema = {
                             src: "portfolio3",
                             hoverEnabled: true,
                             hoverText: "SaaS Analytics Platform — Technical SEO Audit: +75% faster load time",
-                            hoverButton: { text: "See Case", link: "/cases/electronics-backlinks" },                        },
+                            hoverButton: { text: "See Case", link: "/cases/audit" },                        },
                     },
                     {
                         key: "4",
@@ -187,7 +187,7 @@ const schema: PageSchema = {
                             src: "portfolio4",
                             hoverEnabled: true,
                             hoverText: "Restaurant Chain — SEO Copywriting: +90% engagement on location pages",
-                            hoverButton: { text: "See Case", link: "/cases/electronics-backlinks" },                        },
+                            hoverButton: { text: "See Case", link: "/cases/copywriting" },                        },
                     },
                     {
                         key: "5",
@@ -197,7 +197,7 @@ const schema: PageSchema = {
                             src: "portfolio5",
                             hoverEnabled: true,
                             hoverText: "Real Estate Agency — Competitor Analysis: outranked 4 top rivals in 6 months",
-                            hoverButton: { text: "See Case", link: "/cases/electronics-backlinks" },                        },
+                            hoverButton: { text: "See Case", link: "/cases/analysis" },                        },
                     },
                     {
                         key: "6",
@@ -207,7 +207,7 @@ const schema: PageSchema = {
                             src: "portfolio6",
                             hoverEnabled: true,
                             hoverText: "Online Electronics Store — Off-Page SEO: +180 backlinks & +70 domain authority",
-                            hoverButton: { text: "See Case", link: "/cases/electronics-backlinks" },
+                            hoverButton: { text: "See Case", link: "/cases/off-page" },
                         },
                     },
                 ],

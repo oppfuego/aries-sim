@@ -27,7 +27,7 @@ const schema: PageSchema = {
 We adjust technical tags, structure, and content to maximise visibility and user engagement.`,
             image: "image7",
             align: "right",
-            primaryCta: { text: "Request Optimisation", link: "/contact-us" },
+            primaryCta: { text: "Request Optimisation", link: "/contact-us?service=On-Page SEO&tokens=30" },
         },
 
         // 💡 INTRO: Why On-Page SEO matters

@@ -27,7 +27,7 @@ const schema: PageSchema = {
 Our SEO copywriters craft landing pages, blog posts, and product descriptions optimised for both users and search engines.`,
             image: "image12",
             align: "right",
-            primaryCta: { text: "Order SEO Copy", link: "/contact-us" },
+            primaryCta: { text: "Order SEO Copy", link: "/contact-us?service=SEO%20Copywriting&tokens=30" },
         },
 
         // 💡 INTRO

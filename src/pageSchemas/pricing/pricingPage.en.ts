@@ -27,7 +27,7 @@ const schema: PageSchema = {
 Each plan includes a detailed report and real results tracking.`,
             image: "image18",
             align: "right",
-            primaryCta: { text: "Request Consultation", link: "/contact" },
+            primaryCta: { text: "Request Consultation", link: "/contact-us" },
         },
 
         {
