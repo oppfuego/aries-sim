@@ -1,4 +1,5 @@
-import type {CSSProperties} from "react";
+import React, {CSSProperties} from "react";
+import {StaticImageData} from "next/image";
 
 export type TextBlock = {
     type: "text";
@@ -61,7 +62,8 @@ export type FaqBlock = {
 
 export type CardBlock = {
     type: "card";
-    image: string;
+    image?: string;
+    icon?: string | React.ReactNode;
     title: string;
     description: string;
     buttonLink: string;
@@ -87,7 +89,8 @@ export type GridItem = {
 };
 
 export type LegacyCard = {
-    image: string;
+    image?: string;                  // ⬅️ optional
+    icon?: string | React.ReactNode; // ⬅️ NEW
     title: string;
     description: string;
     buttonLink?: string;
@@ -96,6 +99,10 @@ export type LegacyCard = {
 
 export type GridBlock = {
     type: "grid";
+
+    title?: string;
+    description?: string;
+
     columns: number;
     gap?: string;
     style?: CSSProperties;
@@ -132,7 +139,7 @@ export type InfoBlock = {
     component: "InfoBlock";
     title?: string;
     description?: string;
-    icon?: string;       // emoji або svg-клас
+    icon?: string | React.ReactNode;       // emoji або svg-клас
     image?: string;      // ключ з media
     bullets?: string[];
     align?: "left" | "center" | "right";
@@ -144,7 +151,7 @@ export type ValuesIconsBlock = {
     title?: string;
     description?: string; // ✅ тепер можна передавати опис секції
     values: {
-        icon: string;
+        icon: string | React.ReactNode;
         title: string;
         text?: string;
         description?: string; // ✅ дозволяємо description для item

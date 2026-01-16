@@ -5,6 +5,7 @@ import AllOrders from "@/components/widgets/all-orders/AllOrders";
 import TransactionHistory from "@/components/widgets/all-transactions/AllTransactions";
 import styles from "./Dashboard.module.scss";
 import AllSeoRequests from "@/components/widgets/all-orders/AllSeo";
+import AllEsimOrders from "@/components/extra/e-sim/all-orders/AllOrders";
 
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState<"orders" | "transactions">("orders");
@@ -35,7 +36,7 @@ export default function Dashboard() {
             <div className={styles.content}>
                 {activeTab === "orders" ? (
                     <div key="orders" className={styles.fadeIn}>
-                        <AllSeoRequests  />
+                        <AllEsimOrders  />
                     </div>
                 ) : (
                     <div key="transactions" className={styles.fadeIn}>

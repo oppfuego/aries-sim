@@ -6,10 +6,23 @@ import { motion } from "framer-motion";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import { validationSchema, initialValues, sendContactRequest } from "./schema";
 import { useAlert } from "@/context/AlertContext";
-import {FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaBuilding} from "react-icons/fa";
-import {COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME, COMPANY_NAME, COMPANY_PHONE} from "@/resources/constants";
+
+import {
+    FaGlobe,
+    FaQrcode,
+    FaWallet,
+    FaSignal,
+    FaEnvelope,
+    FaPhoneAlt,
+    FaClock,
+} from "react-icons/fa";
+
+import {
+    COMPANY_EMAIL,
+    COMPANY_PHONE,
+} from "@/resources/constants";
+
 import styles from "./ContactForm.module.scss";
-import {TbSeo} from "react-icons/tb";
 
 interface ContactFormValues {
     name: string;
@@ -19,7 +32,7 @@ interface ContactFormValues {
     message?: string;
 }
 
-const ContactForm: React.FC = () => {
+const ContactSupport: React.FC = () => {
     const { showAlert } = useAlert();
     const [successMsg, setSuccessMsg] = useState("");
 
@@ -30,8 +43,8 @@ const ContactForm: React.FC = () => {
         try {
             await sendContactRequest(values);
             resetForm();
-            setSuccessMsg("✅ Message sent successfully!");
-            showAlert("Success", "Your message has been sent!", "success");
+            setSuccessMsg("Your message has been sent. Our support team will contact you shortly.");
+            showAlert("Success", "Message sent successfully", "success");
         } catch {
             showAlert("Error", "Something went wrong. Try again.", "error");
         } finally {
@@ -41,61 +54,75 @@ const ContactForm: React.FC = () => {
 
     return (
         <section className={styles.section}>
-            <motion.div
-                className={styles.header}
+            {/* ===== TOP ===== */}
+            <motion.header
+                className={styles.top}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
             >
-                <h2>Let's Talk About Your Project</h2>
+                <h2>Need Help Staying Connected?</h2>
                 <p>
-                    Have questions about pricing or need a custom solution?
-                    Our team will get back to you within 24 hours.
+                    Our support team helps travelers with eSIM setup, payments,
+                    and connectivity worldwide.
                 </p>
-            </motion.div>
+            </motion.header>
 
-            <div className={styles.container}>
-                {/* === LEFT SIDE === */}
+            {/* ===== MAIN LAYOUT ===== */}
+            <div className={styles.layout}>
+                {/* LEFT — HELP OPTIONS */}
                 <motion.div
-                    className={styles.infoCard}
+                    className={styles.help}
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
                 >
-                    <h3>Contact Information</h3>
-                    <p>We’d love to hear from you — reach out anytime.</p>
+                    <h3>We Can Help With</h3>
 
-                    <div className={styles.infoItem}>
-                        <TbSeo />
-                        <span>{COMPANY_NAME}</span>
-                    </div>
-                    <div className={styles.infoItem}>
-                        <FaBuilding />
-                        <span>{COMPANY_LEGAL_NAME}</span>
-                    </div>
-                    <div className={styles.infoItem}>
-                        <FaMapMarkerAlt />
-                        <span>{COMPANY_ADDRESS}</span>
-                    </div>
-                    <div className={styles.infoItem}>
-                        <FaEnvelope />
-                        <a href={`mailto:${COMPANY_EMAIL}`}>{COMPANY_EMAIL}</a>
-                    </div>
-                    <div className={styles.infoItem}>
-                        <FaPhoneAlt />
-                        <a href={`tel:${COMPANY_PHONE}`}>{COMPANY_PHONE}</a>
-                    </div>
+                    <ul className={styles.helpList}>
+                        <li>
+                            <FaGlobe />
+                            <div>
+                                <strong>Choosing an eSIM</strong>
+                                <span>Country, regional or global plans</span>
+                            </div>
+                        </li>
+
+                        <li>
+                            <FaQrcode />
+                            <div>
+                                <strong>Installation & activation</strong>
+                                <span>QR code setup & device compatibility</span>
+                            </div>
+                        </li>
+
+                        <li>
+                            <FaWallet />
+                            <div>
+                                <strong>Payments & billing</strong>
+                                <span>Invoices, refunds & currencies</span>
+                            </div>
+                        </li>
+
+                        <li>
+                            <FaSignal />
+                            <div>
+                                <strong>Connection issues</strong>
+                                <span>Speed, coverage & troubleshooting</span>
+                            </div>
+                        </li>
+                    </ul>
                 </motion.div>
 
-                {/* === RIGHT SIDE === */}
+                {/* RIGHT — FORM */}
                 <motion.div
                     className={styles.formCard}
                     initial={{ opacity: 0, x: 40 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
                 >
                     {successMsg ? (
-                        <div className={styles.successMsg}>{successMsg}</div>
+                        <div className={styles.success}>{successMsg}</div>
                     ) : (
                         <Formik<ContactFormValues>
                             initialValues={initialValues}
@@ -105,21 +132,33 @@ const ContactForm: React.FC = () => {
                             {({ isSubmitting }) => (
                                 <Form className={styles.form}>
                                     <div className={styles.row}>
-                                        <Field as="input" name="name" placeholder="First name" />
-                                        <Field as="input" name="secondName" placeholder="Last name" />
+                                        <Field name="name" placeholder="First name" />
+                                        <Field name="secondName" placeholder="Last name" />
                                     </div>
 
-                                    <Field as="input" name="email" type="email" placeholder="Email address" />
-                                    <Field as="input" name="phone" type="tel" placeholder="Phone number" />
-                                    <Field as="textarea" name="message" placeholder="Your message" rows={5} />
+                                    <Field
+                                        name="email"
+                                        type="email"
+                                        placeholder="Email address"
+                                    />
+                                    <Field
+                                        name="phone"
+                                        type="tel"
+                                        placeholder="Phone number"
+                                    />
+                                    <Field
+                                        as="textarea"
+                                        name="message"
+                                        placeholder="Describe your issue or question"
+                                        rows={5}
+                                    />
 
                                     <ButtonUI
                                         type="submit"
                                         fullWidth
                                         loading={isSubmitting}
-                                        text="Send Message"
+                                        text="Contact Support"
                                         color="secondary"
-                                        textColor="backgroundLight"
                                     />
                                 </Form>
                             )}
@@ -127,8 +166,24 @@ const ContactForm: React.FC = () => {
                     )}
                 </motion.div>
             </div>
+
+            {/* ===== SUPPORT FOOTER ===== */}
+            <footer className={styles.support}>
+                <div>
+                    <FaEnvelope />
+                    <span>{COMPANY_EMAIL}</span>
+                </div>
+                <div>
+                    <FaPhoneAlt />
+                    <span>{COMPANY_PHONE}</span>
+                </div>
+                <div>
+                    <FaClock />
+                    <span>Support available 24/7</span>
+                </div>
+            </footer>
         </section>
     );
 };
 
-export default ContactForm;
+export default ContactSupport;

@@ -2,7 +2,7 @@
   display: grid !important;
   width: 100% !important;
   padding: 0 20px;
-    max-width: 1200px !important;
+  max-width: 1320px !important;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -13,4 +13,10 @@
     grid-template-columns: repeat(1, 1fr) !important;
     gap: 8px !important;
   }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
 }

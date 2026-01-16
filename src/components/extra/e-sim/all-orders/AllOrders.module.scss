@@ -1,0 +1,147 @@
+.section {
+  padding: 2.5rem 1.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 800;
+  }
+
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.8rem;
+}
+
+/* CARD */
+.card {
+  background: var(--surface-color);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.idBlock {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.orderId {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* STATUS COLORS */
+.paid {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.pending {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.delivered {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.icon {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+}
+
+/* BODY */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.country {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    border-radius: 4px;
+  }
+
+  strong {
+    font-size: 1.1rem;
+  }
+}
+
+.plan {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+
+  svg {
+    margin-right: 4px;
+    color: var(--primary-color);
+  }
+}
+
+.tokens {
+  font-weight: 700;
+}
+
+/* EMPTY */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+
+  .emptyIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* LOADING */
+.loading {
+  text-align: center;
+  padding: 3rem 0;
+}

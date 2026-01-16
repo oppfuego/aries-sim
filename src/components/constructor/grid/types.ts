@@ -1,10 +1,14 @@
-import {CSSProperties, ReactNode} from "react";
+import { CSSProperties, ReactNode } from "react";
 
 export interface GridProps {
+    title?: string;
+    description?: string;
+
     columns?: number;
-    gap?: string | number;
-    alignItems?: CSSProperties['alignItems'];
-    justifyItems?: CSSProperties['justifyItems'];
+    gap?: string;
+    alignItems?: CSSProperties["alignItems"];
+    justifyItems?: CSSProperties["justifyItems"];
     style?: CSSProperties;
+
     children: ReactNode;
 }

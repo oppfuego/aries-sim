@@ -6,7 +6,7 @@ import {
     CreativeCV,
     ModernCV,
     ManagerReviewedCV,
-} from "@/components/features/cvTemplates/cvTemplates";
+} from "@/components/extra/cv/cvTemplates/cvTemplates";
 import {CVOrderType} from "@/backend/types/cv.types";
 
 // 🔹 універсальний рендер extras (використовується всередині шаблонів)

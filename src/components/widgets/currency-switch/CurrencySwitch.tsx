@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useCurrency } from "@/context/CurrencyContext";
 import styles from "./CurrencySwitch.module.scss";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { HiCurrencyDollar } from "react-icons/hi";
 
 const CurrencySwitch: React.FC = () => {
     const { currency, setCurrency } = useCurrency();
@@ -29,8 +30,7 @@ const CurrencySwitch: React.FC = () => {
     return (
         <div className={styles.dropdown} ref={dropdownRef}>
             <button className={styles.trigger} onClick={() => setOpen(!open)}>
-                <span className={styles.label}>{currency}</span>
-                <IoMdArrowDropdown
+                <HiCurrencyDollar
                     className={`${styles.icon} ${open ? styles.open : ""}`}
                     size={20}
                 />

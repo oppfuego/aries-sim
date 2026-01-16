@@ -1,69 +1,102 @@
+/* ===============================
+   BASE CARD
+================================ */
+
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-
   background: var(--surface-color);
-  border-radius: 18px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 12px 28px var(--shadow-color);
+  transition: all 0.35s ease;
+  height: 100%;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s ease;
+}
 
-  height: 100%; // 💡 важливо: дає однакову висоту при align-items: stretch
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: 0 18px 40px rgba(44, 122, 123, 0.18);
+}
 
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 32px rgba(255, 122, 0, 0.25);
-  }
+/* ===============================
+   IMAGE CARD (PHOTO FULL WIDTH)
+================================ */
 
-  &:hover .imageWrapper img {
-    transform: scale(1.08);
-  }
+.imageCard {
+  padding: 0;
 }
 
 .imageWrapper {
   width: 100%;
+  height: 220px;
   overflow: hidden;
-  border-bottom: 1px solid var(--border-color);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
   }
 }
 
+.imageCard .content {
+  padding: 1.8rem;
+}
+
+/* ===============================
+   ICON CARD (SMALL ICON)
+================================ */
+
+.iconCard {
+  padding: 2rem 1.8rem;
+  gap: 1.2rem;
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--surface-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 26px;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   CONTENT
+================================ */
+
 .content {
-  flex: 1; // 💡 розтягує контент до однакової висоти
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.8rem 1.5rem 2rem;
-  gap: 1rem;
+  gap: 0.8rem;
+  flex: 1;
 }
 
 .title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  line-height: 1.35;
 }
 
 .description {
-  flex-grow: 1; // 💡 дозволяє тексту займати доступний простір
-  color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.6;
-  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  flex: 1;
 }
 
 .link {
-  margin-top: auto; // 💡 притискає кнопку вниз
-  text-decoration: none;
+  margin-top: 0.8rem;
+  align-self: flex-start;
 }

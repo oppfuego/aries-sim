@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import ContactUsForm from "@/components/widgets/contact-form/ContactForm";
-import SeoRequestForm from "@/components/widgets/seo-form/SeoForm";
+import SeoRequestForm from "@/components/extra/seo/seo-form/SeoForm";
 
 export default function ContactUsPage() {
     const user = useUser();

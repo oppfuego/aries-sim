@@ -5,7 +5,7 @@ import styles from "./AllSeo.module.scss";
 import { FaRegClock, FaCoins, FaClipboardList } from "react-icons/fa";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import Link from "next/link";
-import {useSeoRequests} from "@/context/SeoContext";
+import {useSeoRequests} from "@/context/extra-context/SeoContext";
 
 const AllSeoRequests: React.FC = () => {
     const { seoRequests, loading, refreshSeoRequests } = useSeoRequests();

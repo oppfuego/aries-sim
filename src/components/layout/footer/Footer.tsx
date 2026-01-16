@@ -183,7 +183,6 @@ const Footer: React.FC = () => {
                         )}
 
 
-                        {/* 🔹 Колонка соцмереж */}
                         <div className={styles["footer__column"]}>
                             <div className={styles["footer__column-title"]}>Follow Us</div>
                             <div className={styles["footer__socials"]}>
@@ -194,14 +193,6 @@ const Footer: React.FC = () => {
                                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
                                    aria-label="Instagram" className={styles["footer__social-link"]}>
                                     <FaInstagram/>
-                                </a>
-                                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                                   aria-label="LinkedIn" className={styles["footer__social-link"]}>
-                                    <FaLinkedinIn/>
-                                </a>
-                                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                                   aria-label="Twitter" className={styles["footer__social-link"]}>
-                                    <FaTwitter/>
                                 </a>
                             </div>
                         </div>

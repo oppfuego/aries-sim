@@ -1,43 +1,58 @@
 "use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./ValuesIcons.module.scss";
+import Text from "@/components/constructor/text/Text";
+import { renderIcon } from "@/utils/renderIcon";
+import { IconKey } from "@/resources/icons";
 
 interface ValueItem {
-    icon: string;
+    icon: IconKey | string;
     title: string;
-    description?: string;
     text?: string;
+    description?: string;
 }
 
-interface Props {
+interface ValuesIconsProps {
     title?: string;
     description?: string;
     values: ValueItem[];
 }
 
-const ValuesIcons: React.FC<Props> = ({ title, description, values }) => {
+const ValuesIcons: React.FC<ValuesIconsProps> = ({
+                                                     title,
+                                                     description,
+                                                     values,
+                                                 }) => {
     return (
         <section className={styles.section}>
             <div className={styles.container}>
-                {title && <h2 className={styles.sectionTitle}>{title}</h2>}
-                {description && <p className={styles.sectionDesc}>{description}</p>}
+                <Text
+                    title={title}
+                    description={description}
+                    centerTitle
+                    centerDescription
+                />
 
-                <div className={styles.valuesGrid}>
+                <div className={styles.grid}>
                     {values.map((v, i) => (
                         <motion.div
                             key={i}
-                            className={styles.valueItem}
-                            initial={{ opacity: 0, y: 40 }}
+                            className={styles.card}
+                            initial={{ opacity: 0, y: 28 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.15, duration: 0.5 }}
-                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ delay: i * 0.12, duration: 0.45 }}
+                            viewport={{ once: true }}
                         >
-                            <div className={styles.iconBox}>{v.icon}</div>
-                            <div className={styles.text}>
-                                <h3>{v.title}</h3>
-                                <p>{v.description ?? v.text}</p>
+                            <div className={styles.iconWrapper}>
+                                {renderIcon(v.icon)}
                             </div>
+
+                            <h3 className={styles.cardTitle}>{v.title}</h3>
+                            <p className={styles.cardText}>
+                                {v.description ?? v.text}
+                            </p>
                         </motion.div>
                     ))}
                 </div>

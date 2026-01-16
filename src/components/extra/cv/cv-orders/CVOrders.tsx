@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "./CVOrders.module.scss";
-import {downloadCVPDF} from "../../features/pdf-extractor/PDFExtractorCV";
+import {downloadCVPDF} from "../../../features/pdf-extractor/PDFExtractorCV";
 
 type CVOrder = {
     _id: string;

@@ -1,7 +1,7 @@
 .textBlock {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1rem;
   line-height: 1.65;
   width: 100%;
   color: var(--text-primary);
@@ -9,20 +9,15 @@
 
 /* 🧭 Заголовок — елегантний, середньої товщини */
 .title {
-  font-weight: 500;
-  font-size: 2rem;
-  letter-spacing: -0.01em;
-  color: var(--secondary-color);
+  font-weight: 600;
+  font-size: 2.2rem;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
   margin: 0;
   line-height: 1.35;
-  max-width: 720px;
+  max-width: 900px;
   width: 100%;
   word-break: keep-all;
-
-  /* ✨ легкий сірий акцент нижче замість біфора */
-  & + .description {
-    margin-top: 0.5rem;
-  }
 
   @media (max-width: 1024px) {
     font-size: 1.6rem;
@@ -76,7 +71,6 @@
 
 /* 📋 Дескр + булети */
 .descriptionWithBullets {
-  margin-top: 1rem;
 
   .description {
     font-weight: 500;
@@ -102,12 +96,6 @@
       }
     }
   }
-}
-
-/* 💼 Ховер для секцій (легкий акцент) */
-.textBlock:hover .title {
-  color: var(--primary-color);
-  transition: color 0.3s ease;
 }
 
 /* 📱 Адаптив */

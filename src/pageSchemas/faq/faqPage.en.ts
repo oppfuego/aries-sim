@@ -3,94 +3,99 @@ import { COMPANY_NAME, COMPANY_EMAIL } from "@/resources/constants";
 
 const faqSchema: PageSchema = {
     meta: {
-        title: `FAQ — ${COMPANY_NAME}`,
-        description: `Common questions about ${COMPANY_NAME} SEO services — audits, optimisation, link building, local SEO, and reporting.`,
+        title: `FAQ — ${COMPANY_NAME} eSIM`,
+        description: `Frequently asked questions about ${COMPANY_NAME} eSIM — compatibility, installation, coverage, payments, and support.`,
         keywords: [
-            "SEO FAQ",
-            "SEO audit",
-            "link building",
-            "local SEO questions",
-            "SEO services explanation",
-            "how SEO works",
+            "eSIM FAQ",
+            "what is eSIM",
+            "how to use eSIM",
+            "eSIM installation",
+            "international eSIM",
+            "travel eSIM questions",
         ],
         canonical: "/faq",
         ogImage: {
-            title: `${COMPANY_NAME} SEO FAQ`,
-            description: `Answers to the most common questions about SEO and how ${COMPANY_NAME} helps your business grow organically.`,
-            bg: "#0a2540",
+            title: `${COMPANY_NAME} eSIM FAQ`,
+            description: `Answers to the most common questions about eSIM usage, setup, and mobile data abroad.`,
+            bg: "#2C7A7B",
             color: "#ffffff",
         },
     },
 
     blocks: [
 
-        // 🌟 Highlight Strip — коротко про принципи
-        {
-            type: "custom",
-            component: "HighlightStrip",
-            items: [
-                { icon: "📈", text: "Real Measurable Growth", subtext: "Rankings, traffic & conversions" },
-                { icon: "🔍", text: "Transparent Process", subtext: "Clear reports every month" },
-                { icon: "🤝", text: "Human Expertise", subtext: "No automation — only specialists" },
-            ],
-        },
-
-        // ❓ FAQ section
         {
             type: "faq",
             items: [
                 {
                     question: `What is ${COMPANY_NAME}?`,
-                    answer: `${COMPANY_NAME} is a full-service SEO agency helping businesses improve their visibility on Google through audits, optimisation, and link building.`,
+                    answer: `${COMPANY_NAME} is an international eSIM marketplace that lets you buy mobile data plans for travel without physical SIM cards or roaming fees.`,
                 },
                 {
-                    question: "How long does it take to see SEO results?",
+                    question: "What is an eSIM?",
                     answer:
-                        "SEO is a long-term process. You can expect visible improvements in 4–8 weeks, with consistent growth after 3–6 months depending on your niche.",
+                        "An eSIM is a digital SIM that allows you to activate a mobile data plan directly on your device without inserting a physical SIM card.",
                 },
                 {
-                    question: "What’s included in your SEO packages?",
+                    question: "Which devices support eSIM?",
                     answer:
-                        "Each package includes technical SEO, on-page optimisation, link building, keyword analysis, and reporting — tailored to your goals and website size.",
+                        "Most modern smartphones support eSIM, including iPhone XS and newer, Google Pixel devices, and many Samsung Galaxy models. Always check your device settings before purchase.",
                 },
                 {
-                    question: "Do you guarantee top rankings on Google?",
+                    question: "How do I install my eSIM?",
                     answer:
-                        "No one can guarantee exact rankings. But we guarantee steady growth, transparent work, and measurable KPIs every month.",
+                        "After purchase, you’ll receive a QR code. Simply scan it using your phone’s mobile settings and follow the on-screen instructions to install the eSIM.",
                 },
                 {
-                    question: "What is a technical SEO audit?",
+                    question: "When should I activate my eSIM?",
                     answer:
-                        "A deep analysis of your site’s structure, speed, indexing, and errors that impact search visibility. We provide a full report with clear fixes.",
+                        "We recommend installing your eSIM before travel and activating mobile data once you arrive at your destination.",
                 },
                 {
-                    question: "Do you offer link building services?",
+                    question: "Will my eSIM work immediately?",
                     answer:
-                        "Yes, we build high-quality backlinks from trusted, relevant sources — all manually researched and tracked in monthly reports.",
+                        "Yes. Once installed and activated, your eSIM connects automatically to a local network in the destination country.",
                 },
                 {
-                    question: "Will I get reports on progress?",
+                    question: "Can I keep my main SIM active?",
                     answer:
-                        "Yes, detailed monthly reports include keyword rankings, traffic stats, backlinks, and completed optimisation tasks.",
+                        "Yes. eSIM works alongside your physical SIM, allowing you to keep your main number for calls and SMS while using eSIM for data.",
                 },
                 {
-                    question: "How do I start working with you?",
+                    question: "Are there roaming fees?",
                     answer:
-                        "Just fill out the contact form or email us at " + COMPANY_EMAIL + ". We’ll analyse your site and prepare a free strategy outline.",
+                        "No. All eSIM plans are prepaid with fixed pricing — no roaming charges or hidden fees.",
                 },
                 {
-                    question: "Is my website access secure?",
+                    question: "What happens if I run out of data?",
                     answer:
-                        `Absolutely. ${COMPANY_NAME} follows strict security and confidentiality standards — your credentials are safe with us.`,
+                        "If your data plan expires or runs out, you can easily purchase a new planffected plan or top up directly on our platform.",
+                },
+                {
+                    question: "Do you offer refunds?",
+                    answer:
+                        "Refunds depend on whether the eSIM has been installed or activated. Please review our Refund Policy or contact support for assistance.",
+                },
+                {
+                    question: "Is my payment information secure?",
+                    answer:
+                        `${COMPANY_NAME} uses trusted payment providers and secure encryption to protect all transactions.`,
+                },
+                {
+                    question: "How can I contact support?",
+                    answer:
+                        `You can reach our support team anytime via the contact form or by email at ${COMPANY_EMAIL}. We’re available 24/7.`,
                 },
             ],
         },
 
+        // 🎯 CTA
         {
             type: "custom",
             component: "TextWithButton",
             title: "Still Have Questions?",
-            buttonText: "Write to Us",
+            description: "Our support team is always ready to help you stay connected.",
+            buttonText: "Contact Support",
             buttonLink: "/contact-us",
         },
     ],

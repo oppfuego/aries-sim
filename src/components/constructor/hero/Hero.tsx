@@ -12,106 +12,76 @@ import type { StaticImageData } from "next/image";
 
 interface HeroSectionProps {
     title: string;
-    highlight?: string;
     description: string;
     primaryCta?: { text: string; link: string };
     secondaryCta?: { text: string; link: string };
-    image?: string;
-    align?: "left" | "right";
+    image: string;
     showTrustBadge?: boolean;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
                                                      title,
-                                                     highlight,
                                                      description,
                                                      primaryCta,
                                                      secondaryCta,
                                                      image,
-                                                     align = "center",
                                                      showTrustBadge = false,
                                                  }) => {
-    const bgImage = image
-        ? (media as Record<string, string | StaticImageData>)[image]
-        : undefined;
-
-    const imageSrc =
-        typeof bgImage === "string"
-            ? bgImage
-            : (bgImage as StaticImageData)?.src || "";
+    const img =
+        (media as Record<string, string | StaticImageData>)[image];
 
     return (
-        <section className={`${styles.hero} ${styles[`align_${align}`]}`}>
-            {imageSrc && (
-                <Image
-                    src={imageSrc}
-                    alt="Hero Background"
-                    fill
-                    priority
-                    className={styles.bgImage}
-                />
-            )}
-            <div className={styles.overlay} />
+        <section className={styles.hero}>
+            <div className={styles.inner}>
+                {/* LEFT — IMAGE */}
+                <motion.div
+                    className={styles.imageWrapper}
+                    initial={{ opacity: 0, x: -40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <Image
+                        src={typeof img === "string" ? img : img.src}
+                        alt="Hero illustration"
+                        width={860}
+                        height={620}
+                        priority
+                    />
+                </motion.div>
 
-            <motion.div
-                className={styles.content}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-            >
-                <div className={styles.textBlock}>
-                    <motion.h1
-                        className={styles.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        {title}{" "}
-                        {highlight && <span className={styles.highlight}>{highlight}</span>}
-                    </motion.h1>
+                {/* RIGHT — CONTENT */}
+                <motion.div
+                    className={styles.content}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <h1 className={styles.title}>{title}</h1>
 
-                    <motion.p
-                        className={styles.description}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        {description}
-                    </motion.p>
+                    <p className={styles.description}>{description}</p>
 
-                    <motion.div
-                        className={styles.actions}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                    >
+                    <div className={styles.actions}>
                         {primaryCta && (
                             <Link href={primaryCta.link}>
-                                <ButtonUI variant="solid" color="primary" size="lg">
-                                    {primaryCta.text}
-                                </ButtonUI>
+                                <ButtonUI fullWidth shape="rounded" size="lg" color="secondary" hoverColor="backgroundDark">{primaryCta.text}</ButtonUI>
                             </Link>
                         )}
                         {secondaryCta && (
                             <Link href={secondaryCta.link}>
-                                <ButtonUI variant="outlined" color="secondary" size="lg">
+                                <ButtonUI variant="outlined" size="lg">
                                     {secondaryCta.text}
                                 </ButtonUI>
                             </Link>
                         )}
-                        {showTrustBadge && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 1 }}
-                                className={styles.trustBadge}
-                            >
-                                <TrustBadge />
-                            </motion.div>
-                        )}
-                    </motion.div>
-                </div>
-            </motion.div>
+                    </div>
+
+                    {showTrustBadge && (
+                        <div className={styles.trust}>
+                            <TrustBadge />
+                        </div>
+                    )}
+                </motion.div>
+            </div>
         </section>
     );
 };

@@ -8,7 +8,7 @@ interface SectionProps {
     description?: string;
     left?: React.ReactNode;
     right?: React.ReactNode;
-    reverse?: boolean;
+    imagePosition?: "left" | "right";
     gap?: string;
     align?: "center" | "start" | "end";
     justify?: "center" | "space-between" | "start" | "end";
@@ -19,12 +19,14 @@ const Section: React.FC<SectionProps> = ({
                                              description,
                                              left,
                                              right,
-                                             reverse = false,
+                                             imagePosition = "right",
                                              gap = "3rem",
                                              align = "center",
                                              justify = "center",
                                          }) => {
     const isSingle = !left || !right;
+
+    const isImageLeft = imagePosition === "left";
 
     return (
         <section className={styles.wrapper}>
@@ -34,17 +36,19 @@ const Section: React.FC<SectionProps> = ({
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 0.6 }}
                 >
                     {title && <h2 className={styles.title}>{title}</h2>}
-                    {description && <p className={styles.description}>{description}</p>}
+                    {description && (
+                        <p className={styles.description}>{description}</p>
+                    )}
                 </motion.div>
             )}
 
             <motion.div
                 className={`${styles.section} ${isSingle ? styles.single : ""}`}
                 style={{
-                    flexDirection: reverse ? "row-reverse" : "row",
+                    flexDirection: isImageLeft ? "row-reverse" : "row",
                     gap,
                     alignItems: align,
                     justifyContent: isSingle ? "center" : justify,
@@ -52,25 +56,24 @@ const Section: React.FC<SectionProps> = ({
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                transition={{ duration: 0.8 }}
             >
                 {left && (
                     <motion.div
                         className={styles.left}
-                        initial={{ opacity: 0, x: reverse ? 50 : -50 }}
+                        initial={{ opacity: 0, x: isImageLeft ? 50 : -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
                         {left}
                     </motion.div>
                 )}
+
                 {right && (
                     <motion.div
                         className={styles.right}
-                        initial={{ opacity: 0, x: reverse ? -50 : 50 }}
+                        initial={{ opacity: 0, x: isImageLeft ? -50 : 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         {right}

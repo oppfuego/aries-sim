@@ -1,0 +1,231 @@
+.page {
+  padding: 0 30px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* ================= HEADER ================= */
+.header {
+  max-width: 1300px;
+  margin-bottom: 40px;
+
+  h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+}
+
+/* ================= POPULAR ================= */
+.popularSection {
+  margin-bottom: 56px;
+
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+}
+
+/* ================= FILTERS ================= */
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  input,
+  select {
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    font-size: 16px;
+    min-width: 240px;
+    background: var(--surface-color);
+  }
+}
+
+.allTitle {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 40px 0 20px;
+}
+
+/* ================= GRID ================= */
+.list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  @media (max-width: 1280px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= CARD ================= */
+.countryBlock {
+  background: var(--surface-color);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.popular {
+  border: 2px solid rgba(251, 133, 0, 0.35);
+}
+
+/* ================= BADGE ================= */
+.badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, #ffb703, #fb8500);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+/* ================= CARD HEADER ================= */
+.countryHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  font-size: 18px;
+  color: var(--text-primary);
+
+  img {
+    width: 32px;
+    height: auto;
+    border-radius: 4px;
+  }
+}
+
+/* ================= ROW ================= */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 130px auto;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--text-muted);
+
+  &:first-of-type {
+    border-top: none;
+  }
+}
+
+.plan {
+  font-size: 15px;
+  color: var(--text-secondary);
+  opacity: 0.9;
+}
+
+.price {
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+/* ========================================================= */
+/* ===================== MOBILE (≤ 480px) ================== */
+/* ========================================================= */
+
+@media (max-width: 580px) {
+
+  .page {
+    padding: 32px 16px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 28px;
+
+    h1 {
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .popularSection h2,
+  .allTitle {
+    font-size: 22px;
+  }
+
+  /* Filters */
+  .filters {
+    flex-direction: column;
+    gap: 12px;
+
+    input,
+    select {
+      width: 100%;
+      min-width: unset;
+      font-size: 15px;
+    }
+  }
+
+  /* Card */
+  .countryBlock {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .countryHeader {
+    font-size: 16px;
+    gap: 10px;
+
+    img {
+      width: 26px;
+    }
+  }
+
+  /* 🔥 KEY FIX */
+  .row {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    padding: 10px 0;
+  }
+
+  .plan {
+    font-size: 14px;
+  }
+
+  .price {
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .row > :last-child {
+    justify-self: flex-start;
+  }
+
+  .badge {
+    top: 10px;
+    right: 10px;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}

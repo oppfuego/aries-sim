@@ -5,7 +5,7 @@ import ProfileHead from "@/components/features/profile-head/ProfileHead";
 import BalanceCard from "@/components/features/balance-card/BalanceCard";
 import Dashboard from "@/components/features/dashboard/Dashboard";
 import styles from "./Profile.module.scss";
-import {SeoRequestsProvider} from "@/context/SeoContext";
+import {EsimOrdersProvider} from "@/context/extra-context/EsimOrdersContext";
 
 const Profile = () => {
     return (
@@ -14,9 +14,9 @@ const Profile = () => {
                 <ProfileHead />
                 <BalanceCard />
             </div>
-            <SeoRequestsProvider>
+            <EsimOrdersProvider>
                 <Dashboard />
-            </SeoRequestsProvider>
+            </EsimOrdersProvider>
         </div>
     );
 };

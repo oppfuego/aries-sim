@@ -38,10 +38,10 @@ export const buttonColors: Record<ButtonColor, string> = {
     muted: "var(--text-muted)",
     inverse: "var(--text-inverse)",
     hover: "var(--button-hover)",
-    link: "var(--text-accent)",
+    link: "var(--link-color)",
     linkHover: "var(--link-hover)",
     backgroundLight: "var(--background-light)",
-    backgroundDark: "var(--text-primary)",
+    backgroundDark: "var(--background-dark)",
     surface: "var(--surface-color)",
     surfaceMuted: "var(--surface-muted)",
     border: "var(--border-color)",
@@ -50,9 +50,9 @@ export const buttonColors: Record<ButtonColor, string> = {
 
 // Header
 export const headerStyles = {
-    type: "sticky" as HeaderType,
+    type: "sticky-rounded" as HeaderType,
     sideBarDirection: "top" as SideBarDirection,
-    linkColor: "var(--text-primary)",
+    linkColor: "var(--link-color)",
     linkHoverColor: "var(--link-hover)",
     scrollMode: "solid" as HeaderScrollMode,
     scrollBackground: "var(--quaternary-color)",
@@ -61,8 +61,8 @@ export const headerStyles = {
 
 // Drawer
 export const drawerConfig = {
-    anchor: "right" as SideBarDirection,
-    width: "50%",
+    anchor: "top" as SideBarDirection,
+    width: "100%",
     padding: "20px",
     logoWidth: 150,
     logoHeight: 50,
@@ -83,13 +83,15 @@ export const footerStyles = {
     logo: { width: 180, height: 50, align: "center" as FooterLogoAlign },
     colors: {
         bg: "var(--primary-color)",
-        title: "var(--background-light)",
+
+        title: "var(--text-primary)",
+        contactLabel: "var(--text-primary)", //Company:
+
         text: "var(--secondary-color)",
-        muted: "var(--text-inverse)",
+        muted: "var(--background-dark)",
         border: "var(--border-color)",
-        link: "var(--surface-muted)",
-        linkHover: "var(--text-gray)",
-        contactLabel: "var(--text-inverse)",
+        link: "var(--text-secondary)",
+        linkHover: "var(--background-dark)",
         contactHover: "var(--background-dark)",
         socialHover: "var(--background-dark)",
     },

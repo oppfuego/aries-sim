@@ -1,100 +1,78 @@
 .section {
   width: 100%;
+  max-width: 1280px;
+  margin: 0 auto; /* 🔥 відступ до наступного блоку */
 }
 
+/* 🔷 Accent container */
 .container {
-  max-width: 1200px;
-  padding: 0 20px;
-  margin: 0 auto;
+  background: linear-gradient(
+                  135deg,
+                  rgba(44, 122, 123, 0.12),
+                  rgba(44, 122, 123, 0.04)
+  );
+  border-radius: 32px;
+  padding: 70px 40px 60px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
 }
 
-.sectionTitle {
-  font-size: 2rem;
-  font-weight: 500;
-  color: var(--secondary-color);
-}
-
-.sectionDesc {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  max-width: 760px;
-  line-height: 1.7;
-  margin-bottom: 3rem;
-}
-
-/* 📦 Сітка */
-.valuesGrid {
+/* 🧱 Grid */
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
-  gap: 2.5rem 3rem;
-  width: 100%;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 40px;
 }
 
-/* 🔸 Картка */
-.valueItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* 🧩 Card — стилістично як Card.module.scss */
+.card {
+  background: var(--surface-color);
+  border-radius: 22px;
+  padding: 2.4rem 2rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 12px 28px var(--shadow-color);
+  transition: all 0.35s ease;
+  text-align: center;
+  height: 100%;
 
   &:hover {
     transform: translateY(-6px);
-  }
-
-  h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 0.4rem;
-  }
-
-  p {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin: 0;
+    border-color: var(--primary-color);
+    box-shadow: 0 20px 45px rgba(44, 122, 123, 0.18);
   }
 }
 
-/* 🧩 Іконка */
-.iconBox {
-  flex-shrink: 0;
+/* 🔷 Icon — тепер такий самий “мовний стиль” */
+.iconWrapper {
   width: 56px;
   height: 56px;
-  border-radius: 12px;
-  background: var(--primary-color);
-  color: var(--text-inverse);
+  margin: 0 auto 1.2rem;
+  border-radius: 16px;
+  background: var(--surface-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
-  transition: all 0.3s ease;
+  color: var(--primary-color);
+  font-size: 28px;
+}
 
-  .valueItem:hover & {
-    background: var(--button-hover);
-    box-shadow: 0 0 15px rgba(255, 122, 0, 0.3);
-  }
+/* 📝 Text */
+.cardTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-bottom: 0.4rem;
+}
+
+.cardText {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* 📱 Responsive */
-@media (max-width: 992px) {
-  .valuesGrid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .sectionTitle {
-    font-size: 2rem;
-  }
-
-  .valueItem {
-    align-items: center;
+@media (max-width: 768px) {
+  .container {
+    padding: 50px 24px 46px;
   }
 }

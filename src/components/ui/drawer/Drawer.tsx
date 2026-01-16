@@ -25,6 +25,7 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, onClose}) => {
                     width: cfg.width,
                     fontFamily: "var(--app-font, 'Roboto', sans-serif)",
                     p: cfg.padding,
+                    overflow: "hidden",
                 },
             }}
         >
@@ -61,8 +62,6 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, onClose}) => {
                         <CurrencySwitch/>
                     </div>
 
-
-
                 </div>
 
                 <nav
@@ -83,32 +82,6 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, onClose}) => {
                             {link.label}
                         </a>
                     ))}
-                    <div className={styles.dropdown}>
-                        <button className={styles.dropbtn}>
-                            Services
-                            <span className={styles.arrow}><IoMdArrowDropright/></span>
-                        </button>
-                        <div className={styles.dropdownMenu}>
-                            <a href="/seo" className={styles.dropdownLink}>SEO Optimization</a>
-                            <a href="/smm" className={styles.dropdownLink}>SMM Marketing</a>
-                            <a href="/audit" className={styles.dropdownLink}>Website Audit</a>
-                        </div>
-                    </div>
-
-                    {/* 🔽 Dropdown 2 — Resources */}
-                    <div className={styles.dropdown}>
-                        <button className={styles.dropbtn}>
-                            Resources
-                            <span className={styles.arrow}>
-                                   <IoMdArrowDropright/>
-                                </span>
-                        </button>
-                        <div className={styles.dropdownMenu}>
-                            <a href="/pricing" className={styles.dropdownLink}>Pricing</a>
-                            <a href="/faq" className={styles.dropdownLink}>FAQ</a>
-                            <a href="/contact" className={styles.dropdownLink}>Contact Us</a>
-                        </div>
-                    </div>
                 </nav>
             </div>
         </Drawer>

@@ -1,6 +1,13 @@
 import {media} from "@/resources/media";
 import {FaTwitter, FaFacebook, FaLinkedin} from "react-icons/fa";
-import {COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME, COMPANY_NUMBER, COMPANY_PHONE} from "@/resources/constants";
+import {
+    COMPANY_ADDRESS,
+    COMPANY_EMAIL,
+    COMPANY_LEGAL_NAME,
+    COMPANY_NAME,
+    COMPANY_NUMBER,
+    COMPANY_PHONE
+} from "@/resources/constants";
 
 export const baseURL =
     typeof window !== "undefined"
@@ -15,8 +22,11 @@ export const headerContent = {
     },
     links: [
         {label: "Home", href: "/"},
-        {label: "About Us", href: "/about-us"},
+        {label: "E-SIM Marketplace", href: "/extra/esim-store"},
         {label: "Plans", href: "/pricing"},
+        {label: `About ${COMPANY_NAME}`, href: "/about-us"},
+        {label: "Help", href: "/contact-us"},
+        {label: "Faq", href: "/faq"},
     ]
 };
 
@@ -26,21 +36,12 @@ export const footerContent = {
         {
             title: "Navigate",
             links: [
-                {label: "About Us", href: "/about-us"},
+                {label: "Home", href: "/"},
+                {label: "E-SIM Marketplace", href: "/extra/esim-store"},
                 {label: "Plans", href: "/pricing"},
-                {label: "Contact Us", href: "/contact-us"},
+                {label: `About ${COMPANY_NAME}`, href: "/about-us"},
+                {label: "Help", href: "/contact-us"},
                 {label: "Faq", href: "/faq"},
-            ]
-        },
-        {
-            title: "Services",
-            links: [
-                {label: "Technical Website Audit", href: "/cases/audit"},
-                {label: "On-Page SEO", href: "/cases/on-page"},
-                {label: "Off-Page SEO", href: "/cases/off-page"},
-                {label: "Local SEO", href: "/cases/local"},
-                {label: "SEO Copywriting", href: "/cases/copywriting"},
-                {label: "Competitor Analysis", href: "/cases/analysis"},
             ]
         },
         {

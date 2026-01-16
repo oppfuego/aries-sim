@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { media as mediaMap } from "@/resources/media";
+import {media as mediaMap} from "@/resources/media";
 import Media from "../image/Media";
 import Section from "../section/Section";
 import Text from "../text/Text";
@@ -67,10 +67,10 @@ function RenderCustom(b: CustomBlock) {
             );
 
         case "HighlightStrip":
-            return <HighlightStrip items={b.items ?? []} />;
+            return <HighlightStrip items={b.items ?? []}/>;
 
         case "Marquee":
-            return <Marquee items={b.items ?? []} />;
+            return <Marquee items={b.items ?? []}/>;
 
         case "Timeline":
             return <Timeline title={b.title} steps={b.steps ?? []}
@@ -78,7 +78,7 @@ function RenderCustom(b: CustomBlock) {
 
 
         case "ContactForm":
-            return <ContactUsForm />;
+            return <ContactUsForm/>;
 
         case "LogoBlock":
             return <LogoBlock
@@ -124,7 +124,7 @@ function RenderCustom(b: CustomBlock) {
 
 
         case "StoryTimeline":
-            return <StoryTimeline steps={b.steps ?? []} />;
+            return <StoryTimeline steps={b.steps ?? []}/>;
 
         case "InfoBlock":
             return (
@@ -202,17 +202,18 @@ function RenderMedia(b: MediaBlock) {
 }
 
 function RenderSlider(b: SliderBlock) {
-    return <Slider images={b.images.map(resolveMedia)} />;
+    return <Slider images={b.images.map(resolveMedia)}/>;
 }
 
 function RenderFaq(b: FaqBlock) {
-    return <FAQ items={b.items} image={b.image ? resolveMedia(b.image) : undefined} />;
+    return <FAQ items={b.items} image={b.image ? resolveMedia(b.image) : undefined}/>;
 }
 
 function RenderCard(b: CardBlock) {
     return (
         <Card
-            image={resolveMedia(b.image)}
+            image={"image" in b ? resolveMedia(b.image as any) : undefined}
+            icon={"icon" in b ? b.icon : undefined}
             title={b.title}
             description={b.description}
             buttonLink={b.buttonLink}
@@ -233,7 +234,7 @@ function RenderPricingCard(b: PricingBlock) {
             buttonText={b.buttonText}
             buttonLink={b.buttonLink}
             badgeTop={b.badgeTop}
-            badgeBottom={b.badgeBottom}е
+            badgeBottom={b.badgeBottom} е
         />
     );
 }
@@ -266,32 +267,35 @@ function RenderGrid(b: GridBlock) {
     const items: GridItem[] =
         b.items && b.items.length > 0
             ? b.items
-            : b.cards?.map((c, idx) => {
-            if (c.type === "pricing") {
-                return {
-                    key: c.title ?? String(idx),
-                    block: c as PricingBlock,
-                };
-            }
-            return {
-                key: c.title ?? String(idx),
-                block: {
-                    type: "card",
-                    image: c.image,
-                    title: c.title,
-                    description: c.description,
-                    buttonLink: c.buttonLink,
-                    buttonText: c.buttonText,
-                } as CardBlock,
-            };
-        }) ?? [];
+            : b.cards?.map((c, idx) => ({
+            key: c.title ?? String(idx),
+            block: {
+                type: "card",
+                image: c.image,
+                icon: c.icon,
+                title: c.title,
+                description: c.description,
+                buttonLink: c.buttonLink,
+                buttonText: c.buttonText,
+            },
+        })) ?? [];
 
     return (
-        <Grid columns={b.columns} gap={b.gap} style={b.style}>
+        <Grid
+            title={b.title}
+            description={b.description}
+            columns={b.columns}
+            gap={b.gap}
+            style={b.style}
+        >
             {items.map((item, i) => (
                 <div
                     key={item.key ?? i}
-                    style={item.colSpan ? { gridColumn: `span ${item.colSpan}` } : undefined}
+                    style={
+                        item.colSpan
+                            ? { gridColumn: `span ${item.colSpan}` }
+                            : undefined
+                    }
                 >
                     {renderBlock(item.block, item.key ?? i)}
                 </div>
@@ -331,6 +335,6 @@ function renderBlock(block: PageBlock, key?: React.Key): React.ReactNode {
 
 // ------------------- root -------------------
 
-export default function PageRenderer({ schema }: { schema: PageSchema }) {
+export default function PageRenderer({schema}: { schema: PageSchema }) {
     return <>{schema.blocks.map((b, i) => renderBlock(b, i))}</>;
 }

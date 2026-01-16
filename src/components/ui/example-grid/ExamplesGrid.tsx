@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ExamplesGrid.module.scss";
 import { cvExamples } from "@/data/cvExample";
-import CVCard from "@/components/ui/cv-card/CVCard";
+import CVCard from "@/components/extra/cv/cv-card/CVCard";
 
 const ExamplesGrid = () => {
     return (

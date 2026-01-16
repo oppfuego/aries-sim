@@ -1,5 +1,9 @@
 import {PageSchema} from "@/components/constructor/page-render/types";
 import {COMPANY_NAME} from "@/resources/constants";
+import { HiOutlineGlobeAlt } from "react-icons/hi";
+import { MdOutlineSpeed } from "react-icons/md";
+import { RiSimCardLine } from "react-icons/ri";
+import { FiShield } from "react-icons/fi";
 
 const schema: PageSchema = {
     meta: {
@@ -28,377 +32,96 @@ const schema: PageSchema = {
             description:
                 `${COMPANY_NAME} is your all-in-one SEO platform. We audit, optimise, and promote your website — using AI tools and human expertise. Get measurable growth and pay with flexible tokens.`,
             primaryCta: {text: "Start SEO Audit", link: "/pricing"},
-            image: "image2",
-            showTrustBadge: true,
+            image: "image1",
+            showTrustBadge: false,
         },
 
-        // 🌍 Highlight logos
-        {
-            type: "custom",
-            component: "Marquee",
-            items: [
-                {text: "Trusted by 200+ Businesses Worldwide"},
-                {text: "Serving Clients in 15+ Countries"},
-                {text: "Proven SEO Strategies for Diverse Industries"},
-                {text: "Helping Startups to Enterprises Grow Organically"},
-            ],
-        },
-
-        // 💡 Section — intro
-        {
-            type: "custom",
-            component: "TextWithButton",
-            title: "SEO That Works — Not Just Promises",
-            buttonText: "Get a Free Consultation",
-            buttonLink: "/contact-us",
-        },
-
-        // 🧩 Services overview
-        {
-            type: "grid",
-            columns: 2,
-            gap: "2rem",
-            cards: [
-                {
-                    image: "image1",
-                    title: "🔍 Technical Website Audit",
-                    description:
-                        "Identify issues that block ranking: speed, Core Web Vitals, duplicate pages, crawling and indexing. You’ll receive a full report with priorities and fixes.",
-                    buttonText: "Request Audit",
-                    buttonLink: "/cases/audit",
-                },
-                {
-                    image: "image3",
-                    title: "✍️ On-Page SEO",
-                    description:
-                        "We optimise content, tags, structure, and visuals. Clean HTML, powerful titles, proper hierarchy — all aligned with your keywords and intent.",
-                    buttonText: "Improve My Pages",
-                    buttonLink: "/cases/on-page",
-                },
-                {
-                    image: "image4",
-                    title: "🌐 Off-Page SEO",
-                    description:
-                        "Backlinks that actually work. Guest posts, outreach, PR placements, and crowd-marketing that build long-term authority.",
-                    buttonText: "See Link Packages",
-                    buttonLink: "/cases/off-page",
-                },
-                {
-                    image: "image5",
-                    title: "📱 Local SEO",
-                    description:
-                        "Appear in Google Maps, increase reviews, and own your city’s search results.",
-                    buttonText: "Optimise for My Area",
-                    buttonLink: "/cases/local",
-                },
-                {
-                    image: "image7",
-                    title: "🧾 SEO Copywriting",
-                    description:
-                        "Get unique, engaging SEO texts and articles that attract visitors and satisfy algorithms. We write for both people and bots.",
-                    buttonText: "View Content Samples",
-                    buttonLink: "/cases/copywriting",
-                },
-                {
-                    image: "image6",
-                    title: "📊 Competitor Analysis",
-                    description:
-                        "We study your niche, keywords, and backlinks to uncover what competitors do better — and help you outrank them.",
-                    buttonText: "Order Research",
-                    buttonLink: "/cases/analysis",
-                },
-            ],
-        },
-
-        // 🪜 SEO workflow timeline
-        {
-            type: "custom",
-            component: "Timeline",
-            title: "Step-by-Step SEO Growth Plan",
-            steps: [
-                {title: "1. Technical Website Audit", description: "Jetreex provides a full technical SEO audit to identify performance.", link: "/cases/audit"},
-                {title: "2. On-Page SEO", description: "We performs deep on-page optimisation to make every page of your website.", link: "/cases/on-page"},
-                {title: "3. Off-Page SEO", description: "We helps your website grow beyond its borders.", link: "/cases/off-page"},
-                {title: "4. Local SEO", description: "We optimise your Google Business Profile, build local citations, and boost reputation to attract customers near you.", link: "/cases/local"},
-                {title: "5. SEO Copywriting", description: "Our SEO copywriters craft landing pages, blog posts, and product descriptions optimised for both users and search engines.", link: "/cases/copywriting"},
-                {title: "6. Competitor Analysis", description: "Jetreex helps you understand exactly why your competitors rank higher.", link: "/cases/analysis"},
-            ],
-        },
-
-        // 💎 Why choose us
         {
             type: "custom",
             component: "ValuesIcons",
-            title: "Why Choose Our SEO Agency",
+            title: "Why Travelers Choose Our eSIM",
             description:
-                "We combine AI technology with human creativity to bring measurable, lasting results. Every client has a custom SEO roadmap.",
+                "Stay connected worldwide with instant eSIM activation. No physical SIM cards, no roaming surprises.",
             values: [
-                {icon: "📈", title: "Proven Growth", text: "100+ projects with guaranteed traffic increase."},
-                {icon: "🤖", title: "AI-Enhanced", text: "Automated analysis & keyword clustering tools."},
-                {icon: "🕵️", title: "Competitor Insights", text: "We track and outsmart your top rivals."},
-                {icon: "🧩", title: "All-in-One", text: "Audit, content, backlinks — everything in one place."},
-            ],
-        },
-
-        {
-            type: "section",
-            title: "Our Portfolio",
-            description: "Explore how our SEO expertise helped diverse brands grow their visibility, traffic, and conversions.",
-            left: {
-                type: "grid",
-                columns: 3,
-                gap: "1.2rem",
-                items: [
-                    {
-                        key: "1",
-                        block: {
-                            type: "media",
-                            mediaType: "image",
-                            src: "portfolio1",
-                            hoverEnabled: true,
-                            hoverText: "E-Commerce Fashion Store — On-Page SEO: +120% organic sales in 4 months",
-                            hoverButton: { text: "See Case", link: "/cases/on-page" },                        },
-                    },
-                    {
-                        key: "2",
-                        block: {
-                            type: "media",
-                            mediaType: "image",
-                            src: "portfolio2",
-                            hoverEnabled: true,
-                            hoverText: "Dental Clinic Network — Local SEO: +230% visibility on Google Maps",
-                            hoverButton: { text: "See Case", link: "/cases/local" },                        },
-                    },
-                    {
-                        key: "3",
-                        block: {
-                            type: "media",
-                            mediaType: "image",
-                            src: "portfolio3",
-                            hoverEnabled: true,
-                            hoverText: "SaaS Analytics Platform — Technical SEO Audit: +75% faster load time",
-                            hoverButton: { text: "See Case", link: "/cases/audit" },                        },
-                    },
-                    {
-                        key: "4",
-                        block: {
-                            type: "media",
-                            mediaType: "image",
-                            src: "portfolio4",
-                            hoverEnabled: true,
-                            hoverText: "Restaurant Chain — SEO Copywriting: +90% engagement on location pages",
-                            hoverButton: { text: "See Case", link: "/cases/copywriting" },                        },
-                    },
-                    {
-                        key: "5",
-                        block: {
-                            type: "media",
-                            mediaType: "image",
-                            src: "portfolio5",
-                            hoverEnabled: true,
-                            hoverText: "Real Estate Agency — Competitor Analysis: outranked 4 top rivals in 6 months",
-                            hoverButton: { text: "See Case", link: "/cases/analysis" },                        },
-                    },
-                    {
-                        key: "6",
-                        block: {
-                            type: "media",
-                            mediaType: "image",
-                            src: "portfolio6",
-                            hoverEnabled: true,
-                            hoverText: "Online Electronics Store — Off-Page SEO: +180 backlinks & +70 domain authority",
-                            hoverButton: { text: "See Case", link: "/cases/off-page" },
-                        },
-                    },
-                ],
-            },
-        },
-
-        // 👥 Team section
-        {
-            type: "custom",
-            component: "TeamGrid",
-            title: "Meet the Team Behind the Rankings",
-            description:
-                "A multidisciplinary team of SEO specialists, analysts, copywriters, and digital strategists — united by one goal: your growth.",
-            members: [
                 {
-                    name: "Olena V.",
-                    role: "Head of SEO",
-                    bio: "11 years of experience, ex-agency director, passionate about technical SEO and team growth.",
-                    image: "team7",
+                    icon: "globe",
+                    title: "Global Coverage",
+                    text: "Mobile data in 200+ countries and regions worldwide.",
                 },
                 {
-                    name: "Max D.",
-                    role: "SEO Engineer",
-                    bio: "Focuses on Core Web Vitals, indexing, and site performance optimisation.",
-                    image: "team5",
+                    icon: "speed",
+                    title: "Instant Activation",
+                    text: "Install your eSIM in minutes and get online immediately.",
                 },
                 {
-                    name: "Daria L.",
-                    role: "Content Strategist",
-                    bio: "Transforms analytics into content plans that engage and convert readers into clients.",
-                    image: "team6",
+                    icon: "sim",
+                    title: "No Physical SIM",
+                    text: "Forget SIM cards, stores, and swapping — everything is digital.",
                 },
                 {
-                    name: "Ihor P.",
-                    role: "Link Building Manager",
-                    bio: "Builds high-quality backlinks through authentic outreach and strategic partnerships.",
-                    image: "team4",
-                },
-                {
-                    name: "Svitlana K.",
-                    role: "SEO Analyst",
-                    bio: "Masters keyword research, competitor insights, and data-driven SEO reporting.",
-                    image: "team3",
-                },
-                {
-                    name: "Andrii M.",
-                    role: "UX & Conversion Specialist",
-                    bio: "Optimises user experience and landing flows to boost conversions and dwell time.",
-                    image: "team2",
+                    icon: "shield",
+                    title: "Secure & Reliable",
+                    text: "Trusted infrastructure with stable speeds and secure connections.",
                 },
             ],
         },
 
-        {
-            type: "custom",
-            component: "VideoDemo",
-            title: "See Our SEO Process in Action",
-            description:
-                "Watch how we audit, optimise, and promote websites using a blend of AI tools and human expertise.",
-            video: "demo",
-        },
-
-
-        // 💬 Testimonials
-        {
-            type: "custom",
-            component: "TestimonialsSlider",
-            title: "What Our Clients Say",
-            description: "Real feedback from companies we’ve helped grow organically.",
-            testimonials: [
-                {
-                    name: "Anastasia Romanova",
-                    role: "CMO, Local Clinic",
-                    image: "review6",
-                    text: "The local SEO campaign doubled our calls in just two months. The analytics dashboard is pure gold — everything is transparent and easy to track.",
-                    rating: 5,
-                },
-                {
-                    name: "Viktor Kovalenko",
-                    role: "Founder, Tech Startup",
-                    image: "review5",
-                    text: "I love the token-based model — simple, flexible, and cost-effective. We scaled traffic by 3x without unpredictable retainers.",
-                    rating: 5,
-                },
-                {
-                    name: "Oleksandr Hryn",
-                    role: "Marketing Director, Retail Brand",
-                    image: "review4",
-                    text: "Professional, responsive, and strategic. Their off-page SEO helped us dominate Google rankings in our niche within 6 months.",
-                    rating: 5,
-                },
-                {
-                    name: "Maria Koval",
-                    role: "E-commerce Manager",
-                    image: "review7",
-                    text: "After their audit and on-page optimisation, our organic sales skyrocketed. They also improved UX — now our bounce rate is down 35%.",
-                    rating: 5,
-                },
-                {
-                    name: "Andrii Poltavets",
-                    role: "CEO, Logistics Company",
-                    image: "review8",
-                    text: "Their team understood our complex B2B structure and delivered results fast. Real professionals who think like business partners.",
-                    rating: 5,
-                },
-            ],
-        },
-
-
-        // 💰 Token pricing
         {
             type: "grid",
-            columns: 2,
+            columns: 3,
             gap: "2rem",
+            title: "How It Works: 6 Easy Steps to Get Your eSIM",
             cards: [
                 {
-                    type: "pricing",
-                    variant: "starter",
-                    title: "Starter SEO Audit",
-                    price: "€15",
-                    tokens: 1500,
-                    badgeTop: "Entry Plan",
+                    icon: "login",
+                    title: "1. Sign Up or Log In",
                     description:
-                        "Get a full site scan, ranking report, and 10-page audit with actionable fixes.",
-                    features: [
-                        "Technical check",
-                        "Mobile performance",
-                        "Speed recommendations",
-                        "Basic keyword analysis",
-                    ],
-                    buttonText: "Buy Tokens",
-                    buttonLink: "/pricing",
+                        "Create an account or log in to access your dashboard, balance, and purchased eSIMs.",
+                    buttonText: "Create Account",
+                    buttonLink: "/auth",
                 },
                 {
-                    type: "pricing",
-                    variant: "pro",
-                    title: "Full SEO Package",
-                    price: "€45",
-                    tokens: 4500,
-                    badgeTop: "Popular",
+                    icon: "wallet",
+                    title: "2. Buy Tokens",
                     description:
-                        "Everything you need for growth: audit, link strategy, and content plan.",
-                    features: [
-                        "Complete audit report",
-                        "10 backlinks / mo",
-                        "Content strategy",
-                        "Monthly tracking",
-                    ],
-                    buttonText: "Start SEO Campaign",
-                    buttonLink: "/pricing",
+                        "Purchase token packages once. Tokens never expire and can be used for any eSIM worldwide.",
+                    buttonText: "View Token Plans",
+                    buttonLink: "/plans",
                 },
                 {
-                    type: "pricing",
-                    variant: "premium",
-                    title: "Enterprise SEO",
-                    price: "€90",
-                    tokens: 9000,
-                    badgeTop: "All-In Plan",
+                    icon: "sim",
+                    title: "3. Choose eSIM",
                     description:
-                        "For large businesses and e-commerce. Dedicated team, analytics & continuous growth.",
-                    features: [
-                        "Dedicated SEO manager",
-                        "20+ backlinks / mo",
-                        "Custom dashboards",
-                        "Priority support",
-                    ],
-                    buttonText: "Contact for Setup",
-                    buttonLink: "/contact",
+                        "Browse the global eSIM marketplace and select a country or regional data plan.",
+                    buttonText: "Open Marketplace",
+                    buttonLink: "/e-sim-marketplace",
                 },
                 {
-                    type: "pricing",
-                    variant: "custom",
-                    title: "Custom SEO Solutions",
-                    price: "dynamic",
-                    tokens: 0,
-                    badgeTop: "Tailored Plan",
+                    icon: "pay",
+                    title: "4. Purchase eSIM",
                     description:
-                        "Need something specific? We create bespoke SEO strategies for unique needs.",
-                    features: [
-                        "Personalised strategy",
-                        "Flexible services",
-                        "Scalable solutions",
-                        "Dedicated support",
-                    ],
-                    buttonText: "Get a Quote",
-                    buttonLink: "/contact",
-                }
+                        "Pay for your selected eSIM using tokens. No hidden fees or subscriptions.",
+                    buttonText: "Buy eSIM",
+                    buttonLink: "/e-sim-marketplace",
+                },
+                {
+                    icon: "mail",
+                    title: "5. Get eSIM by Email",
+                    description:
+                        "Receive your eSIM details instantly by email, including QR code and setup instructions.",
+                    buttonText: "Check Inbox",
+                    buttonLink: "/help",
+                },
+                {
+                    icon: "call",
+                    title: "6. Activate & Use",
+                    description:
+                        "Scan the QR code, activate your eSIM, and enjoy fast mobile internet worldwide.",
+                    buttonText: "Check Compatibility",
+                    buttonLink: "/devices",
+                },
             ],
         },
-
-        // ❓ FAQ
         {
             type: "faq",
             items: [
@@ -423,17 +146,6 @@ const schema: PageSchema = {
                         "Yes. We strictly follow Google guidelines to ensure long-term stability and avoid penalties.",
                 },
             ],
-        },
-
-        // 🎯 Final CTA
-        {
-            type: "custom",
-            component: "MissionBanner",
-            title: "Ready to Boost Your Organic Traffic?",
-            description:
-                "Get a free consultation and see how our SEO services can transform your online presence.",
-            image: "image9",
-
         },
     ],
 };

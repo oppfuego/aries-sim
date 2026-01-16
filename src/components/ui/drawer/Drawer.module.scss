@@ -1,6 +1,6 @@
 .link {
     position: relative;
-    color: var(--primary-color);
+    color: var(--text-primary);
     text-decoration: none;
     transition: color 0.25s ease, opacity 0.25s ease;
 
@@ -124,11 +124,10 @@
 
 .topRow{
     display: flex;
-    flex-direction: column;
     width: 100%;
     gap: 20px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 16px;
     border-bottom: 1px solid var(--primary-color);
 
@@ -141,11 +140,10 @@
 
 .topRowInner{
     display: flex;
-    flex-direction: column;
+    width: fit-content;
     gap: 20px;
     align-items: center;
     justify-content: center;
-    width: 100%;
     text-align: center;
 }
 

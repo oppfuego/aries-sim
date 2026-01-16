@@ -1,216 +1,119 @@
 .card {
-  position: relative;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 22px 18px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 3rem 2rem;
-  border-radius: 1.6rem;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.4s ease;
-  overflow: hidden;
+  gap: 14px;
   height: 100%;
-  z-index: 1;
+  transition: all 0.25s ease;
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 45px rgba(255, 122, 0, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px var(--shadow-color);
   }
+}
 
-  /* Світловий ореол */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-                    circle at top right,
-                    rgba(255, 200, 150, 0.25),
-                    transparent 70%
-    );
-    z-index: -1;
-    transition: opacity 0.3s ease;
+/* 🔖 Badge */
+.badgeTop {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--secondary-color);
+}
+
+/* 🏷 Title */
+.title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* 💰 Price */
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.price {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--secondary-color);
+}
+
+.tokens {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ✍️ Custom */
+.customBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.customHint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* 📄 Description */
+.description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ✅ Features */
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    font-size: 13px;
+    color: var(--text-secondary);
+
+    &::before {
+      content: "✓";
+      margin-right: 6px;
+      color: var(--success-color);
+      font-weight: 600;
+    }
   }
+}
 
-  &:hover::before {
-    opacity: 0.9;
-  }
+/* 🌈 Variants */
+.starter {
+  border-color: var(--border-color);
+}
 
-  /* 🏷️ Верхній бейдж */
-  .badgeTop {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: var(--primary-color);
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    padding: 0.35rem 0.8rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-  }
+.pro {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 1px rgba(44, 122, 123, 0.15);
+}
 
-  .title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    letter-spacing: -0.01em;
-  }
+.premium {
+  border-color: var(--button-primary);
+}
 
-  /* 💰 Ціна */
+.custom {
+  background: var(--surface-muted);
+  border-style: dashed;
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
   .price {
-    font-size: 2.6rem;
-    font-weight: 900;
-    color: var(--primary-color);
-    margin-bottom: 1.2rem;
-
-    .tokens {
-      display: block;
-      font-size: 1rem;
-      color: var(--text-secondary);
-      margin-top: 0.2rem;
-      font-weight: 500;
-    }
-  }
-
-  .dynamicPrice {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-  }
-
-  .description {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 0.8rem 0 1.8rem;
-    max-width: 90%;
-  }
-
-  /* ✅ Features list */
-  .features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      transition: color 0.3s ease;
-
-      &::before {
-        content: "✓";
-        color: var(--primary-color);
-        font-weight: 700;
-      }
-
-      &:hover {
-        color: var(--text-primary);
-      }
-    }
-  }
-
-  .inputWrapper {
-    width: 100%;
-    margin-bottom: 1rem;
-
-    input {
-      width: 100%;
-      border-radius: 0.6rem;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.7);
-      transition: all 0.3s ease;
-
-      &:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.2);
-        outline: none;
-      }
-    }
-  }
-
-  /* 👇 Нижній бейдж */
-  .badgeBottom {
-    margin-top: 1.5rem;
-    background: rgba(255, 122, 0, 0.1);
-    color: var(--primary-color);
-    font-weight: 600;
-    font-size: 0.85rem;
-    padding: 0.4rem 1rem;
-    border-radius: 0.5rem;
-  }
-
-  /* 💡 Кнопка */
-  button {
-    width: 100%;
-    border: none;
-    border-radius: 0.8rem;
-    background: linear-gradient(135deg, #ff8c00, #ff5e00);
-    color: #fff;
-    font-size: 1.05rem;
-    font-weight: 700;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    margin-top: auto;
-
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(255, 122, 0, 0.35);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-  }
-
-  /* 🌈 Варіанти */
-  &.starter {
-    --primary-color: #ff7a00;
-    --button-hover: #ff5400;
-  }
-
-  &.pro {
-    --primary-color: #3b82f6;
-    background: rgba(240, 248, 255, 0.6);
-    --button-hover: #2563eb;
-  }
-
-  &.premium {
-    --primary-color: #facc15;
-    background: rgba(255, 250, 205, 0.5);
-    --button-hover: #eab308;
-  }
-
-  &.custom {
-    --primary-color: #9333ea;
-    background: rgba(250, 245, 255, 0.5);
-    --button-hover: #7e22ce;
-  }
-
-  @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
-    .price {
-      font-size: 2rem;
-    }
-    .features li {
-      font-size: 0.9rem;
-    }
+    font-size: 22px;
   }
 }

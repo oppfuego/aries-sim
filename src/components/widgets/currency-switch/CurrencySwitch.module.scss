@@ -14,8 +14,8 @@
   border-radius: 12px;
   background: linear-gradient(
                   135deg,
-                  var(--primary-color, #FF7A00),
-                  var(--secondary-color, #CC5800)
+                  var(--primary-color, #00fff7),
+                  var(--secondary-color, #009ccc)
   );
   color: var(--text-inverse, #fff);
   font-weight: 600;
@@ -25,7 +25,7 @@
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(255, 122, 0, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 255, 255, 0.4);
   }
 }
 
@@ -42,7 +42,7 @@
   position: absolute;
   top: 110%;
   left: 0;
-  width: 100%;
+  width: 100px;
   background: var(--surface-color, #fff);
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
@@ -75,11 +75,11 @@
 
   &:hover {
     background: var(--quaternary-color, #FFF4E6);
-    color: var(--primary-color, #FF7A00);
+    color: var(--primary-color, #00c4ff);
   }
 
   &.active {
-    background: var(--primary-color, #FF7A00);
+    background: var(--primary-color, #0077ff);
     color: var(--text-inverse, #fff);
     font-weight: 600;
   }
@@ -100,7 +100,7 @@
   .option {
     color: #eaeaea;
     &:hover {
-      background: rgba(255, 122, 0, 0.2);
+      background: rgba(0, 208, 255, 0.2);
     }
   }
 }

@@ -30,8 +30,8 @@ const AuthButtons: React.FC = () => {
         <div className={styles.nonAuthedButtons}>
             <Link href="/sign-in">
                 <ButtonUI
-                    text="Login"
-                    color="primary"
+                    text="Sign In"
+                    color="backgroundDark"
                     shape="rounded"
                     hoverColor="link"
                     hoverEffect="scale"
@@ -41,13 +41,14 @@ const AuthButtons: React.FC = () => {
             </Link>
             <Link href="/sign-up">
                 <ButtonUI
-                    text="Register"
+                    text="Sign Up"
                     shape="rounded"
-                    color="tertiary"
+                    color="primary"
                     hoverEffect="scale"
                     fullWidth
-                    textColor="primary"
-                    hoverColor="tertiary"
+                    textColor="quaternary"
+                    hoverColor="primary"
+
                 />
             </Link>
         </div>

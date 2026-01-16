@@ -1,167 +1,117 @@
 .timelineSection {
   width: 100%;
-  position: relative;
-  overflow: hidden;
+  background: var(--background-color);
 }
 
-.inner {
+.head {
+  max-width: 720px;
+}
+
+.sectionTitle {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.sectionDesc {
+  margin-top: 0.75rem;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.container {
   max-width: 1200px;
-  padding: 0 20px;
   margin: 0 auto;
-  position: relative;
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 4rem;
 }
 
-.title {
-  font-size: 2rem;
-  font-weight: 500;
-  color: var(--secondary-color);
-}
-
-/* 🟠 Вертикальна лінія */
-.timelineTrack {
+/* ───── Timeline wrapper ───── */
+.timeline {
   position: relative;
-  width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding-left: 36px;
 }
 
-.line {
+/* Vertical line */
+.timeline::before {
+  content: "";
   position: absolute;
+  left: 12px;
   top: 0;
   bottom: 0;
-  left: 50%;
-  width: 4px;
-  background: linear-gradient(
-                  180deg,
-                  var(--primary-color),
-                  var(--secondary-color)
-  );
-  border-radius: 2px;
-  opacity: 0.4;
+  width: 2px;
+  background: var(--border-color);
 }
 
-/* 💫 Кроки */
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  width: 100%;
-  position: relative;
-  z-index: 2;
+/* ───── Item ───── */
+.timelineItem {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  column-gap: 2rem;
+  align-items: flex-start;
 }
 
-/* 🔹 Картка */
-.stepCard {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-
-  &:nth-child(even) {
-    flex-direction: row-reverse;
-
-    .content {
-      text-align: right;
-      align-items: flex-end;
-    }
-  }
-
-  &:hover .circle {
-    background: var(--primary-color);
-    color: white;
-    box-shadow: 0 0 20px rgba(255, 122, 0, 0.6);
-    transform: scale(1.1);
-  }
-
-  &:hover .content h4 {
-    color: var(--primary-color);
-  }
-}
-
-/* 🔵 Коло з номером */
-.circle {
-  flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+/* ───── Marker ───── */
+.marker {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: var(--quaternary-color);
-  color: var(--secondary-color);
-  border: 3px solid var(--primary-color);
-  font-weight: 700;
-  font-size: 1.3rem;
+  background: var(--background-color);
+  border: 2px solid var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s ease;
-  box-shadow: 0 0 10px rgba(255, 122, 0, 0.15);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  z-index: 1;
 }
 
-/* 🧩 Контент */
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.7rem;
-  max-width: 420px;
-  padding: 1.8rem 2rem;
-  border-radius: 16px;
-  background: white;
-  box-shadow: 0 10px 30px rgba(255, 122, 0, 0.1);
-  border: 1px solid #f6d9bb;
-  transition: all 0.4s ease;
-
-  h4 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-  }
-
-  p {
-    font-size: 1rem;
-    line-height: 1.65;
-    color: var(--text-secondary);
-    margin: 0;
-  }
-
-  .stepCard:hover & {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 32px rgba(255, 122, 0, 0.15);
-  }
+/* ───── Card ───── */
+.card {
+  background: var(--surface-color);
+  padding: 1.75rem 2rem;
+  border: 1px solid var(--border-color);
+  transition: border-color 0.25s ease;
 }
 
-/* 📱 Адаптивність */
-@media (max-width: 900px) {
-  .line {
-    left: 10px;
+.card:hover {
+  border-color: var(--primary-color);
+}
+
+.card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 0.4rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: var(--text-inverse);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ───── Responsive ───── */
+@media (max-width: 768px) {
+  .timeline {
+    padding-left: 28px;
   }
 
-  .stepCard {
-    flex-direction: row;
-    gap: 1.2rem;
-
-    &:nth-child(even) {
-      flex-direction: row;
-      .content {
-        text-align: left;
-        align-items: flex-start;
-      }
-    }
+  .timelineItem {
+    grid-template-columns: 28px 1fr;
   }
 
-  .circle {
-    width: 50px;
-    height: 50px;
-    font-size: 1.1rem;
-  }
-
-  .content {
-    max-width: 100%;
-    padding: 1.4rem 1.2rem;
+  .card {
+    padding: 1.5rem;
   }
 }
