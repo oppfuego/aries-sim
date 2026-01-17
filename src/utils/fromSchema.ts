@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import type { MetaSchema } from "@/components/constructor/page-render/types";
+import {COMPANY_NAME} from "@/resources/constants";
 
 async function absoluteUrl(path: string): Promise<string> {
     const envBase = process.env.NEXT_PUBLIC_FRONTEND_URL;
@@ -42,7 +43,7 @@ export async function metadataFromSchema(meta: MetaSchema): Promise<Metadata> {
             title,
             description,
             url: canonicalAbs,
-            siteName: "Jetreex",
+            siteName: COMPANY_NAME,
             type: "website",
             locale: "uk_UA",
             images: [
