@@ -4,12 +4,14 @@ import React, { useEffect, useState, useMemo } from "react";
 import styles from "./Checkout.module.scss";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCheckoutStore } from "@/utils/store";
+import {useAlert} from "@/context/AlertContext";
 
 const Checkout = () => {
     const { plan, setPlan } = useCheckoutStore();
     const [activePlan, setActivePlan] = useState(plan);
     const { currency, sign, convertFromGBP } = useCurrency();
     const [agreed, setAgreed] = useState(false);
+    const { showAlert } = useAlert();
 
     // 🔄 При завантаженні — підтягуємо план із localStorage
     useEffect(() => {
@@ -42,6 +44,40 @@ const Checkout = () => {
 
     const vat = useMemo(() => convertedPrice * 0.2, [convertedPrice]);
     const total = useMemo(() => convertedPrice + vat, [convertedPrice, vat]);
+
+    const handlePay = async () => {
+        if (!agreed || !activePlan) return;
+
+        try {
+            const res = await fetch("/api/user/buy-tokens", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    currency,
+                    amount: convertedPrice, // ❗️БЕЗ VAT
+                }),
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || "Payment failed");
+            }
+
+            localStorage.removeItem("selectedPlan");
+            showAlert(
+                "Success",
+                "Payment completed successfully. Tokens have been added to your balance.",
+                "success"
+            );
+
+            setTimeout(() => {
+                window.location.href = "/profile";
+            }, 1200);
+        } catch (e: any) {
+            alert(e.message);
+        }
+    };
+
 
     return (
         <div className={styles.checkout}>
@@ -105,7 +141,7 @@ const Checkout = () => {
                 {/* RIGHT SIDE */}
                 <div className={styles.payment}>
                     <h2>Payment Details</h2>
-                    <form>
+                    <form onSubmit={(e) => e.preventDefault()}>
                         <input type="text" placeholder="Card number" />
                         <div className={styles.row}>
                             <input type="text" placeholder="MM/YY" />
@@ -139,11 +175,12 @@ const Checkout = () => {
                         </div>
 
                         <button
-                            type="submit"
+                            type="button"
                             disabled={!agreed}
+                            onClick={handlePay}
                             className={`${styles.payButton} ${!agreed ? styles.disabled : ""}`}
                         >
-                            Pay {sign}
+                        Pay {sign}
                             {total.toFixed(2)} {currency}
                         </button>
                     </form>

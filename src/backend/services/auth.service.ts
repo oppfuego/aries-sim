@@ -18,18 +18,60 @@ function parseDurationToSec(input: string): number {
 
 const REFRESH_TTL_SEC = parseDurationToSec(ENV.REFRESH_TOKEN_EXPIRES);
 
+const COUNTRY_BLACKLIST = [
+    "Russia",
+    "Belarus",
+    "Iran",
+    "North Korea",
+];
+
 export const authService = {
-    async register(data: { name: string; email: string; password: string }) {
+    async register(data: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+        phone: string;
+        birthDate: string;
+        addressStreet: string;
+        addressCity: string;
+        addressCountry: string;
+        addressZip: string;
+    }) {
         const existing = await User.findOne({ email: data.email.toLowerCase() });
         if (existing) throw new Error("Email already registered");
 
+        if (COUNTRY_BLACKLIST.includes(data.addressCountry)) {
+            throw new Error("Registration from this country is not allowed");
+        }
+
         const hashed = await bcrypt.hash(data.password, 12);
-        const user = await User.create({ ...data, email: data.email.toLowerCase(), password: hashed });
-        const result = await this.issueTokensAndSession(user._id, user.email, user.role, undefined, undefined);
+
+        const user = await User.create({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email.toLowerCase(),
+            password: hashed,
+            phone: data.phone,
+            birthDate: new Date(data.birthDate),
+            address: {
+                street: data.addressStreet,
+                city: data.addressCity,
+                country: data.addressCountry,
+                zip: data.addressZip,
+            },
+        });
+
+        const result = await this.issueTokensAndSession(
+            user._id,
+            user.email,
+            user.role
+        );
+
         await sendEmail(
             user.email,
             "Welcome to Aries Sim 🎉",
-            `Hi ${user.name}, thanks for registering at Aries Sim.`
+            `Hi ${user.firstName}, thanks for registering at Aries Sim.`
         );
 
         return { user, ...result };
@@ -42,20 +84,16 @@ export const authService = {
         const valid = await bcrypt.compare(password, user.password);
         if (!valid) throw new Error("Invalid credentials");
 
-        // 🧩 1️⃣ ВАЖЛИВО: видаляємо старі refresh-сесії цього користувача
         await RefreshSession.deleteMany({ userId: user._id });
 
-        // 🧩 2️⃣ Тепер видаємо абсолютно нові токени та сесію
         const result = await this.issueTokensAndSession(user._id, user.email, user.role, userAgent, ip);
 
-        // 🧩 3️⃣ (опційно) Лог для відладки
         console.log(`[authService.login] ✅ New login for ${user.email}, old sessions cleared.`);
 
         return { user, ...result };
     },
 
     async issueTokensAndSession(userId: Types.ObjectId, email: string, role: string, userAgent?: string, ip?: string) {
-        // refresh як рандомний токен (не JWT); у БД зберігаємо hash
         const rawRefresh = randomToken(64);
         const tokenHash = sha256(rawRefresh);
 

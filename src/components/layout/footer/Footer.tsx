@@ -93,6 +93,12 @@ const Footer: React.FC = () => {
                         <a href={`tel:${contact.phone}`}>{contact.phone}</a>
                     </div>
                 )}
+                {contact.address && (
+                    <div className={styles["footer__contact-item"]}>
+                        {contact.address}
+                    </div>
+                )}
+
                 <LegalAddress/>
             </div>
         ) : null;

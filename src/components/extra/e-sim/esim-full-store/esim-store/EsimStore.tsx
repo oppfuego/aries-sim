@@ -131,7 +131,9 @@ export default function EsimStore() {
                                     shape="rounded"
                                     onClick={() => {
                                         router.push(
-                                            `/extra/esim-checkout?country=${country.name}&code=${country.code}&plan=${plan.label}&priceEur=${plan.priceEur}`
+                                            user
+                                                ? `/extra/esim-checkout?country=${country.name}&code=${country.code}&plan=${plan.label}&priceEur=${plan.priceEur}`
+                                                : "/sign-in"
                                         );
                                     }}
                                 >

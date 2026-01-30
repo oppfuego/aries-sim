@@ -10,12 +10,7 @@ import {
 } from "@/validationSchemas/sign-up/schema";
 import FormUI from "@/components/ui/form/FormUI";
 
-export type SignUpValues = {
-    name: string;
-    email: string;
-    password: string;
-    terms: boolean;
-};
+export type SignUpValues = typeof signUpInitialValues;
 
 export default function SignUpPage() {
     const { showAlert } = useAlert();
@@ -35,13 +30,22 @@ export default function SignUpPage() {
                     title="Sign Up"
                     description="Create your account"
                     isSubmitting={isSubmitting}
-                    fields={[
-                        { name: "name", type: "text", placeholder: "Name" },
-                        { name: "email", type: "email", placeholder: "Email" },
-                        { name: "password", type: "password", placeholder: "Password" },
-                    ]}
                     submitLabel="Sign Up"
                     showTerms
+                    variant="register"
+                    fields={[
+                        { name: "firstName", type: "text", placeholder: "First name" },
+                        { name: "lastName", type: "text", placeholder: "Last name" },
+                        { name: "email", type: "email", placeholder: "Email" },
+                        { name: "password", type: "password", placeholder: "Password" },
+                        { name: "phone", type: "tel", placeholder: "Phone number" },
+                        { name: "birthDate", type: "date", placeholder: "Date of birth" },
+
+                        { name: "addressStreet", type: "text", placeholder: "Street" },
+                        { name: "addressCity", type: "text", placeholder: "City" },
+                        { name: "addressCountry", type: "text", placeholder: "Country" },
+                        { name: "addressZip", type: "text", placeholder: "Postal code" },
+                    ]}
                 />
             )}
         </Formik>

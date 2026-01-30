@@ -34,7 +34,7 @@ export default function HomePage() {
             <HeroSection
                 title="Global Mobile Internet. No Roaming. No SIM Cards."
                 description={`${COMPANY_NAME} is a global eSIM marketplace for travelers. Buy mobile data plans for 200+ countries and get online instantly.`}
-                primaryCta={{ text: "Browse eSIM Plans", link: "/e-sim-marketplace" }}
+                primaryCta={{ text: "Browse eSIM Plans", link: "/extra/esim-store" }}
                 image="image1"
                 showTrustBadge={false}
             />
@@ -76,7 +76,7 @@ export default function HomePage() {
                     title="1. Create an Account"
                     description="Sign up to manage your eSIMs, purchases, and balance in one place."
                     buttonText="Create Account"
-                    buttonLink="/auth"
+                    buttonLink="/sign-up"
                 />
 
                 <Card
@@ -84,7 +84,7 @@ export default function HomePage() {
                     title="2. Top Up Balance"
                     description="Add funds once and use them to buy eSIM plans anytime."
                     buttonText="Top Up Balance"
-                    buttonLink="/plans"
+                    buttonLink="/pricing"
                 />
 
                 <Card
@@ -92,7 +92,7 @@ export default function HomePage() {
                     title="3. Choose an eSIM Plan"
                     description="Select a country or regional data plan that fits your trip."
                     buttonText="Open Marketplace"
-                    buttonLink="/e-sim-marketplace"
+                    buttonLink="/esim-store"
                 />
 
                 <Card
@@ -100,7 +100,7 @@ export default function HomePage() {
                     title="4. Purchase eSIM"
                     description="Pay securely and receive your eSIM instantly."
                     buttonText="Buy eSIM"
-                    buttonLink="/e-sim-marketplace"
+                    buttonLink="/esim-store"
                 />
 
                 <Card
@@ -108,15 +108,13 @@ export default function HomePage() {
                     title="5. Receive Setup Details"
                     description="Get your QR code and activation instructions by email."
                     buttonText="Check Email"
-                    buttonLink="/help"
+                    buttonLink="/contact-us"
                 />
 
                 <Card
                     icon="call"
                     title="6. Activate & Travel"
                     description="Scan the QR code, activate your eSIM, and enjoy mobile internet."
-                    buttonText="Check Device Compatibility"
-                    buttonLink="/devices"
                 />
             </Grid>
 
@@ -207,37 +205,36 @@ export default function HomePage() {
                 testimonials={[
                     {
                         name: "Leon Sutherland",
-                        image: "review1",
+                        image: "review9",
                         text:
                             "Bought the eSIM before my trip to Australia. Activated it at the airport and had fast internet immediately. No roaming issues at all.",
                     },
                     {
                         name: "Anna Peterson",
-                        image: "review2",
+                        image: "review12",
                         text:
                             "Installed the eSIM in under 5 minutes. Worked perfectly across multiple countries during my trip. Super convenient and reliable.",
                     },
                     {
                         name: "Marco Rossi",
-                        image: "review3",
+                        image: "review10",
                         text:
                             "Very reliable connection with clear setup instructions. Saved me a lot of money compared to traditional roaming plans.",
                     },
                     {
                         name: "Sofia Martinez",
-                        image: "review4",
+                        image: "review13",
                         text:
                             "Customer support was quick and helpful when I had questions about my plan. The eSIM worked flawlessly throughout my journey.",
                     },
                     {
                         name: "Daniel Kim",
-                        image: "review5",
+                        image: "review11",
                         text:
                             "Used this eSIM while traveling across Asia and Europe. Fast speeds, easy activation, and no need to swap SIM cards.",
                     },
                 ]}
             />
-
 
             <FAQ
                 items={[

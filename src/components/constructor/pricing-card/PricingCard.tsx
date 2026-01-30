@@ -43,7 +43,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     const { setPlan } = useCheckoutStore();
 
     const isCustom = price === "dynamic";
-    const [customAmount, setCustomAmount] = useState<number>(10);
+    const [customAmount, setCustomAmount] = useState(10);
 
     const basePriceGBP = useMemo(() => {
         if (isCustom) return 0;
@@ -78,7 +78,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
         const plan = {
             title,
-            price: finalPriceGBP,
+            price: finalPriceGBP, // ❗️ЗАВЖДИ GBP
             tokens: finalTokens,
             currency,
             variant,
@@ -103,10 +103,10 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
             {!isCustom ? (
                 <div className={styles.priceRow}>
-          <span className={styles.price}>
-            {sign}
-              {convertedPrice.toFixed(2)}
-          </span>
+                    <span className={styles.price}>
+                        {sign}
+                        {convertedPrice.toFixed(2)}
+                    </span>
                     <span className={styles.tokens}>{tokens} tokens</span>
                 </div>
             ) : (
@@ -121,8 +121,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
                         size="sm"
                     />
                     <span className={styles.customHint}>
-            ≈ {calculatedTokens} tokens
-          </span>
+                        ≈ {calculatedTokens} tokens
+                    </span>
                 </div>
             )}
 
@@ -134,12 +134,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 ))}
             </ul>
 
-            <ButtonUI
-                fullWidth
-                size="sm"
-                variant="soft"
-                onClick={handleBuy}
-            >
+            <ButtonUI fullWidth size="sm" variant="soft" onClick={handleBuy}>
                 {user ? buttonText : "Sign up to continue"}
             </ButtonUI>
         </motion.div>
