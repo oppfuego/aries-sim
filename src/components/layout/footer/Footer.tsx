@@ -8,17 +8,12 @@ import styles from "./Footer.module.scss";
 import {footerContent} from "@/resources/content";
 import {footerStyles} from "@/resources/styles-config";
 import {SmartLinkProps} from "@/types/smart-link";
-import {media} from "@/resources/media";
+import visaLogo from "@/assets/cards/visa.png";
+import mastercardLogo from "@/assets/cards/mastercard.png";
+import pciLogo from "@/assets/cards/pci-dss-compliant-logo-vector.svg";
 import {
-    FaApplePay,
-    FaCcAmex,
-    FaCcMastercard,
-    FaCcVisa,
     FaFacebookF,
-    FaGooglePay,
     FaInstagram,
-    FaLinkedinIn,
-    FaTwitter
 } from "react-icons/fa";
 
 const SmartLink: React.FC<SmartLinkProps> = ({
@@ -53,7 +48,7 @@ const SmartLink: React.FC<SmartLinkProps> = ({
 };
 
 const Footer: React.FC = () => {
-    const {logo, columns, contact, socials, legal} = footerContent;
+    const {logo, columns, contact, legal} = footerContent;
 
     const LegalAddress = () =>
         Array.isArray(legal?.addressLines) && legal.addressLines.length ? (
@@ -66,8 +61,30 @@ const Footer: React.FC = () => {
 
     const PaymentMethods = () => (
         <div className={styles.paymentsContent}>
-            <FaCcVisa className={styles.paymentIcon}/>
-            <FaCcMastercard className={styles.paymentIcon}/>
+            <div className={styles.paymentLogoWrap}>
+                <Image
+                    src={visaLogo}
+                    alt="Visa"
+                    className={styles.paymentLogo}
+                    sizes="96px"
+                />
+            </div>
+            <div className={styles.paymentLogoWrap}>
+                <Image
+                    src={mastercardLogo}
+                    alt="Mastercard"
+                    className={styles.paymentLogo}
+                    sizes="96px"
+                />
+            </div>
+            <div className={styles.paymentLogoWrap}>
+                <Image
+                    src={pciLogo}
+                    alt="PCI DSS Compliant"
+                    className={styles.paymentLogo}
+                    sizes="96px"
+                />
+            </div>
         </div>
     );
 
