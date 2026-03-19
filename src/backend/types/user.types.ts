@@ -9,6 +9,13 @@ export interface IUserSchema extends Document {
     email: string;
     password: string;
 
+    phoneNumber: string;
+    dateOfBirth: Date;
+    street: string;
+    city: string;
+    country: string;
+    postCode: string;
+
     phone: string;
     birthDate: Date;
 
@@ -33,6 +40,13 @@ export interface UserType {
     lastName: string;
 
     email: string;
+    phoneNumber: string;
+    dateOfBirth: Date;
+    street: string;
+    city: string;
+    country: string;
+    postCode: string;
+
     phone: string;
     birthDate: Date;
 

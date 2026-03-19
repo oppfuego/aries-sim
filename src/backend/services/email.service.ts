@@ -128,7 +128,91 @@ ${companyName} Team
 
         return await sendEmail(data.email, subject, text, html);
     },
+
+    async sendOrderConfirmationEmail(data: {
+        email: string;
+        firstName?: string;
+        subject: string;
+        summary: string;
+        items: string[];
+        amountLabel: string;
+        amountValue: string;
+        transactionDate?: Date | string;
+    }) {
+        const companyName = COMPANY_NAME || "Website";
+        const transactionDate = formatDate(data.transactionDate || new Date());
+        const greetingName = data.firstName?.trim() || "there";
+        const itemsText = data.items.map((item) => `- ${item}`).join("\n");
+        const itemsHtml = data.items
+            .map((item) => `<li style="margin:4px 0;">${escapeHtml(item)}</li>`)
+            .join("");
+
+        const text = `
+Hi ${greetingName},
+
+${data.summary}
+
+Order details:
+${itemsText}
+
+${data.amountLabel}: ${data.amountValue}
+Transaction date: ${transactionDate}
+
+${COMPANY_EMAIL ? `Support email: ${COMPANY_EMAIL}` : ""}
+${COMPANY_PHONE ? `Phone: ${COMPANY_PHONE}` : ""}
+
+Best regards,
+${companyName} Team
+        `.trim();
+
+        const html = `
+        <div style="font-family: Arial, sans-serif; background:#f4faff; padding:20px; color:#333;">
+          <div style="max-width:600px; margin:auto; background:#fff; border-radius:8px; padding:30px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+            <h2 style="color:#007BFF; text-align:center; margin-bottom:24px;">
+              ${escapeHtml(data.subject)}
+            </h2>
+
+            <p style="font-size:16px; line-height:1.6;">
+              Hi <strong>${escapeHtml(greetingName)}</strong>,
+            </p>
+
+            <p style="font-size:16px; line-height:1.6;">
+              ${escapeHtml(data.summary)}
+            </p>
+
+            <div style="margin:24px 0; padding:16px; background:#f8fbff; border-radius:8px;">
+              <p style="margin:0 0 12px; font-size:14px; font-weight:bold;">Order details</p>
+              <ul style="margin:0 0 12px 18px; padding:0;">${itemsHtml}</ul>
+              <p style="margin:6px 0; font-size:14px;"><strong>${escapeHtml(data.amountLabel)}:</strong> ${escapeHtml(data.amountValue)}</p>
+              <p style="margin:6px 0; font-size:14px;"><strong>Transaction date:</strong> ${escapeHtml(transactionDate)}</p>
+            </div>
+
+            ${
+            COMPANY_EMAIL || COMPANY_PHONE
+                ? `
+            <div style="margin-top:24px; padding:16px; background:#f8fbff; border-radius:8px;">
+              ${COMPANY_EMAIL ? `<p style="margin:4px 0; font-size:14px;">Email: ${escapeHtml(COMPANY_EMAIL)}</p>` : ""}
+              ${COMPANY_PHONE ? `<p style="margin:4px 0; font-size:14px;">Phone: ${escapeHtml(COMPANY_PHONE)}</p>` : ""}
+            </div>
+            `
+                : ""
+        }
+          </div>
+        </div>
+        `;
+
+        return await sendEmail(data.email, data.subject, text, html);
+    },
 };
+
+function formatDate(value: Date | string) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return new Date().toISOString();
+    }
+
+    return date.toISOString();
+}
 
 function escapeHtml(value: string) {
     return String(value)

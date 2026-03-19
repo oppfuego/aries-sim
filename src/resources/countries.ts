@@ -4,6 +4,30 @@ export interface CountryOption {
     flag: string;
 }
 
+export const restrictedRegistrationCountryNames = new Set([
+    "Russia",
+    "Belarus",
+    "Iran",
+    "North Korea",
+    "Syria",
+    "Yemen",
+    "Afghanistan",
+    "Sudan",
+    "South Sudan",
+    "Cuba",
+    "Venezuela",
+    "Zimbabwe",
+    "Myanmar",
+    "Mali",
+    "Democratic Republic of the Congo",
+    "Central African Republic",
+    "Somalia",
+    "Iraq",
+    "Haiti",
+    "Darfur",
+    "Crimea",
+]);
+
 export const countries: CountryOption[] = [
     // 🌍 Europe
     { code: "AL", name: "Albania", flag: "🇦🇱" },
@@ -85,3 +109,11 @@ export const countries: CountryOption[] = [
     { code: "AU", name: "Australia", flag: "🇦🇺" },
     { code: "NZ", name: "New Zealand", flag: "🇳🇿" },
 ];
+
+export const allowedRegistrationCountries = countries.filter(
+    (country) => !restrictedRegistrationCountryNames.has(country.name)
+);
+
+export const allowedRegistrationCountryNames = new Set(
+    allowedRegistrationCountries.map((country) => country.name)
+);

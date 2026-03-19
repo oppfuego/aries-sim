@@ -5,6 +5,7 @@ import { transactionService } from "../services/transaction.service";
 import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
+import { emailService } from "@/backend/services/email.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -245,6 +246,24 @@ export const universalService = {
         };
 
         const order = await UniversalOrder.create(orderDoc);
+
+        emailService.sendOrderConfirmationEmail({
+            email: user.email,
+            firstName: user.firstName,
+            subject: "Order confirmed",
+            summary: "Your order was completed successfully.",
+            items: [
+                `Category: ${body.category}`,
+                `Plan: ${body.planType}`,
+                ...(body.extras?.length ? [`Extras: ${body.extras.join(", ")}`] : []),
+            ],
+            amountLabel: "Tokens used",
+            amountValue: `${totalCost} tokens`,
+            transactionDate: order.createdAt,
+        }).catch((error) => {
+            console.error("❌ Universal order confirmation email failed:", error);
+        });
+
         return order.toObject({ flattenMaps: true });
     },
 

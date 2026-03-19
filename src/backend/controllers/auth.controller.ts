@@ -1,9 +1,7 @@
 import { connectDB } from "../config/db";
 import { authService } from "../services/auth.service";
-import { User } from "../models/user.model";
-import { AuthResponse, AuthError, LogoutResponse } from "@/backend/types/auth.types";
+import { LogoutResponse } from "@/backend/types/auth.types";
 import { UserType } from "@/backend/types/user.types";
-import { signAccessToken } from "../utils/jwt";
 
 export const authController = {
     async register(body: any) {
@@ -17,6 +15,12 @@ export const authController = {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                phoneNumber: user.phoneNumber || user.phone,
+                dateOfBirth: user.dateOfBirth || user.birthDate,
+                street: user.street || user.address?.street || "",
+                city: user.city || user.address?.city || "",
+                country: user.country || user.address?.country || "",
+                postCode: user.postCode || user.address?.zip || "",
                 phone: user.phone,
                 birthDate: user.birthDate,
                 address: user.address,
@@ -61,6 +65,13 @@ export const authController = {
 };
 
 function toUser(u: any): UserType {
+    const phoneNumber = u.phoneNumber || u.phone;
+    const dateOfBirth = u.dateOfBirth || u.birthDate;
+    const street = u.street || u.address?.street || "";
+    const city = u.city || u.address?.city || "";
+    const country = u.country || u.address?.country || "";
+    const postCode = u.postCode || u.address?.zip || "";
+
     return {
         _id: u._id.toString(),
 
@@ -68,10 +79,21 @@ function toUser(u: any): UserType {
         lastName: u.lastName,
 
         email: u.email,
-        phone: u.phone,
-        birthDate: u.birthDate,
+        phoneNumber,
+        dateOfBirth,
+        street,
+        city,
+        country,
+        postCode,
+        phone: u.phone || phoneNumber,
+        birthDate: u.birthDate || dateOfBirth,
 
-        address: u.address,
+        address: {
+            street,
+            city,
+            country,
+            zip: u.address?.zip || postCode,
+        },
 
         role: u.role,
         tokens: u.tokens,

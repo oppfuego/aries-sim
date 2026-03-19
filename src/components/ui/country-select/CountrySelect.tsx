@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React from "react";
 import { useField } from "formik";
+import FormControl from "@mui/joy/FormControl";
+import Option from "@mui/joy/Option";
+import Select from "@mui/joy/Select";
+import { ChevronDown } from "lucide-react";
 import styles from "./CountrySelect.module.scss";
-import { countries } from "@/resources/countries";
+import { allowedRegistrationCountries } from "@/resources/countries";
 
 interface Props {
     name: string;
@@ -11,90 +15,49 @@ interface Props {
 }
 
 const CountrySelect: React.FC<Props> = ({ name, placeholder }) => {
-    const [field, meta, helpers] = useField(name);
-    const [open, setOpen] = useState(false);
-    const [query, setQuery] = useState("");
-    const wrapperRef = useRef<HTMLDivElement>(null);
-
-    const selected = countries.find(c => c.code === field.value);
-
-    const filtered = useMemo(() => {
-        return countries.filter(c =>
-            c.name.toLowerCase().includes(query.toLowerCase())
-        );
-    }, [query]);
-
-    // ✅ CLOSE ON OUTSIDE CLICK
-    useEffect(() => {
-        if (!open) return;
-
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                wrapperRef.current &&
-                !wrapperRef.current.contains(event.target as Node)
-            ) {
-                setOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [open]);
+    const [field, meta, helpers] = useField<string>(name);
 
     return (
-        <div className={styles.wrapper} ref={wrapperRef}>
-            {/* CONTROL */}
-            <div
+        <FormControl error={Boolean(meta.touched && meta.error)} className={styles.wrapper}>
+            <Select
+                name={name}
+                value={field.value || null}
+                placeholder={placeholder || "Select your country"}
+                indicator={<ChevronDown size={18} />}
+                onChange={(_, value) => helpers.setValue(value || "")}
+                onBlur={() => helpers.setTouched(true)}
                 className={styles.control}
-                onClick={() => setOpen(v => !v)}
+                slotProps={{
+                    button: {
+                        className: styles.button,
+                    },
+                    listbox: {
+                        className: styles.listbox,
+                    },
+                }}
+                sx={{
+                    width: "100%",
+                    minHeight: "52px",
+                    borderRadius: "12px",
+                    fontSize: "1rem",
+                    backgroundColor: "#fff",
+                    "--Select-placeholderColor": "var(--text-secondary)",
+                    "--Select-focusedThickness": "1px",
+                    "--Select-indicatorColor": "var(--text-secondary)",
+                    "--Select-paddingInline": "18px",
+                }}
             >
-                {selected ? (
-                    <span className={styles.value}>
-                        <span>{selected.name}</span>
-                    </span>
-                ) : (
-                    <span className={styles.placeholder}>
-                        {placeholder || "Select country"}
-                    </span>
-                )}
-            </div>
-
-            {/* DROPDOWN */}
-            {open && (
-                <div className={styles.dropdown}>
-                    <input
-                        className={styles.search}
-                        placeholder="Search country…"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        autoFocus
-                    />
-
-                    <div className={styles.list}>
-                        {filtered.map((country) => (
-                            <div
-                                key={country.code}
-                                className={styles.option}
-                                onClick={() => {
-                                    helpers.setValue(country.code);
-                                    setOpen(false);
-                                    setQuery("");
-                                }}
-                            >
-                                <span className={styles.name}>{country.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+                {allowedRegistrationCountries.map((country) => (
+                    <Option key={country.code} value={country.name} className={styles.option}>
+                        {country.name}
+                    </Option>
+                ))}
+            </Select>
 
             {meta.touched && meta.error && (
                 <div className={styles.error}>{meta.error}</div>
             )}
-        </div>
+        </FormControl>
     );
 };
 

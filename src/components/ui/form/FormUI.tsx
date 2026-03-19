@@ -59,7 +59,7 @@ const FormUI: React.FC<FormUIProps> = ({
                 >
                     {fields.map((field) => {
                         // 🌍 country dropdown with search + flag
-                        if (field.name === "addressCountry") {
+                        if (field.name === "country") {
                             return (
                                 <CountrySelect
                                     key={field.name}

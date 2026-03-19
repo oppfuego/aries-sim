@@ -1,88 +1,57 @@
 .wrapper {
-  position: relative;
   width: 100%;
 }
 
-/* ===== CONTROL ===== */
 .control {
-  height: 52px;
-  padding: 0 16px;
+  width: 100%;
+}
+
+.button {
+  min-height: 52px !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--joy-palette-neutral-outlinedBorder, rgba(0, 0, 0, 0.23)) !important;
+  background: #fff !important;
+  padding: 0 18px !important;
+  font-size: 1rem !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+
+.button:hover {
+  background: #fff !important;
+  border-color: var(--border-color) !important;
+}
+
+.button:focus-visible,
+.button[data-focus-visible="true"] {
+  outline: none !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(143, 208, 220, 0.18) !important;
+}
+
+.wrapper [aria-invalid="true"] + .error,
+.wrapper:has([aria-invalid="true"]) .button {
+  border-color: var(--error-color) !important;
+}
+
+.wrapper:has([aria-invalid="true"]) .button:focus-visible,
+.wrapper:has([aria-invalid="true"]) .button[data-focus-visible="true"] {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.listbox {
+  max-height: 280px;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  background: var(--surface-color);
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: border 0.2s ease;
-
-  &:hover {
-    border-color: var(--primary-color);
-  }
+  box-shadow: 0 10px 30px var(--shadow-color);
 }
 
-.placeholder {
-  color: var(--text-secondary);
-}
-
-.value {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.flag {
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
-/* ===== DROPDOWN ===== */
-.dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  width: 100%;
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  z-index: 50;
-  overflow: hidden;
-}
-
-.search {
-  height: 44px;
-  padding: 0 14px;
-  border: none;
-  border-bottom: 1px solid var(--border-color);
-  outline: none;
-  font-size: 0.95rem;
-}
-
-.list {
-  max-height: 220px;
-  overflow-y: auto;
-}
-
-/* ===== OPTION ===== */
 .option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  cursor: pointer;
-  font-size: 0.95rem;
-
-  &:hover {
-    background: var(--surface-hover);
-  }
+  font-size: 15px;
 }
 
-.name {
-  flex: 1;
-}
-
-/* ===== ERROR ===== */
 .error {
   margin-top: 4px;
-  font-size: 0.8rem;
-  color: #dc2626;
+  color: red;
+  font-size: 12px;
 }

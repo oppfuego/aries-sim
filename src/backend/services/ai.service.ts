@@ -2,6 +2,7 @@ import { AiOrder } from "../models/aiOrder.model";
 import { User } from "../models/user.model";
 import { ENV } from "../config/env";
 import OpenAI from "openai";
+import { emailService } from "@/backend/services/email.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -55,6 +56,19 @@ export const aiService = {
             email,
             prompt,
             response: polishedText.trim(),
+        });
+
+        emailService.sendOrderConfirmationEmail({
+            email: user.email,
+            firstName: user.firstName,
+            subject: "AI order confirmed",
+            summary: "Your AI order was completed successfully.",
+            items: ["AI content generation request"],
+            amountLabel: "Tokens used",
+            amountValue: `${finalCost} tokens`,
+            transactionDate: order.createdAt,
+        }).catch((error) => {
+            console.error("❌ AI confirmation email failed:", error);
         });
 
         return order;
