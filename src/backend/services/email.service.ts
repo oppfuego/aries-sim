@@ -19,7 +19,7 @@ export const emailService = {
         const appUrl = ENV.APP_URL || "http://localhost:3000";
 
         const subject = `Welcome to ${companyName} 🎉`;
-
+//
         const text = `
 Hi ${data.firstName},
 
