@@ -209,11 +209,11 @@ const Footer: React.FC = () => {
                         <div className={styles["footer__column"]}>
                             <div className={styles["footer__column-title"]}>Follow Us</div>
                             <div className={styles["footer__socials"]}>
-                                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                                <a href="https://www.facebook.com/profile.php?id=61580723054494" target="_blank" rel="noopener noreferrer"
                                    aria-label="Facebook" className={styles["footer__social-link"]}>
                                     <FaFacebookF/>
                                 </a>
-                                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                                <a href="https://www.instagram.com/ariessim.uk?igsh=MTR2cTd0eHJoYzZrNw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer"
                                    aria-label="Instagram" className={styles["footer__social-link"]}>
                                     <FaInstagram/>
                                 </a>

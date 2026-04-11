@@ -1,24 +1,32 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {
+    COMPANY_NAME,
+    COMPANY_ADDRESS,
+    COMPANY_PHONE,
+    COMPANY_LEGAL_NAME,
+    COMPANY_NUMBER,
+    COMPANY_EMAIL,
+} from "@/resources/constants";
 
 const refundPolicySchema: PageSchema = {
     meta: {
-        title: "Refund / Return Policy – Averis",
+        title: `Refund & Returns Policy – ${COMPANY_NAME}`,
         description:
-            "Official Refund / Return Policy for Averis: refunds for tokens, workout plans, digital services, and consumer rights.",
+            `Official Refund & Returns Policy for ${COMPANY_NAME}: tokens, eSIM plans, refunds, and consumer rights.`,
         keywords: [
             "refund policy",
-            "return policy",
-            "averis",
+            "returns policy",
+            "esim",
             "tokens",
-            "AI fitness",
-            "digital content",
-            "consumer rights",
+            "refunds",
+            "aries sim",
+            "digital services",
         ],
         canonical: "/refund-policy",
         ogImage: {
-            title: "Jetreex – Refund / Return Policy",
+            title: `${COMPANY_NAME} – Refund Policy`,
             description:
-                "Transparent refund and return policy for Jetreex AI workout plans and token system.",
+                `Transparent refund policy for ${COMPANY_NAME} digital eSIM services.`,
             bg: "#ffffff",
             color: "#000000",
         },
@@ -26,120 +34,176 @@ const refundPolicySchema: PageSchema = {
     blocks: [
         {
             type: "text",
-            title: "Refund / Return Policy",
-            description: "Effective date: 18 October 2025",
+            title: "Refund & Returns Policy",
+            description:
+                `Effective date: 7 April 2026\n\nThis Refund & Returns Policy applies to the digital services offered through Aries Sim at https://www.ariessim.co.uk and is issued by:\n${COMPANY_LEGAL_NAME}\nCompany Number: ${COMPANY_NUMBER}\nAddress: ${COMPANY_ADDRESS}\nEmail: ${COMPANY_EMAIL}\nPhone: ${COMPANY_PHONE}\n\nAries Sim provides digital eSIM services only. No physical goods are sold or shipped. As a result, this Policy governs refunds only. It does not create any right to return physical products.\n\nThis Policy should be read together with our Terms and Conditions.\n\nNothing in this Policy limits any mandatory rights you may have under the laws of England and Wales or under other applicable consumer protection law.`,
         },
         {
             type: "text",
-            title: "1. Summary (customer-facing)",
+            title: "1. Summary",
             bullets: [
-                "Refunds are assessed under this Policy and applicable consumer law.",
-                "Typical processing time: 5–10 business days after approval (payment-provider timelines may vary).",
-                "A refund will not exceed the amount originally paid for the relevant Token top-up or transaction.",
-                "Spent Tokens (i.e., redeemed for Workout Plans/Services) are non-refundable, except as set out in §4.2.",
-                "Tokens are account-bound, non-transferable, and cannot be exchanged for real currency.",
-                "Promotional/bonus Tokens are non-refundable in all circumstances.",
-                "Submit requests to info@averis.co.uk with your order reference and details.",
-                "This Policy may be updated; material changes will be notified as described in §8.",
-                "If you consented to immediate supply and opened/downloaded the digital content, your statutory right to cancel may be lost (see §4.7).",
-                "Accepted currencies: GBP (£), EUR (€). Payment methods: Visa, Mastercard.",
+                "1.1 Refund requests are assessed in accordance with this Policy, our Terms and Conditions, and applicable law.",
+                "1.2 Refunds, where approved, are usually processed within 5 to 10 business days after approval. The time for funds to appear may vary depending on your payment provider.",
+                "1.3 Refunds will not exceed the amount originally paid by you for the relevant transaction.",
+                "1.4 Tokens already used to obtain an eSIM Plan or other paid digital service are generally non-refundable, except where required by law or where we fail to provide the purchased service as described.",
+                "1.5 Delivered eSIM Plans are generally non-refundable once supply has begun, except where required by law or where the relevant service is materially defective, not delivered, or materially not as described.",
+                "1.6 Tokens are account-bound, non-transferable, and cannot be exchanged for cash except where required by law or expressly stated by us.",
+                "1.7 Promotional or bonus Tokens are non-refundable, unless the relevant promotion expressly states otherwise.",
+                "1.8 If you expressly request immediate supply of digital content or digital services and acknowledge the loss of your withdrawal right where applicable, your statutory right to withdraw may end once supply begins.",
+                `1.9 Refund requests must be sent to ${COMPANY_EMAIL} with sufficient details to allow us to review the matter.`,
             ],
         },
         {
             type: "text",
-            title: "2. Scope and Legal Note",
-            description:
-                "This Policy governs refunds for Tokens (internal credits) and digital Workout Plans/Services supplied by SHIREDON LIMITED via averis.co.uk. Nothing in this Policy overrides statutory consumer rights under UK law, including the Consumer Contracts Regulations 2013 and the Consumer Rights Act 2015.",
+            title: "2. Scope",
+            bullets: [
+                "2.1 This Policy applies to:",
+                "(a) purchases of Tokens;",
+                "(b) purchases or redemptions of eSIM Plans; and",
+                "(c) refund requests relating to digital connectivity services delivered through Aries Sim.",
+                "2.2 This Policy applies to country, regional, and global eSIM Plans made available through the Service.",
+                "2.3 This Policy does not apply to third-party products or services purchased outside Aries Sim, even if linked from our website.",
+            ],
         },
         {
             type: "text",
             title: "3. Definitions",
+            description: "For the purposes of this Policy:",
             bullets: [
-                "Tokens / Credits — internal prepaid credits used on the Service. The current purchase rate (e.g., £1.00 ≈ 100 Tokens or €1.17 ≈ 100 Tokens) is displayed at the time of purchase and may change from time to time.",
-                "Unused Tokens — Tokens credited to your Account but not yet redeemed.",
-                "Redeemed / Spent Tokens — Tokens already used to access or generate a Workout Plan/Service.",
-                "Promotional / Bonus Tokens — Tokens issued as part of a promotion, bonus, or incentive and marked as such.",
+                "Tokens means internal digital credits used solely within Aries Sim to obtain eSIM Plans and related paid services.",
+                "Unused Tokens means Tokens credited to your Account that have not been redeemed, spent, or consumed.",
+                "Used Tokens means Tokens that have been redeemed for an eSIM Plan or other paid digital service, or where performance of the relevant service has already begun.",
+                "eSIM Plan means any digital mobile connectivity package made available through the Service.",
+                "Delivered eSIM Plan means an eSIM Plan for which the QR code, activation code, installation details, or other digital access credentials have been sent to you.",
+                "Promotional or Bonus Tokens means Tokens granted free of charge or as part of a promotion.",
             ],
         },
         {
             type: "text",
-            title: "4. Refund Principles (binding rules)",
-            description:
-                "4.1. Refund amount cap. Any refund will not exceed the original amount paid for the relevant Token top-up or transaction, net of any non-refundable processor fees (where permitted by law and the provider’s rules).\n\n" +
-                "4.2. No refund for spent Tokens (exceptions). Redeemed Tokens are non-refundable, except where:\n(a) the Workout Plan or Service is defective or not as described; or\n(b) Averis fails to supply the Service as contracted; or\n(c) a refund is otherwise required by law.\n\n" +
-                "4.3. Unused Tokens. Unused Tokens are generally refundable at the original purchase price if requested before any redemption from that top-up. Non-recoverable payment-processing fees may be deducted.\n\n" +
-                "4.4. Account-bound. Tokens are tied to your Account and cannot be transferred between accounts.\n\n" +
-                "4.5. No cash-out. Tokens cannot be exchanged for cash or other currencies, unless required by law.\n\n" +
-                "4.6. Promotional Tokens. Bonus/promotional Tokens are non-refundable under all circumstances.\n\n" +
-                "4.7. Immediate supply of digital content. If you consent to immediate delivery and open/download the content (e.g., generated PDF), you acknowledge your statutory right to cancel may not apply. Refunds are only available under §4.2 or where required by law.\n\n" +
-                "4.8. Bespoke/custom work. Custom Workout Plans are non-refundable once preparation has substantially begun, unless otherwise agreed in writing.\n\n" +
-                "4.9. Standard plan & add-ons (pricing clarity). Standard generation and add-ons have clear token prices shown before confirmation; once redeemed, non-refundable except under §4.2.",
-        },
-        {
-            type: "text",
-            title: "5. How to Request a Refund (Procedure)",
+            title: "4. General Refund Principles",
             bullets: [
-                "Order reference number.",
-                "Account email used for purchase.",
-                "Whether the request concerns Unused Tokens or a Redeemed item.",
-                "For redeemed items: a description of the issue and supporting evidence (screenshots, file details).",
-                "Preferred refund method (original payment method is standard).",
-                "Upon receipt we will: acknowledge within 5 business days, investigate and, if needed, request more details, provide a decision, and if approved, process the refund within 5–10 business days (subject to provider timelines).",
+                "4.1 Refund limit. Any refund will be limited to the amount actually paid by you for the relevant transaction.",
+                "4.2 Used Tokens are generally non-refundable, except:",
+                "(a) where required by applicable law;",
+                "(b) where we fail to provide the purchased service;",
+                "(c) where the delivered eSIM Plan is materially defective; or",
+                "(d) where the delivered eSIM Plan is materially not as described.",
+                "4.3 Unused Tokens may be eligible for refund if requested before use.",
+                "4.4 Tokens are account-bound and non-transferable.",
+                "4.5 Tokens are not redeemable for cash except where required by law.",
+                "4.6 Promotional Tokens are non-refundable.",
+                "4.7 Immediate digital supply may remove withdrawal rights.",
+                "4.8 Supply begins once eSIM or activation data is delivered.",
             ],
         },
         {
             type: "text",
-            title: "6. Investigation, Evidence and Decisions",
-            description:
-                "6.1. For claims involving redeemed content, we may review token transaction logs, checkout confirmations, delivery/access logs, and customer evidence.\n\n" +
-                "6.2. Refunds are normally processed to the original payment method; if not possible, an alternative (e.g., bank transfer) may be offered after verification.\n\n" +
-                "6.3. If a claim is rejected, we will provide reasons and inform you of options to escalate or pursue legal remedies.",
-        },
-        {
-            type: "text",
-            title: "7. Chargebacks, Fraud and Abuse",
-            description:
-                "If a chargeback is initiated while a refund request is pending, we treat it as a dispute and submit full transaction evidence to the payment provider. We may refuse refunds and suspend Accounts in cases of suspected fraud, abuse, or repeated chargebacks. Where funds are reversed, equivalent Tokens and access to related content may be removed.",
-        },
-        {
-            type: "text",
-            title: "8. Changes to this Policy",
-            description:
-                "We may update this Policy at any time. Material changes will be notified by email or in-product notice. Changes apply prospectively and do not affect previously completed transactions unless required by law.",
-        },
-        {
-            type: "text",
-            title: "9. Record Keeping and Retention",
-            description:
-                "We retain records relevant to refund requests and disputes — including order IDs, token purchase/redemption history, checkout acceptance, timestamps, IP, and device information — for at least 24 months, and up to 6 years for enterprise or disputed transactions, in line with our Privacy Policy and applicable data-protection law.",
-        },
-        {
-            type: "text",
-            title: "10. Escalation and Disputes",
-            description:
-                "If you disagree with a decision, you may escalate by emailing info@averis.co.uk with full reasons and your order reference. We will review within 10 business days. This Policy does not affect your statutory rights; you may pursue ADR or court proceedings as applicable.",
-        },
-        {
-            type: "text",
-            title: "11. Examples (Practical, Illustrative)",
+            title: "5. When Refunds May Be Approved",
             bullets: [
-                "Unused Tokens (GBP): Purchase 2,000 Tokens; spend 300; unused 1,700 → refund equals the pro-rata amount based on the original GBP purchase price (minus fees).",
-                "Unused Tokens (EUR): Same as above, but refund is in EUR at the original amount paid.",
-                "Opened Workout Plan: If you consented to immediate supply and downloaded the PDF, refunds apply only if defective or not as described (§4.2).",
-                "Promotional Tokens: 100 bonus Tokens awarded in a promotion → non-refundable.",
-                "Add-ons: Base 60 Tokens + add-on Token prices displayed before confirmation; once redeemed, non-refundable except under §4.2.",
+                "5.1 Tokens not credited due to technical error.",
+                "5.2 eSIM not delivered due to system failure.",
+                "5.3 eSIM defective or unusable.",
+                "5.4 Service materially different from description.",
+                "5.5 Duplicate payment.",
+                "5.6 Incorrect Token deduction.",
+                "5.7 Refund required by law.",
             ],
         },
         {
             type: "text",
-            title: "12. Contact Details",
+            title: "6. When Refunds Will Normally Not Be Approved",
             bullets: [
-                "SHIREDON LIMITED",
-                "Registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, United Kingdom, CF31 1JF",
-                "Email: info@averis.co.uk",
-                "Tel: +44 7441 393249",
-                "Accepted currencies: GBP (£), EUR (€)",
-                "Payment methods: Visa, Mastercard",
+                "6.1 Tokens already used.",
+                "6.2 eSIM already delivered or used.",
+                "6.3 Change of mind after delivery.",
+                "6.4 Wrong plan purchased.",
+                "6.5 Device incompatibility.",
+                "6.6 Travel plans changed.",
+                "6.7 Wrong activation usage.",
+                "6.8 User deleted eSIM.",
+                "6.9 User-side technical issues.",
+                "6.10 Personal dissatisfaction.",
+                "6.11 Network limitations.",
+                "6.12 Carrier charges due to user settings.",
+                "6.13 Promotional Tokens.",
+                "6.14 Fraud or abuse suspected.",
+            ],
+        },
+        {
+            type: "text",
+            title: "7. How to Request a Refund",
+            bullets: [
+                `7.1 Contact ${COMPANY_EMAIL}.`,
+                "7.2 Provide:",
+                "(a) account email;",
+                "(b) order reference;",
+                "(c) purchase date;",
+                "(d) issue type;",
+                "(e) description;",
+                "(f) evidence.",
+                "7.3 Additional information may be requested.",
+            ],
+        },
+        {
+            type: "text",
+            title: "8. Review Procedure and Decisions",
+            bullets: [
+                "8.1 Requests reviewed within reasonable time.",
+                "8.2 We may review logs, payments, delivery, and support data.",
+                "8.3 Refunds issued to original payment method.",
+                "8.4 Alternatives:",
+                "(a) re-delivery;",
+                "(b) fix;",
+                "(c) replacement;",
+                "(d) token restore.",
+                "8.5 Rejection may include explanation.",
+            ],
+        },
+        {
+            type: "text",
+            title: "9. Chargebacks, Fraud, and Abuse",
+            bullets: [
+                "9.1 Chargebacks pause review.",
+                "9.2 Evidence may be submitted.",
+                "9.3 Accounts may be suspended for abuse.",
+            ],
+        },
+        {
+            type: "text",
+            title: "10. Processing Time",
+            bullets: [
+                "10.1 5–10 business days processing.",
+                "10.2 Bank timing may vary.",
+                "10.3 Not responsible for banking delays.",
+            ],
+        },
+        {
+            type: "text",
+            title: "11. Changes to This Policy",
+            bullets: [
+                "11.1 Policy may be updated.",
+                "11.2 Latest version published.",
+                "11.3 Changes apply prospectively.",
+            ],
+        },
+        {
+            type: "text",
+            title: "12. Governing Law and Consumer Rights",
+            bullets: [
+                "12.1 Governed by England and Wales law.",
+                "12.2 Consumer rights preserved.",
+                "12.3 International consumer protections may apply.",
+            ],
+        },
+        {
+            type: "text",
+            title: "13. Contact Details",
+            bullets: [
+                COMPANY_LEGAL_NAME || "",
+                `Company Number: ${COMPANY_NUMBER}`,
+                `Address: ${COMPANY_ADDRESS}`,
+                `Email: ${COMPANY_EMAIL}`,
+                `Phone: ${COMPANY_PHONE}`,
             ],
         },
     ],
