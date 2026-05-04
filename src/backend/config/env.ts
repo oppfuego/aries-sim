@@ -25,4 +25,12 @@ export const ENV = {
     SMTP_PASS: env("SMTP_PASS", ""),
     EMAIL_FROM: env("EMAIL_FROM", ""),
     RESEND_API: env("RESEND_API", ""),
+
+    CARDSERV_BASE_URL: env("CARDSERV_BASE_URL", "https://test.cardserv.io"),
+    CARDSERV_REQUESTOR_ID: env("CARDSERV_REQUESTOR_ID", "853"),
+    CARDSERV_BEARER_TOKEN: env("CARDSERV_BEARER_TOKEN", ""),
+    CARDSERV_SIGNING_KEY: env("CARDSERV_SIGNING_KEY", ""),
+    CARDSERV_API_KEY: env("CARDSERV_API_KEY", ""),
+    CARDSERV_DESCRIPTOR: env("CARDSERV_DESCRIPTOR", "ariesonline"),
+    CARDSERV_MCC: env("CARDSERV_MCC", "4814"),
 };
