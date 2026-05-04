@@ -4,16 +4,34 @@ import React, { useEffect, useState, useMemo } from "react";
 import styles from "./Checkout.module.scss";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCheckoutStore } from "@/utils/store";
-import {useAlert} from "@/context/AlertContext";
+import { useAlert } from "@/context/AlertContext";
+
+function collectBrowserData() {
+    return {
+        colorDepth: window.screen.colorDepth,
+        screenHeight: window.screen.height,
+        screenWidth: window.screen.width,
+        timeZone: new Date().getTimezoneOffset(),
+        javaEnabled: false,
+        javascriptEnabled: true,
+        acceptLanguage: navigator.language,
+        userAgent: navigator.userAgent,
+    };
+}
 
 const Checkout = () => {
     const { plan, setPlan } = useCheckoutStore();
     const [activePlan, setActivePlan] = useState(plan);
     const { currency, sign, convertFromGBP } = useCurrency();
     const [agreed, setAgreed] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { showAlert } = useAlert();
 
-    // 🔄 При завантаженні — підтягуємо план із localStorage
+    const [cardNumber, setCardNumber] = useState("");
+    const [expiry, setExpiry] = useState("");
+    const [cvv, setCvv] = useState("");
+    const [cardName, setCardName] = useState("");
+
     useEffect(() => {
         if (!plan) {
             const stored = localStorage.getItem("selectedPlan");
@@ -37,7 +55,6 @@ const Checkout = () => {
             </div>
         );
 
-    // 💱 Перерахунок ціни відповідно до поточної валюти
     const convertedPrice = useMemo(() => {
         return convertFromGBP(activePlan.price);
     }, [activePlan.price, convertFromGBP, currency]);
@@ -46,144 +63,277 @@ const Checkout = () => {
     const total = useMemo(() => convertedPrice + vat, [convertedPrice, vat]);
 
     const handlePay = async () => {
-        if (!agreed || !activePlan) return;
+        if (!agreed || !activePlan || loading) return;
 
+        const cleanCard = cardNumber.replace(/\s/g, "");
+        if (cleanCard.length < 13 || cleanCard.length > 19) {
+            showAlert("Validation", "Please enter a valid card number", "warning");
+            return;
+        }
+        if (!expiry.includes("/") || expiry.length < 5) {
+            showAlert("Validation", "Please enter expiry as MM/YY", "warning");
+            return;
+        }
+        if (cvv.length < 3) {
+            showAlert("Validation", "Please enter a valid CVV", "warning");
+            return;
+        }
+        if (cardName.trim().length < 2) {
+            showAlert("Validation", "Please enter cardholder name", "warning");
+            return;
+        }
+
+        const [expMonth, expYearShort] = expiry.split("/");
+        const expYear = expYearShort.length === 2 ? `20${expYearShort}` : expYearShort;
+
+        setLoading(true);
         try {
-            const res = await fetch("/api/user/buy-tokens", {
+            const browser = collectBrowserData();
+
+            const res = await fetch("/api/cardserv/sale", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
+                    title: activePlan.title,
+                    price: activePlan.price,
+                    tokens: activePlan.tokens,
                     currency,
-                    amount: convertedPrice, // ❗️БЕЗ VAT
+                    variant: activePlan.variant,
+                    card: {
+                        cardNumber: cleanCard,
+                        cvv2: cvv,
+                        expireMonth: expMonth.padStart(2, "0"),
+                        expireYear: expYear,
+                        cardPrintedName: cardName.trim().toUpperCase(),
+                    },
+                    browser,
                 }),
             });
 
+            const data = await res.json();
+
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || "Payment failed");
+                throw new Error(data.message || "Payment initiation failed");
             }
 
-            localStorage.removeItem("selectedPlan");
-            showAlert(
-                "Success",
-                "Payment completed successfully. Tokens have been added to your balance.",
-                "success"
-            );
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+                return;
+            }
 
-            setTimeout(() => {
-                window.location.href = "/profile";
-            }, 1200);
-        } catch (e: any) {
-            alert(e.message);
+            if (data.state === "APPROVED") {
+                localStorage.removeItem("selectedPlan");
+                showAlert("Success", "Payment completed successfully.", "success");
+                setTimeout(() => {
+                    window.location.href = "/payment-success?order=" + data.orderMerchantId;
+                }, 1200);
+                return;
+            }
+
+            if (data.state === "PROCESSING" && data.orderMerchantId) {
+                const pollDelays = [3000, 5000, 5000, 10000];
+                for (const delay of pollDelays) {
+                    await new Promise((r) => setTimeout(r, delay));
+                    const statusRes = await fetch("/api/cardserv/status", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ orderMerchantId: data.orderMerchantId }),
+                    });
+                    const statusData = await statusRes.json();
+
+                    if (statusData.redirectUrl) {
+                        window.location.href = statusData.redirectUrl;
+                        return;
+                    }
+                    if (statusData.state === "APPROVED") {
+                        localStorage.removeItem("selectedPlan");
+                        showAlert("Success", "Payment completed successfully.", "success");
+                        setTimeout(() => {
+                            window.location.href = "/payment-success?order=" + data.orderMerchantId;
+                        }, 1200);
+                        return;
+                    }
+                    if (["DECLINED", "ERROR", "FILTERED"].includes(statusData.state)) {
+                        throw new Error(statusData.errorMessage || statusData.state);
+                    }
+                }
+                showAlert("Processing", "Your payment is being processed. You'll receive a confirmation shortly.", "info");
+                setTimeout(() => {
+                    window.location.href = "/payment-success?order=" + data.orderMerchantId;
+                }, 2000);
+                return;
+            }
+
+            if (data.errorMessage) {
+                throw new Error(data.errorMessage);
+            }
+
+            throw new Error("Payment could not be processed. Please try again.");
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : "Payment failed";
+            showAlert("Payment Error", message, "error");
+        } finally {
+            setLoading(false);
         }
     };
 
+    const formatCardNumber = (value: string) => {
+        const digits = value.replace(/\D/g, "").slice(0, 16);
+        return digits.replace(/(.{4})/g, "$1 ").trim();
+    };
+
+    const formatExpiry = (value: string) => {
+        const digits = value.replace(/\D/g, "").slice(0, 4);
+        if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+        return digits;
+    };
 
     return (
         <div className={styles.checkout}>
-            <div className={styles.header}>
-                <h1>Checkout</h1>
-                <p>Secure Payment</p>
-            </div>
+            <div className={styles.container}>
+                {/* ─── LEFT: Summary ─── */}
+                <div className={styles.summaryPanel}>
+                    <div className={styles.summaryTop}>
+                        <a href="/pricing" className={styles.backLink}>
+                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Back to pricing
+                        </a>
 
-            <div className={styles.main}>
-                {/* LEFT SIDE */}
-                <div className={styles.summary}>
-                    <h2>Order Summary</h2>
+                        <span className={styles.planBadge}>{activePlan.variant} plan</span>
+                        <h2 className={styles.planName}>{activePlan.title}</h2>
+                        <p className={styles.planDesc}>{activePlan.tokens} tokens included</p>
 
-                    <div className={styles.itemRow}>
-                        <div className={styles.itemInfo}>
-                            <h3>{activePlan.title}</h3>
-                            <p>
-                                Top-up {sign}
-                                {convertedPrice.toFixed(2)} {currency}
-                            </p>
+                        <div className={styles.priceBlock}>
+                            <span className={styles.priceMain}>{sign}{total.toFixed(2)}</span>
+                            <span className={styles.priceCurrency}>{currency}</span>
                         </div>
-                        <span>
-                            {sign}
-                            {convertedPrice.toFixed(2)} {currency}
-                        </span>
+
+                        <div className={styles.divider} />
+
+                        <div className={styles.lineItem}>
+                            <span>Subtotal</span>
+                            <strong>{sign}{convertedPrice.toFixed(2)}</strong>
+                        </div>
+                        <div className={styles.lineItem}>
+                            <span>VAT (20%)</span>
+                            <strong>{sign}{vat.toFixed(2)}</strong>
+                        </div>
+                        <div className={styles.totalItem}>
+                            <span>Total</span>
+                            <span>{sign}{total.toFixed(2)} {currency}</span>
+                        </div>
                     </div>
 
-                    <div className={styles.line}></div>
-
-                    <div className={styles.itemRow}>
-                        <p>Subtotal</p>
-                        <span>
-                            {sign}
-                            {convertedPrice.toFixed(2)} {currency}
-                        </span>
+                    <div className={styles.secureNote}>
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                        Payments are secure and encrypted
                     </div>
-
-                    <div className={styles.itemRow}>
-                        <p>VAT (20%)</p>
-                        <span>
-                            {sign}
-                            {vat.toFixed(2)} {currency}
-                        </span>
-                    </div>
-
-                    <div className={styles.totalRow}>
-                        <h3>Total</h3>
-                        <h3>
-                            {sign}
-                            {total.toFixed(2)} {currency}
-                        </h3>
-                    </div>
-
-                    <p className={styles.note}>
-                        You are purchasing <strong>{activePlan.title}</strong> plan.
-                        <br />
-                        A detailed invoice will be sent to your registered email.
-                    </p>
                 </div>
 
-                {/* RIGHT SIDE */}
-                <div className={styles.payment}>
-                    <h2>Payment Details</h2>
+                {/* ─── RIGHT: Payment Form ─── */}
+                <div className={styles.formPanel}>
+                    <h2 className={styles.formTitle}>Payment details</h2>
+                    <p className={styles.formSubtitle}>Complete your purchase securely</p>
+
                     <form onSubmit={(e) => e.preventDefault()}>
-                        <input type="text" placeholder="Card number" />
-                        <div className={styles.row}>
-                            <input type="text" placeholder="MM/YY" />
-                            <input type="text" placeholder="CVV" />
-                        </div>
-                        <input type="text" placeholder="Cardholder name" />
-                        <input type="text" placeholder="Billing address" />
-                        <div className={styles.row}>
-                            <input type="text" placeholder="City" />
-                            <input type="text" placeholder="Postal code" />
+                        <div className={styles.fieldGroup}>
+                            <div className={styles.field}>
+                                <label className={styles.fieldLabel}>Cardholder name</label>
+                                <input
+                                    className={styles.fieldInput}
+                                    type="text"
+                                    placeholder="Full name on card"
+                                    value={cardName}
+                                    onChange={(e) => setCardName(e.target.value)}
+                                    autoComplete="cc-name"
+                                />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label className={styles.fieldLabel}>Card information</label>
+                                <div className={styles.cardInputGroup}>
+                                    <div className={styles.cardNumberRow}>
+                                        <input
+                                            type="text"
+                                            placeholder="1234 1234 1234 1234"
+                                            value={cardNumber}
+                                            onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                                            inputMode="numeric"
+                                            autoComplete="cc-number"
+                                        />
+                                    </div>
+                                    <div className={styles.cardBottomRow}>
+                                        <div className={styles.expiryField}>
+                                            <input
+                                                type="text"
+                                                placeholder="MM / YY"
+                                                value={expiry}
+                                                onChange={(e) => setExpiry(formatExpiry(e.target.value))}
+                                                inputMode="numeric"
+                                                autoComplete="cc-exp"
+                                            />
+                                        </div>
+                                        <div className={styles.cvvField}>
+                                            <input
+                                                type="text"
+                                                placeholder="CVC"
+                                                value={cvv}
+                                                onChange={(e) => setCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                                                inputMode="numeric"
+                                                autoComplete="cc-csc"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* ✅ Чекбокс согласия */}
-                        <div className={styles.agreement}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={agreed}
-                                    onChange={(e) => setAgreed(e.target.checked)}
-                                />{" "}
+                        <label className={styles.agreement}>
+                            <input
+                                type="checkbox"
+                                checked={agreed}
+                                onChange={(e) => setAgreed(e.target.checked)}
+                            />
+                            <span>
                                 I agree to the{" "}
-                                <a
-                                    href="/terms"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <a href="/terms" target="_blank" rel="noopener noreferrer">
                                     terms & conditions
+                                </a>{" "}
+                                and{" "}
+                                <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                                    privacy policy
                                 </a>
-                                .
-                            </label>
-                        </div>
+                            </span>
+                        </label>
 
                         <button
                             type="button"
-                            disabled={!agreed}
+                            disabled={!agreed || loading}
                             onClick={handlePay}
-                            className={`${styles.payButton} ${!agreed ? styles.disabled : ""}`}
+                            className={`${styles.payButton} ${!agreed || loading ? styles.disabled : ""}`}
                         >
-                        Pay {sign}
-                            {total.toFixed(2)} {currency}
+                            {loading ? (
+                                <>
+                                    <span className={styles.spinner} />
+                                    Processing...
+                                </>
+                            ) : (
+                                `Pay ${sign}${total.toFixed(2)} ${currency}`
+                            )}
                         </button>
                     </form>
+
+                    <div className={styles.poweredBy}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        Powered by CardServ
+                    </div>
                 </div>
             </div>
         </div>
