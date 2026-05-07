@@ -1,3 +1,4 @@
+import { createHmac } from "crypto";
 import { getCardServConfig, type CardServCurrency } from "./cardserv-config";
 
 interface SalePayload {
@@ -64,13 +65,13 @@ export async function createCardServRedirectSession(payload: SalePayload): Promi
                 ? payload.browser.acceptHeader
                 : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             colorDepth: payload.browser.colorDepth ?? 32,
-            javascriptEnabled: String(payload.browser.javascriptEnabled ?? true),
+            javascriptEnabled: payload.browser.javascriptEnabled ?? true,
             acceptLanguage: payload.browser.acceptLanguage || "en-US",
             screenHeight: payload.browser.screenHeight ?? 1080,
             screenWidth: payload.browser.screenWidth ?? 1920,
             timeZone: payload.browser.timeZone ?? -180,
             userAgent: payload.browser.userAgent || "Mozilla/5.0",
-            javaEnabled: String(payload.browser.javaEnabled ?? false),
+            javaEnabled: payload.browser.javaEnabled ?? false,
         },
         customer: {
             firstname: firstName,
@@ -82,7 +83,12 @@ export async function createCardServRedirectSession(payload: SalePayload): Promi
         },
         urls: {
             resultUrl: `${payload.appUrl}/api/cardserv/result`,
+            cresUrl: `${payload.appUrl}/api/cardserv/cres`,
             webhookUrl: `${payload.appUrl}/api/cardserv/webhook`,
+            redirectWebhookUrl: `${payload.appUrl}/api/cardserv/redirect-webhook`,
+        },
+        feature: {
+            redirectUrlCreation: "CREATE_IN_RESPONSE",
         },
     };
 
@@ -167,4 +173,13 @@ export function parseCardServWebhookPayload(payload: Record<string, unknown>) {
 
 export function readCardServWebhookOrderId(payload: Record<string, unknown>): string | null {
     return (payload.orderMerchantId as string) ?? null;
+}
+
+export function verifyWebhookSignature(rawBody: string, signature: string | null): boolean {
+    if (!signature) return false;
+    const config = getCardServConfig();
+    const expected = createHmac("sha256", config.signingKey)
+        .update(rawBody)
+        .digest("hex");
+    return expected === signature;
 }

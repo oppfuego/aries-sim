@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
-import { parseCardServWebhookPayload, readCardServWebhookOrderId } from "@/backend/lib/cardserv";
+import { parseCardServWebhookPayload, readCardServWebhookOrderId, verifyWebhookSignature } from "@/backend/lib/cardserv";
 import { userController } from "@/backend/controllers/user.controller";
 
 export async function POST(req: Request) {
     try {
         await connectDB();
-        const payload = (await req.json().catch(() => ({}))) as Record<string, unknown>;
+        const rawBody = await req.text();
+        const signature = req.headers.get("x-hmac-sha256-signature");
+
+        if (!verifyWebhookSignature(rawBody, signature)) {
+            return NextResponse.json({ ok: false, error: "Invalid signature" }, { status: 401 });
+        }
+
+        const payload = JSON.parse(rawBody) as Record<string, unknown>;
         const orderMerchantId = readCardServWebhookOrderId(payload);
 
         if (!orderMerchantId) {

@@ -1,0 +1,424 @@
+{
+  "generatedAt": "2026-05-07",
+  "description": "Debug logs and error analysis for payment orders cc_1777994675223_9wj43p and cc_1777995360949_4rqm2n. FIXED: see appliedFixes section.",
+  "appliedFixes": [
+    {
+      "fix": "Added feature.redirectUrlCreation = CREATE_IN_RESPONSE to sale request",
+      "file": "src/backend/lib/cardserv.ts",
+      "impact": "ROOT CAUSE — CardServ now returns outputRedirectToUrl in the sale response so the frontend can redirect to 3DS"
+    },
+    {
+      "fix": "Changed javascriptEnabled and javaEnabled from String() to boolean",
+      "file": "src/backend/lib/cardserv.ts",
+      "impact": "CardServ BrowserInfo schema requires boolean, not string — was sending 'true'/'false' instead of true/false"
+    },
+    {
+      "fix": "Added cresUrl and redirectWebhookUrl to urls in sale request",
+      "file": "src/backend/lib/cardserv.ts",
+      "impact": "Wires up the existing /api/cardserv/cres and /api/cardserv/redirect-webhook routes with CardServ"
+    },
+    {
+      "fix": "Added redirectUrl to status polling response",
+      "file": "src/app/api/cardserv/status/route.ts",
+      "impact": "Fallback polling path now works — if initial sale didn't return redirectUrl, status polling will"
+    },
+    {
+      "fix": "Added HMAC-SHA256 webhook signature verification",
+      "file": "src/app/api/cardserv/webhook/route.ts",
+      "impact": "Security — validates x-hmac-sha256-signature header using signingKey before processing webhooks"
+    }
+  ],
+  "orders": [
+    {
+      "orderMerchantId": "cc_1777994675223_9wj43p",
+      "timestampMs": 1777994675223,
+      "timestampISO": "2026-05-05T14:44:35.223Z"
+    },
+    {
+      "orderMerchantId": "cc_1777995360949_4rqm2n",
+      "timestampMs": 1777995360949,
+      "timestampISO": "2026-05-05T14:56:00.949Z"
+    }
+  ],
+  "paymentFlowTracePoints": {
+    "1_sale_initiation": {
+      "endpoint": "POST /api/cardserv/sale",
+      "file": "src/app/api/cardserv/sale/route.ts",
+      "logPoints": [
+        {
+          "line": 143,
+          "level": "error",
+          "message": "CardServ sale error: <message>",
+          "trigger": "Any uncaught exception in the sale flow"
+        }
+      ],
+      "possibleErrors": [
+        {
+          "code": "MISSING_FIELDS",
+          "httpStatus": 400,
+          "condition": "!title || !price || !tokens || !currency",
+          "line": 34,
+          "message": "Missing required fields"
+        },
+        {
+          "code": "MISSING_CARD",
+          "httpStatus": 400,
+          "condition": "!card?.cardNumber || !card?.cvv2 || !card?.expireMonth || !card?.expireYear || !card?.cardPrintedName",
+          "line": 38,
+          "message": "Missing card details"
+        },
+        {
+          "code": "UNSUPPORTED_CURRENCY",
+          "httpStatus": 400,
+          "condition": "currency not in [GBP, EUR, USD]",
+          "line": 43,
+          "message": "Unsupported currency"
+        },
+        {
+          "code": "USER_NOT_FOUND",
+          "httpStatus": 404,
+          "condition": "userService.getUserById(auth.sub) returns null",
+          "line": 48,
+          "message": "User not found"
+        },
+        {
+          "code": "CARDSERV_API_ERROR",
+          "httpStatus": 400,
+          "condition": "CardServ API returns error in sale.errorCode / sale.errorMessage",
+          "line": "89-116 (cardserv.ts)",
+          "message": "Error from CardServ gateway (DECLINED, FILTERED, ERROR)"
+        },
+        {
+          "code": "CARDSERV_NETWORK_ERROR",
+          "httpStatus": 400,
+          "condition": "fetch() to CardServ API fails or returns non-JSON",
+          "line": "93-105 (cardserv.ts)",
+          "message": "Network timeout or malformed response from gateway"
+        },
+        {
+          "code": "DB_WRITE_FAIL",
+          "httpStatus": 400,
+          "condition": "PaymentOrder.create() fails (duplicate orderMerchantId or DB connection issue)",
+          "line": 62,
+          "message": "MongoDB write error"
+        }
+      ],
+      "cardServLibraryLogs": [
+        {
+          "file": "src/backend/lib/cardserv.ts",
+          "line": 89,
+          "level": "log",
+          "message": "[CardServ] Sale request: <full JSON body>"
+        },
+        {
+          "file": "src/backend/lib/cardserv.ts",
+          "line": 90,
+          "level": "log",
+          "message": "[CardServ] Auth: Bearer bt_L21URO5E..."
+        },
+        {
+          "file": "src/backend/lib/cardserv.ts",
+          "line": 91,
+          "level": "log",
+          "message": "[CardServ] URL: https://live.cardserv.io/api/payments/sale/853"
+        },
+        {
+          "file": "src/backend/lib/cardserv.ts",
+          "line": 106,
+          "level": "log",
+          "message": "[CardServ] Sale response: <full JSON response from gateway>"
+        }
+      ]
+    },
+    "2_3ds_redirect_result": {
+      "endpoint": "GET/POST /api/cardserv/result",
+      "file": "src/app/api/cardserv/result/route.ts",
+      "logPoints": [
+        {
+          "line": 93,
+          "level": "error",
+          "message": "CardServ result POST error: <message>"
+        },
+        {
+          "line": 104,
+          "level": "error",
+          "message": "CardServ result GET error: <message>"
+        }
+      ],
+      "possibleErrors": [
+        {
+          "code": "MISSING_ORDER_ID",
+          "redirect": "/payment-failed?reason=missing_order",
+          "condition": "orderMerchantId could not be extracted from path, form data, or query params",
+          "line": 47
+        },
+        {
+          "code": "ORDER_NOT_FOUND",
+          "redirect": "/payment-failed?reason=order_not_found&order=<id>",
+          "condition": "PaymentOrder.findOne({ orderMerchantId }) returns null",
+          "line": 52
+        },
+        {
+          "code": "GATEWAY_DECLINED",
+          "redirect": "/payment-failed?reason=<errorMessage>",
+          "condition": "CardServ status returns DECLINED",
+          "line": 73
+        },
+        {
+          "code": "GATEWAY_ERROR",
+          "redirect": "/payment-failed?reason=<errorMessage>",
+          "condition": "CardServ status returns ERROR",
+          "line": 73
+        },
+        {
+          "code": "GATEWAY_FILTERED",
+          "redirect": "/payment-failed?reason=<errorMessage>",
+          "condition": "CardServ status returns FILTERED (fraud filter triggered)",
+          "line": 73
+        },
+        {
+          "code": "GATEWAY_CHAIN_STEP",
+          "redirect": "/payment-failed?reason=<errorMessage>",
+          "condition": "CardServ status returns CHAIN_STEP (incomplete 3DS challenge)",
+          "line": 73
+        }
+      ]
+    },
+    "3_webhook": {
+      "endpoint": "POST /api/cardserv/webhook",
+      "file": "src/app/api/cardserv/webhook/route.ts",
+      "logPoints": [
+        {
+          "line": 47,
+          "level": "error",
+          "message": "CardServ webhook error: <message>"
+        }
+      ],
+      "possibleErrors": [
+        {
+          "code": "MISSING_ORDER_ID",
+          "httpStatus": 400,
+          "condition": "readCardServWebhookOrderId(payload) returns null",
+          "line": 13,
+          "message": "Missing orderMerchantId"
+        },
+        {
+          "code": "ORDER_NOT_FOUND",
+          "httpStatus": 404,
+          "condition": "PaymentOrder.findOne({ orderMerchantId }) returns null",
+          "line": 18,
+          "message": "Order not found"
+        },
+        {
+          "code": "TOKEN_CREDIT_FAILURE",
+          "httpStatus": 500,
+          "condition": "userController.buyTokens() throws (user deleted, DB error)",
+          "line": 34,
+          "message": "Failed to credit tokens after APPROVED status"
+        }
+      ]
+    },
+    "4_status_poll": {
+      "endpoint": "POST /api/cardserv/status",
+      "file": "src/app/api/cardserv/status/route.ts",
+      "logPoints": [],
+      "possibleErrors": [
+        {
+          "code": "INVALID_ORDER_ID",
+          "httpStatus": 400,
+          "condition": "!orderMerchantId || orderMerchantId.length < 4",
+          "line": 13,
+          "message": "Invalid orderMerchantId"
+        },
+        {
+          "code": "ORDER_NOT_FOUND_OR_WRONG_USER",
+          "httpStatus": 404,
+          "condition": "Order not found OR order.userId !== auth.sub",
+          "line": 18,
+          "message": "Order not found"
+        },
+        {
+          "code": "GATEWAY_STATUS_FETCH_FAIL",
+          "httpStatus": 400,
+          "condition": "getCardServStatus() throws (network error or non-JSON response)",
+          "line": 22,
+          "message": "Failed to fetch payment status"
+        }
+      ]
+    },
+    "5_token_crediting": {
+      "file": "src/backend/controllers/user.controller.ts",
+      "logPoints": [
+        {
+          "line": 13,
+          "level": "log",
+          "message": "💳 Adding tokens for user: <userId>"
+        },
+        {
+          "line": 15,
+          "level": "log",
+          "message": "✅ Transaction created successfully"
+        },
+        {
+          "line": 26,
+          "level": "error",
+          "message": "❌ Token purchase confirmation email failed: <error>"
+        }
+      ],
+      "possibleErrors": [
+        {
+          "code": "USER_NOT_FOUND",
+          "condition": "userService.addTokens() fails because user was deleted",
+          "message": "User not found"
+        },
+        {
+          "code": "TRANSACTION_RECORD_FAIL",
+          "condition": "transactionService.record() fails (DB error)",
+          "message": "MongoDB write error on Transaction collection"
+        }
+      ]
+    },
+    "6_transaction_recording": {
+      "file": "src/backend/services/transaction.service.ts",
+      "logPoints": [
+        {
+          "line": 21,
+          "level": "log",
+          "message": "🧾 Transaction saved: <transaction document>"
+        }
+      ]
+    }
+  },
+  "likelyErrorScenarios": [
+    {
+      "scenario": "DECLINED by CardServ gateway",
+      "probability": "high",
+      "description": "Card issuer declined the transaction. CardServ returns orderState=DECLINED with an errorCode and errorMessage. The user is redirected to /payment-failed.",
+      "affectedOrders": ["cc_1777994675223_9wj43p", "cc_1777995360949_4rqm2n"],
+      "evidenceNeeded": "Check PaymentOrder.gatewayResponse in MongoDB for these orderMerchantIds",
+      "dbQuery": "db.paymentorders.find({ orderMerchantId: { $in: ['cc_1777994675223_9wj43p', 'cc_1777995360949_4rqm2n'] } })"
+    },
+    {
+      "scenario": "FILTERED by fraud detection",
+      "probability": "medium",
+      "description": "CardServ fraud filters blocked the transaction (IP mismatch, high-risk card, velocity check). Returns orderState=FILTERED.",
+      "affectedOrders": ["cc_1777994675223_9wj43p", "cc_1777995360949_4rqm2n"],
+      "notes": "Two orders 11 minutes apart from same user may trigger velocity filters"
+    },
+    {
+      "scenario": "3DS challenge incomplete (CHAIN_STEP)",
+      "probability": "medium",
+      "description": "User was redirected to 3DS verification page but did not complete it, or the result callback failed to extract orderMerchantId from the 3DS redirect.",
+      "affectedOrders": ["cc_1777994675223_9wj43p", "cc_1777995360949_4rqm2n"],
+      "notes": "The extractOrderMerchantId function checks: path segment, MD form field, threeDSSessionData, query params. If none match, order stays stuck in PROCESSING."
+    },
+    {
+      "scenario": "Webhook never received",
+      "probability": "medium",
+      "description": "CardServ completed the transaction but webhook to /api/cardserv/webhook was never delivered (network issue, wrong webhookUrl, server down). Order remains in PENDING/PROCESSING and tokens are never credited.",
+      "notes": "No automatic cleanup exists for stale PENDING orders. webhookUrl is built from getAppUrl() which may differ between environments."
+    },
+    {
+      "scenario": "Currency conversion mismatch",
+      "probability": "low",
+      "description": "Amount sent to CardServ in EUR may not match what user expected due to hardcoded exchange rates (GBP: 1.0, EUR: 1.17, USD: 1.29). Could cause CardServ to reject if amount is outside acceptable range.",
+      "notes": "Exchange rates in sale/route.ts are static, not live market rates"
+    },
+    {
+      "scenario": "Tokens credited but user not notified",
+      "probability": "low",
+      "description": "Payment was APPROVED and tokens were credited, but email confirmation failed. The user thinks payment failed because they didn't receive confirmation, while tokens were actually added.",
+      "notes": "Email errors are caught and logged but don't affect token crediting"
+    }
+  ],
+  "diagnosticQueries": {
+    "findOrders": "db.paymentorders.find({ orderMerchantId: { $in: ['cc_1777994675223_9wj43p', 'cc_1777995360949_4rqm2n'] } }).pretty()",
+    "checkOrderStatus": "db.paymentorders.find({ orderMerchantId: { $in: ['cc_1777994675223_9wj43p', 'cc_1777995360949_4rqm2n'] } }, { status: 1, orderMerchantId: 1, gatewayResponse: 1, creditedTokens: 1, tokens: 1 }).pretty()",
+    "findRelatedTransactions": "db.transactions.find({ createdAt: { $gte: ISODate('2026-05-05T14:40:00Z'), $lte: ISODate('2026-05-05T15:10:00Z') } }).pretty()",
+    "findUserOrders": "db.paymentorders.find({ orderMerchantId: /^cc_17779/ }).sort({ createdAt: -1 }).pretty()",
+    "checkAllPendingOrders": "db.paymentorders.find({ status: { $in: ['PENDING', 'PROCESSING'] } }).sort({ createdAt: -1 }).pretty()"
+  },
+  "allApiEndpoints": {
+    "cardserv": [
+      { "method": "POST", "path": "/api/cardserv/sale", "file": "src/app/api/cardserv/sale/route.ts", "purpose": "Initiate card payment with CardServ gateway" },
+      { "method": "POST", "path": "/api/cardserv/webhook", "file": "src/app/api/cardserv/webhook/route.ts", "purpose": "Receive CardServ transaction result webhook" },
+      { "method": "GET/POST", "path": "/api/cardserv/result", "file": "src/app/api/cardserv/result/route.ts", "purpose": "Handle 3DS redirect return and finalize payment" },
+      { "method": "POST", "path": "/api/cardserv/status", "file": "src/app/api/cardserv/status/route.ts", "purpose": "Poll payment status from client" },
+      { "method": "GET/POST", "path": "/api/cardserv/cres", "file": "src/app/api/cardserv/cres/route.ts", "purpose": "Alias for result endpoint" },
+      { "method": "POST", "path": "/api/cardserv/redirect-webhook", "file": "src/app/api/cardserv/redirect-webhook/route.ts", "purpose": "Alias for webhook endpoint" }
+    ],
+    "transactions": [
+      { "method": "GET", "path": "/api/transactions/get-all", "purpose": "Get all transactions for authenticated user" }
+    ],
+    "user": [
+      { "method": "POST", "path": "/api/user/buy-tokens", "purpose": "Credit tokens to user account" }
+    ],
+    "esim": [
+      { "method": "POST", "path": "/api/e-sim/checkout", "purpose": "Purchase eSIM with tokens" }
+    ],
+    "ai": [
+      { "method": "POST", "path": "/api/ai/create-order", "purpose": "Create AI-generated content order" }
+    ],
+    "universal": [
+      { "method": "POST", "path": "/api/universal/create-order", "purpose": "Create universal service order" }
+    ],
+    "cv": [
+      { "method": "POST", "path": "/api/cv/create-order", "purpose": "Create CV generation order" }
+    ],
+    "contact": [
+      { "method": "POST", "path": "/api/contact", "purpose": "Contact form submission" }
+    ],
+    "seo": [
+      { "method": "POST", "path": "/api/seo-request", "purpose": "SEO analysis request" }
+    ],
+    "auth": [
+      { "method": "POST", "path": "/api/auth/register", "purpose": "User registration" },
+      { "method": "POST", "path": "/api/auth/login", "purpose": "User login" },
+      { "method": "POST", "path": "/api/auth/refresh", "purpose": "Refresh JWT token" },
+      { "method": "POST", "path": "/api/auth/logout", "purpose": "User logout" }
+    ],
+    "upload": [
+      { "method": "POST", "path": "/api/upload", "purpose": "File upload" }
+    ],
+    "og": [
+      { "method": "GET", "path": "/api/og", "purpose": "OpenGraph image generation" }
+    ]
+  },
+  "knownIssues": [
+    {
+      "issue": "No retry mechanism for failed webhooks",
+      "severity": "high",
+      "description": "If CardServ webhook delivery fails, there is no retry or polling fallback. Orders can get stuck in PENDING/PROCESSING indefinitely.",
+      "file": "src/app/api/cardserv/webhook/route.ts",
+      "recommendation": "Add a cron job or scheduled task to poll CardServ status for orders stuck in PENDING/PROCESSING for more than 15 minutes"
+    },
+    {
+      "issue": "No server-side logging persistence",
+      "severity": "high",
+      "description": "All logging uses console.log/console.error which is ephemeral in serverless environments. Logs are lost after function execution unless captured by an external service.",
+      "files": ["src/backend/lib/cardserv.ts", "src/app/api/cardserv/sale/route.ts", "src/app/api/cardserv/webhook/route.ts"],
+      "recommendation": "Integrate a structured logging service (e.g., Vercel Log Drains, Sentry, or Datadog) to persist and query logs"
+    },
+    {
+      "issue": "Double token crediting race condition",
+      "severity": "medium",
+      "description": "Both /api/cardserv/webhook and /api/cardserv/result can credit tokens. The check (creditedTokens === 0) is not atomic — if webhook and result callback fire simultaneously, tokens could be credited twice.",
+      "files": ["src/app/api/cardserv/webhook/route.ts:33", "src/app/api/cardserv/result/route.ts:68"],
+      "recommendation": "Use MongoDB findOneAndUpdate with { creditedTokens: 0 } as a condition to make the check-and-update atomic"
+    },
+    {
+      "issue": "Static exchange rates",
+      "severity": "low",
+      "description": "Currency conversion uses hardcoded rates (EUR: 1.17, USD: 1.29 per GBP). These do not reflect live market rates and could cause pricing discrepancies.",
+      "file": "src/app/api/cardserv/sale/route.ts:9",
+      "recommendation": "Use a live exchange rate API or update rates regularly"
+    },
+    {
+      "issue": "No idempotency key for sale requests",
+      "severity": "medium",
+      "description": "If the client retries a failed /api/cardserv/sale request, a duplicate PaymentOrder is created with a new orderMerchantId. User could be charged twice.",
+      "file": "src/app/api/cardserv/sale/route.ts:60",
+      "recommendation": "Accept a client-generated idempotency key and check for existing orders before creating a new one"
+    }
+  ]
+}
