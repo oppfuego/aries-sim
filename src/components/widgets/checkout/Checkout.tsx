@@ -66,8 +66,8 @@ const Checkout = () => {
         if (!agreed || !activePlan || loading) return;
 
         const cleanCard = cardNumber.replace(/\s/g, "");
-        if (cleanCard.length < 13 || cleanCard.length > 19) {
-            showAlert("Validation", "Please enter a valid card number", "warning");
+        if (cleanCard.length !== 16) {
+            showAlert("Validation", "Please enter a valid 16-digit card number", "warning");
             return;
         }
         if (!expiry.includes("/") || expiry.length < 5) {

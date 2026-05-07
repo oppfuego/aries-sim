@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
             orderMerchantId,
             orderSystemId: status.orderSystemId,
             state: status.orderState,
+            redirectUrl: status.redirectUrl,
             errorCode: status.errorCode,
             errorMessage: status.errorMessage,
             tokens: order.tokens,
