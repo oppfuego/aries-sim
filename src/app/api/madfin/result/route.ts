@@ -2,14 +2,22 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
 import { getMadfinStatus } from "@/backend/lib/madfin";
+import { logPaymentEvent } from "@/backend/lib/madfin-logger";
 import { userController } from "@/backend/controllers/user.controller";
 
 function getAppUrl(req: Request): string {
+    const url = new URL(req.url);
+    const host = req.headers.get("host") || url.host;
+    const isLocalhost = host.startsWith("localhost") || host.startsWith("127.0.0.1");
+
+    if (isLocalhost) {
+        return `${url.protocol}//${host}`;
+    }
+
     const envUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL;
     if (envUrl) return envUrl.replace(/\/$/, "");
 
-    const url = new URL(req.url);
-    return `${url.protocol}//${url.host}`;
+    return `${url.protocol}//${host}`;
 }
 
 function extractIdentifiers(req: Request, form?: FormData) {
@@ -66,6 +74,23 @@ async function handleResult(req: Request, form?: FormData) {
 
     const status = await getMadfinStatus(effectiveOrderMerchantId, order.orderSystemId);
 
+    await logPaymentEvent({
+        timestamp: new Date().toISOString(),
+        event: "result.status_check",
+        orderMerchantId: effectiveOrderMerchantId,
+        orderSystemId: status.orderSystemId,
+        state: status.orderState,
+        errorCode: status.errorCode,
+        errorMessage: status.errorMessage,
+        response: status.raw,
+        meta: {
+            lookupBy: orderMerchantId ? "orderMerchantId" : "madfinPaymentId",
+            lookupValue: orderMerchantId || madfinPaymentId,
+            tokens: order.tokens,
+            creditedTokens: order.creditedTokens,
+        },
+    });
+
     const updateData: Record<string, unknown> = {
         status: status.orderState,
         gatewayResponse: status.raw,
@@ -77,6 +102,17 @@ async function handleResult(req: Request, form?: FormData) {
     if (status.orderState === "APPROVED" && order.creditedTokens === 0) {
         await userController.buyTokens(order.userId.toString(), order.tokens);
         await PaymentOrder.updateOne({ orderMerchantId: effectiveOrderMerchantId }, { creditedTokens: order.tokens });
+
+        await logPaymentEvent({
+            timestamp: new Date().toISOString(),
+            event: "result.tokens_credited",
+            orderMerchantId: effectiveOrderMerchantId,
+            orderSystemId: status.orderSystemId,
+            state: "APPROVED",
+            errorCode: null,
+            errorMessage: null,
+            meta: { tokensCredited: order.tokens, userId: order.userId.toString() },
+        });
     }
 
     if (["DECLINED", "ERROR", "FILTERED", "CANCELLED"].includes(status.orderState)) {

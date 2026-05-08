@@ -3,6 +3,7 @@ import { requireAuth } from "@/backend/middlewares/auth.middleware";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
 import { createMadfinPayment } from "@/backend/lib/madfin";
+import { logPaymentEvent } from "@/backend/lib/madfin-logger";
 import { userService } from "@/backend/services/user.service";
 
 const TOKENS_PER_GBP = 100;
@@ -10,11 +11,18 @@ const RATES_TO_GBP: Record<string, number> = { GBP: 1, EUR: 1.17, USD: 1.29 };
 const RATES_FROM_GBP_TO_EUR = 1.17;
 
 function getAppUrl(req: NextRequest): string {
+    const url = new URL(req.url);
+    const host = req.headers.get("host") || url.host;
+    const isLocalhost = host.startsWith("localhost") || host.startsWith("127.0.0.1");
+
+    if (isLocalhost) {
+        return `${url.protocol}//${host}`;
+    }
+
     const envUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL;
     if (envUrl) return envUrl.replace(/\/$/, "");
 
-    const url = new URL(req.url);
-    return `${url.protocol}//${url.host}`;
+    return `${url.protocol}//${host}`;
 }
 
 function normalizeIp(value: string | undefined | null): string {
@@ -129,6 +137,28 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        await logPaymentEvent({
+            timestamp: new Date().toISOString(),
+            event: "sale.response",
+            orderMerchantId,
+            orderSystemId: sale.orderSystemId,
+            state: sale.orderState,
+            errorCode: sale.errorCode,
+            errorMessage: sale.errorMessage,
+            request: {
+                title,
+                price: amountInEUR,
+                currency: "EUR",
+                tokens: finalTokens,
+                variant,
+                appUrl,
+                userEmail: user.email,
+                browserIp,
+            },
+            response: sale.raw,
+            meta: { redirectUrl: sale.redirectUrl },
+        });
+
         return NextResponse.json({
             ok: true,
             orderMerchantId,
@@ -141,6 +171,16 @@ export async function POST(req: NextRequest) {
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Failed to create payment";
         console.error("Madfin sale error:", message);
+        await logPaymentEvent({
+            timestamp: new Date().toISOString(),
+            event: "sale.error",
+            orderMerchantId: null,
+            orderSystemId: null,
+            state: null,
+            errorCode: null,
+            errorMessage: message,
+            meta: { stack: err instanceof Error ? err.stack : undefined },
+        });
         return NextResponse.json({ message }, { status: 400 });
     }
 }

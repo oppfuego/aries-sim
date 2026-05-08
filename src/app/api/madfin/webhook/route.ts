@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
 import { parseMadfinWebhookPayload, readMadfinWebhookOrderId, verifyWebhookSignature } from "@/backend/lib/madfin";
+import { logPaymentEvent } from "@/backend/lib/madfin-logger";
 import { userController } from "@/backend/controllers/user.controller";
 
 export async function POST(req: Request) {
@@ -28,6 +29,17 @@ export async function POST(req: Request) {
 
         const status = parseMadfinWebhookPayload(payload);
 
+        await logPaymentEvent({
+            timestamp: new Date().toISOString(),
+            event: "webhook.received",
+            orderMerchantId,
+            orderSystemId: status.orderSystemId,
+            state: status.orderState,
+            errorCode: status.errorCode,
+            errorMessage: status.errorMessage,
+            response: payload,
+        });
+
         const updateData: Record<string, unknown> = {
             status: status.orderState,
             gatewayResponse: payload,
@@ -41,6 +53,17 @@ export async function POST(req: Request) {
             await userController.buyTokens(order.userId.toString(), order.tokens);
             await PaymentOrder.updateOne({ orderMerchantId }, { creditedTokens: order.tokens });
             tokensAdded = order.tokens;
+
+            await logPaymentEvent({
+                timestamp: new Date().toISOString(),
+                event: "webhook.tokens_credited",
+                orderMerchantId,
+                orderSystemId: status.orderSystemId,
+                state: "APPROVED",
+                errorCode: null,
+                errorMessage: null,
+                meta: { tokensCredited: order.tokens, userId: order.userId.toString() },
+            });
         }
 
         return NextResponse.json({
@@ -52,6 +75,16 @@ export async function POST(req: Request) {
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Webhook processing failed";
         console.error("Madfin webhook error:", message);
+        await logPaymentEvent({
+            timestamp: new Date().toISOString(),
+            event: "webhook.error",
+            orderMerchantId: null,
+            orderSystemId: null,
+            state: null,
+            errorCode: null,
+            errorMessage: message,
+            meta: { stack: err instanceof Error ? err.stack : undefined },
+        });
         return NextResponse.json({ ok: false, error: message }, { status: 500 });
     }
 }
