@@ -62,7 +62,7 @@ export async function createMadfinPayment(payload: SalePayload): Promise<SaleRes
         billingAddress: {
             countryCode: payload.countryCode,
         },
-        returnUrl: `${payload.appUrl}/api/madfin/result`,
+        returnUrl: `${payload.appUrl}/result`,
         webhookUrl: `${payload.appUrl}/api/madfin/webhook`,
     };
 
