@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
-import { parseCardServWebhookPayload, readCardServWebhookOrderId, verifyWebhookSignature } from "@/backend/lib/cardserv";
+import { parseMadfinWebhookPayload, readMadfinWebhookOrderId, verifyWebhookSignature } from "@/backend/lib/madfin";
 import { userController } from "@/backend/controllers/user.controller";
 
 export async function POST(req: Request) {
     try {
         await connectDB();
         const rawBody = await req.text();
-        const signature = req.headers.get("x-hmac-sha256-signature");
+        const signature = req.headers.get("signature") || req.headers.get("x-hmac-sha256-signature");
 
         if (!verifyWebhookSignature(rawBody, signature)) {
             return NextResponse.json({ ok: false, error: "Invalid signature" }, { status: 401 });
         }
 
         const payload = JSON.parse(rawBody) as Record<string, unknown>;
-        const orderMerchantId = readCardServWebhookOrderId(payload);
+        const orderMerchantId = readMadfinWebhookOrderId(payload);
 
         if (!orderMerchantId) {
             return NextResponse.json({ ok: false, error: "Missing orderMerchantId" }, { status: 400 });
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ ok: false, error: "Order not found" }, { status: 404 });
         }
 
-        const status = parseCardServWebhookPayload(payload);
+        const status = parseMadfinWebhookPayload(payload);
 
         const updateData: Record<string, unknown> = {
             status: status.orderState,
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
         });
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Webhook processing failed";
-        console.error("CardServ webhook error:", message);
+        console.error("Madfin webhook error:", message);
         return NextResponse.json({ ok: false, error: message }, { status: 500 });
     }
 }

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/backend/middlewares/auth.middleware";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
-import { getCardServStatus } from "@/backend/lib/cardserv";
+import { getMadfinStatus } from "@/backend/lib/madfin";
 
 export async function POST(req: NextRequest) {
     try {
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Order not found" }, { status: 404 });
         }
 
-        const status = await getCardServStatus(orderMerchantId, order.orderSystemId);
+        const status = await getMadfinStatus(orderMerchantId, order.orderSystemId);
 
         await PaymentOrder.updateOne(
             { orderMerchantId },

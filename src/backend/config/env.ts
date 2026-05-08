@@ -26,11 +26,9 @@ export const ENV = {
     EMAIL_FROM: env("EMAIL_FROM", ""),
     RESEND_API: env("RESEND_API", ""),
 
-    CARDSERV_BASE_URL: env("CARDSERV_BASE_URL", "https://test.cardserv.io"),
-    CARDSERV_REQUESTOR_ID: env("CARDSERV_REQUESTOR_ID", "853"),
-    CARDSERV_BEARER_TOKEN: env("CARDSERV_BEARER_TOKEN", ""),
-    CARDSERV_SIGNING_KEY: env("CARDSERV_SIGNING_KEY", ""),
-    CARDSERV_API_KEY: env("CARDSERV_API_KEY", ""),
-    CARDSERV_DESCRIPTOR: env("CARDSERV_DESCRIPTOR", "ariesonline"),
-    CARDSERV_MCC: env("CARDSERV_MCC", "4814"),
+    MADFIN_BASE_URL: env("MADFIN_BASE_URL", "https://engine.madfin.tech"),
+    MADFIN_SIGNING_KEY: env("MADFIN_SIGNING_KEY", ""),
+    MADFIN_API_KEY: env("MADFIN_API_KEY", ""),
+    MADFIN_DESCRIPTOR: env("MADFIN_DESCRIPTOR", "ariesonline"),
+    MADFIN_MCC: env("MADFIN_MCC", "4814"),
 };

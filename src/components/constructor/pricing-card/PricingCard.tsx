@@ -9,7 +9,6 @@ import { useAlert } from "@/context/AlertContext";
 import { useUser } from "@/context/UserContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useRouter } from "next/navigation";
-import { useCheckoutStore } from "@/utils/store";
 
 const TOKENS_PER_GBP = 100;
 
@@ -40,7 +39,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     const user = useUser();
     const { currency, sign, convertFromGBP, convertToGBP } = useCurrency();
     const router = useRouter();
-    const { setPlan } = useCheckoutStore();
+    const [loading, setLoading] = useState(false);
 
     const isCustom = price === "dynamic";
     const [customAmount, setCustomAmount] = useState(10);
@@ -61,12 +60,14 @@ const PricingCard: React.FC<PricingCardProps> = ({
         return Math.floor(gbp * TOKENS_PER_GBP);
     }, [customAmount, convertToGBP]);
 
-    const handleBuy = () => {
+    const handleBuy = async () => {
         if (!user) {
             showAlert("Sign up required", "Please sign in to continue", "info");
             setTimeout(() => router.push("/sign-up"), 1200);
             return;
         }
+
+        if (loading) return;
 
         const finalPriceGBP = isCustom
             ? convertToGBP(customAmount)
@@ -76,17 +77,38 @@ const PricingCard: React.FC<PricingCardProps> = ({
             ? Math.floor(finalPriceGBP * TOKENS_PER_GBP)
             : tokens;
 
-        const plan = {
-            title,
-            price: finalPriceGBP, // ❗️ЗАВЖДИ GBP
-            tokens: finalTokens,
-            currency,
-            variant,
-        };
+        setLoading(true);
+        try {
+            const res = await fetch("/api/madfin/sale", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title,
+                    price: finalPriceGBP,
+                    tokens: finalTokens,
+                    currency,
+                    variant,
+                }),
+            });
 
-        setPlan(plan);
-        localStorage.setItem("selectedPlan", JSON.stringify(plan));
-        router.push("/checkout");
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || "Payment initiation failed");
+            }
+
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+                return;
+            }
+
+            throw new Error("No payment page URL received. Please try again.");
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : "Payment failed";
+            showAlert("Payment Error", message, "error");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -134,8 +156,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 ))}
             </ul>
 
-            <ButtonUI fullWidth size="sm" variant="soft" onClick={handleBuy}>
-                {user ? buttonText : "Sign up to continue"}
+            <ButtonUI fullWidth size="sm" variant="soft" onClick={handleBuy} disabled={loading}>
+                {!user ? "Sign up to continue" : loading ? "Redirecting..." : buttonText}
             </ButtonUI>
         </motion.div>
     );

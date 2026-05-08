@@ -27,10 +27,13 @@ const Checkout = () => {
     const [loading, setLoading] = useState(false);
     const { showAlert } = useAlert();
 
-    const [cardNumber, setCardNumber] = useState("");
-    const [expiry, setExpiry] = useState("");
-    const [cvv, setCvv] = useState("");
-    const [cardName, setCardName] = useState("");
+    const isLocalhost = typeof window !== "undefined" &&
+        (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+    const [cardNumber, setCardNumber] = useState(isLocalhost ? "4165 9852 2362 9556" : "");
+    const [expiry, setExpiry] = useState(isLocalhost ? "03/31" : "");
+    const [cvv, setCvv] = useState(isLocalhost ? "572" : "");
+    const [cardName, setCardName] = useState(isLocalhost ? "David Petrov Dukat" : "");
 
     useEffect(() => {
         if (!plan) {
@@ -90,7 +93,7 @@ const Checkout = () => {
         try {
             const browser = collectBrowserData();
 
-            const res = await fetch("/api/cardserv/sale", {
+            const res = await fetch("/api/madfin/sale", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -134,7 +137,7 @@ const Checkout = () => {
                 const pollDelays = [3000, 5000, 5000, 10000];
                 for (const delay of pollDelays) {
                     await new Promise((r) => setTimeout(r, delay));
-                    const statusRes = await fetch("/api/cardserv/status", {
+                    const statusRes = await fetch("/api/madfin/status", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ orderMerchantId: data.orderMerchantId }),
@@ -332,7 +335,7 @@ const Checkout = () => {
                         <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
-                        Powered by CardServ
+                        Powered by Madfin
                     </div>
                 </div>
             </div>

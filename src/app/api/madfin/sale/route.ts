@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/backend/middlewares/auth.middleware";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
-import { createCardServRedirectSession } from "@/backend/lib/cardserv";
+import { createMadfinPayment } from "@/backend/lib/madfin";
 import { userService } from "@/backend/services/user.service";
 
 const TOKENS_PER_GBP = 100;
@@ -35,8 +35,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
         }
 
-        if (!card?.cardNumber || !card?.cvv2 || !card?.expireMonth || !card?.expireYear || !card?.cardPrintedName) {
-            return NextResponse.json({ message: "Missing card details" }, { status: 400 });
+        if (card && (!card.cardNumber || !card.cvv2 || !card.expireMonth || !card.expireYear || !card.cardPrintedName)) {
+            return NextResponse.json({ message: "Incomplete card details" }, { status: 400 });
         }
 
         const supportedCurrencies = ["GBP", "EUR", "USD"];
@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
         const gbpAmount = amountGross / (RATES_TO_GBP[currency] || 1);
         const amountInEUR = Math.round(gbpAmount * RATES_FROM_GBP_TO_EUR * 100) / 100;
 
-        const sale = await createCardServRedirectSession({
+        const sale = await createMadfinPayment({
             orderMerchantId,
             amountGross: amountInEUR,
             currency: "EUR",
@@ -95,13 +95,13 @@ export async function POST(req: NextRequest) {
             customerName: `${user.firstName} ${user.lastName}`,
             countryCode,
             appUrl,
-            card: {
+            card: card ? {
                 cardNumber: card.cardNumber.replace(/\s/g, ""),
                 cvv2: card.cvv2,
                 expireMonth: card.expireMonth,
                 expireYear: card.expireYear,
                 cardPrintedName: card.cardPrintedName,
-            },
+            } : undefined,
             browser: {
                 ipAddress: browserIp,
                 acceptHeader: body.browser?.acceptHeader ||
@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
         });
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Failed to create payment";
-        console.error("CardServ sale error:", message);
+        console.error("Madfin sale error:", message);
         return NextResponse.json({ message }, { status: 400 });
     }
 }
